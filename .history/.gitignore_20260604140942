@@ -1,0 +1,22 @@
+# Archivos de entorno
+.env
+.env.*
+
+# Compilación y cachés de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de base de datos locales
+*.sqlite3
+
+# Configuración de IDE
+.vscode/
+.idea/
+
+# Archivos de logs
+*.log
+
+# Migraciones temporales de Alembic (opcional)
+migrations/versions/*.py
