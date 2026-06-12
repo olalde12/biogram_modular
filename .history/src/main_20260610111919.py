@@ -1,0 +1,12 @@
+from fastapi import FastAPI
+from src.core.config import settings
+from src.api.routes import microorganismos, usuarios, cuestionarios
+import src.models  
+
+# Crea la intsnacia principal de la app 
+app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
+
+app.include_router(microorganismos.router, prefix='/microorganismos', tags=['Etiquetas (microorganismos)'])
+app.include_router(usuarios.router, prefix='/usuarios', tags=['Etiquetas (usuarios)'])
+app.include_router(cuestionarios.router, prefix='/cuestionarios', tags=['Etiquetas (cuestionarios)'])
+app.include_router(pruebas.router, prefix='/cuestionarios', tags=['Etiquetas (cuestionarios)'])
