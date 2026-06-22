@@ -1,0 +1,26 @@
+from sqlalchemy.orm import Session
+from src.models.resultado_prueba_micro import Resultado_prueba_micro
+from src.schemas.resultado_prueba_micro import ResultadoCreate
+
+# Metodo GET: obtiene resultados por id
+def get_resultado_by_id(db: Session, id_resultado: int):
+    return db.query(Resultado_prueba_micro).filter(Resultado_prueba_micro.id_resultado == id_resultado).first()
+
+# Metodo POST: crea resultados
+def create_resultado(db: Session, resultado: ResultadoCreate):
+    db_resultado = Resultado_prueba_micro(**resultado.dict())
+    db.add(db_resultado)
+    db.commit()
+    db.refresh(db_resultado)
+    return db_resultado
+
+# Metodo PUT: modifica resultados
+def update_resultado(db: Session, id_resultado: int, resultado: ResultadoCuestCreate):
+    db_resultado = db.query(Resultado_cuestionario).filter(Resultado_cuestionario.id_resultado_cues == id_resultado_cues).first()
+    if not db_resultado:
+        return None
+    for key, value in resultado.dict().items():
+        setattr(db_resultado, key, value)
+    db.commit()
+    db.refresh(db_resultado)
+    return db_resultado
