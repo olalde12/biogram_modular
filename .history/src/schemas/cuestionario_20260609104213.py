@@ -1,0 +1,22 @@
+from datetime import date
+from pydantic import BaseModel
+
+# Se define la estructura minima de un usuario
+class CuestionarioBase(BaseModel):
+    nombre: str
+    apellido: str
+    correo: str
+    contraseña: str
+    estado: bool
+
+# Se agrega el identificador y la fecha a los campos
+class Cuestionario(CuestionarioBase):
+    id_usuario: int
+    fecha_registro: date
+
+    class Config:
+        from_attributes: True
+
+# No se necesita ningun campo adicional 
+class UsuarioCreate(UsuarioBase):
+    pass
