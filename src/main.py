@@ -2,9 +2,21 @@ from fastapi import FastAPI
 from src.core.config import settings
 from src.api.routes import microorganismos, usuarios, cuestionarios, resultado_cuest, pruebas, resultados, medios
 import src.models  
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
+from fastapi.responses import HTMLResponse
 
 # Crea la intsnacia principal de la app 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
+templates = Jinja2Templates(directory="src/templates")
+@app.get("/", response_class=HTMLResponse)
+async def inicio(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request}
+    )
 
 app.include_router(usuarios.router, prefix='/usuarios', tags=['Etiquetas (usuarios)'])
 app.include_router(cuestionarios.router, prefix='/cuestionarios', tags=['Etiquetas (cuestionarios)'])

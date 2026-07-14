@@ -1,11 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block titulo %}
+Inicio
+{% endblock %}
+
+{% block contenido %}
+
+<section class="inicio">
+
+    <div class="left-content">
+
+        <h2>
+            ¿Qué deseas hacer hoy?
+        </h2>
+
+        <button class="btn btn-principal">
+            Identificar bacteria
+        </button>
+
+        <button class="btn btn-principal">
+            Buscar bacteria
+        </button>
+
+    </div>
+
+    <div class="right-content">
+
+        <h1>
+            ¡Bienvenid@!
+        </h1>
+
+        <button class="btn btn-principal">
+            Tutoriales
+        </button>
+
+    </div>
+
+</section>
+
+{% endblock %}
