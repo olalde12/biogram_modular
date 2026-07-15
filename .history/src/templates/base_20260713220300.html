@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIOGRAM</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+</head>
+<body>
+     <!-- ===== HEADER ===== -->
+
+    <header>
+
+        <nav class="navbar">
+
+            <div class="logo">
+
+                <img src="{{ url_for('static', path='img/logoBig.png') }}"
+                     alt="Logo">
+
+            </div>
+
+            <ul class="menu">
+
+                <li><a href="/">Inicio</a></li>
+
+                <li><a href="#">Diccionario</a></li>
+
+            </ul>
+
+            <a href="#" class="btn-login">
+
+                Iniciar sesión
+
+            </a>
+
+        </nav>
+
+    </header>
+
+    <!-- ===== CONTENIDO ===== -->
+
+    <main>
+
+        {% block contenido %}
+
+        {% endblock %}
+
+    </main>
+
+    <script src="{{ url_for('static', path='js/script.js') }}"></script>
+</body>
+</html>
