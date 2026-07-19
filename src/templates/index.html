@@ -6,13 +6,11 @@ Inicio
 
 {% block contenido %}
 
-<section class="inicio">
-
+<section class="home">
+    
     <div class="left-content">
 
-        <h2>
-            ¿Qué deseas hacer hoy?
-        </h2>
+        <h2>¿Qué deseas hacer hoy?</h2>
 
         <button class="btn btn-principal">
             Identificar bacteria
@@ -24,18 +22,27 @@ Inicio
 
     </div>
 
+
     <div class="right-content">
-
         <h1>
-            ¡Bienvenid@!
+            {% if usuario %}
+                ¡Hola, {{ usuario.nombre}}!
+            {% else %}
+                ¡Bienvenid@!
+            {% endif %}
         </h1>
-
         <button class="btn btn-principal">
-            Tutoriales
+            {% if usuario %}
+                Continuar con un tutorial
+            {% else %}
+                Tutoriales
+            {% endif %}
         </button>
 
     </div>
 
+    
+    
 </section>
 
 {% endblock %}

@@ -24,7 +24,7 @@
 
             <div class="logo">
 
-                <img src="{{ url_for('static', path='img/logoBig.png') }}"
+                <img src="{{ url_for('static', path='img/logoBiogram.jpg') }}"
                      alt="Logo">
 
             </div>
@@ -33,15 +33,21 @@
 
                 <li><a href="/">Inicio</a></li>
 
-                <li><a href="#">Diccionario</a></li>
+                <li><a href="/diccionario">Diccionario</a></li>
 
             </ul>
 
-            <a href="#" class="btn-login">
-
-                Iniciar sesión
-
+            {% if usuario %}
+            <a href="/perfil" class="btn-login">
+                Perfil
             </a>
+
+            {% else %}
+            <a href="/login" class="btn-login">
+                Iniciar sesión
+            </a>
+            
+            {% endif %}
 
         </nav>
 
