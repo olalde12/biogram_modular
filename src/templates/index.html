@@ -22,15 +22,17 @@ Inicio
 
     </div>
 
-
     <div class="right-content">
-        <h1>
+        <div class="text-intro">
+            <h1>
             {% if usuario %}
-                ¡Hola, {{ usuario.nombre}}!
+                ¡Hola, {{ usuario.nombre }}!
             {% else %}
                 ¡Bienvenid@!
             {% endif %}
-        </h1>
+            </h1>
+        </div>
+        <div class="btn-right-content">
         <button class="btn btn-principal">
             {% if usuario %}
                 Continuar con un tutorial
@@ -38,11 +40,13 @@ Inicio
                 Tutoriales
             {% endif %}
         </button>
+        <button class="btn btn-principal">
+            Escanear pruebas
+        </button>
+        </div>
 
     </div>
 
-    
-    
 </section>
 
 {% endblock %}
