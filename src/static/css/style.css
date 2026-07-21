@@ -3,17 +3,13 @@
 /* ============================= */
 
 :root{
-    --azul:#42B7F5;
-    --azul-hover:#2A9DDA;
-    --morado:#AA8CF2;
-    --gris:#F2F2F2;
-    --texto:#222;
 
     --color-principal:#39B7F3;
     --color-principal-hover:#2A9AD7;
 
-    --color-secundario:#A68AEF;
+    --color-secundario:#9288e3;
     --color-secundario-hover:#8E73DC;
+    --color-secundario-light:#e0d6f7;
 
     --color-fondo:#FFFFFF;
 
@@ -48,7 +44,12 @@ body{
     justify-content:space-between;
     align-items:center;
     padding:0 70px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
 }
+
 
 .logo img{
     width:250px;
@@ -63,7 +64,9 @@ body{
 .menu a{
     text-decoration:none;
     color:#000;
-    font-weight:600;
+    font-weight: 550;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
 }
 
 /* ============================= */
@@ -71,11 +74,17 @@ body{
 /* ============================= */
 
 .home{
-    display: grid;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 90%;
+    margin: 50px auto;
+
+    /*display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: start;
     min-height: calc(100vh - 95px);
-    padding:70 90px;
+    padding:70 90px;*/
 }
 
 .left-content{
@@ -88,20 +97,72 @@ body{
     padding-left: 30px;
 }
 .right-content{
+    width: 42%; /*hace mas grande el "recuadro" hacia la izquierda*/
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-height: 500px;
+
+    /*
+    width: 40%;
+    min-height: 500px;*/
+
+    /*align-items: center;
+    padding-top: 15px;
+    padding-right: 45px;
+    gap: 45px;*/
+
+}
+.text-intro{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 145px; /*separa los botones del text intro*/
+    margin-top: -40px; /*distancia entre el header y el text intro*/
+}
+.text-intro h1{
+    font-size: 70px;
+    font-weight: 700;
+    margin: 0;
+}
+.btn-right-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 45px;
+}
+.btn-principal{
+    width: 440px;
+    height: 78px;
+    border: none;
+    border-radius: 14px;
+    font-size: 20px;
+    font-weight: 700;
+}
+/*
+.btn-right-content{
+    border: 3px solid green;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 25px;
-    padding-right: 45px;
-}
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 35px;
+    padding-bottom: 10%;
+    
+}*/
+/*
 .right-content h1{
+    border: 3px solid red;
     line-height: 65px;
     display: flex;
     width: 100%;
     justify-content: flex-end;
     align-items: center;
     margin-bottom: 120px;
-}
+    padding-right: 30px;
+}*/
 
 h1{
     font-size:58px;
@@ -146,6 +207,7 @@ h2{
     text-decoration:none;
     font-weight:600;
     transition:.30s;
+    font-size: 15px;
 
 }
 .btn-login:hover{
