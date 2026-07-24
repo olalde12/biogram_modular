@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/identificacion.css') }}">
+{% endblock %}
+
+{% block contenido %}
+
+<!--Pantalla inicial-->
+<div id="pantallaCarga">
+    <h1>Identificación bacteriana</h1>
+</div>
+<!--Todo el contenido de la pagina-->
+<main id="contenido">
+    <!--Barra de progreso-->
+    <section class="progress">
+        <div class="step active">
+            Paso 1
+        </div>
+        <div class="line"></div>
+        <div class="circle">
+            2
+        </div>
+        <div class="line"></div>
+        <div class="circle">
+            3
+        </div>
+        <div class="line"></div>
+        <div class="circle">
+            4
+        </div>
+        <div class="line"></div>
+        <div class="circle">
+            5
+        </div>
+    </section>
+
+    <!--Tarjeta-->
+    <section class="card">
+        <h2>
+            Tinción de Gram
+        </h2>
+
+        <div class="options">
+            <button class="option">
+                Gram positivo
+            </button>
+            <button class="option">
+                Gram negativo
+            </button>
+        </div>
+
+        <button class="continue">
+            Continuar
+        </button>
+
+    </section>
+
+</main>
+
+{% block js %}
+
+<script src="{{ url_for('static', path='js/identificacion.js') }}"></script>
+
+{% endblock %}
+
+{% endblock %}

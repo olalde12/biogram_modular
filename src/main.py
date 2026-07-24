@@ -18,6 +18,14 @@ async def inicio(request: Request):
         {"request": request}
     )
 
+# ruta para las demas paginas 
+@app.get("/identificacion", name="identificacion")
+async def identificacion(request: Request):
+    return templates.TemplateResponse(
+        "identificacion.html",
+        {"request": request}
+    )
+
 app.include_router(usuarios.router, prefix='/usuarios', tags=['Etiquetas (usuarios)'])
 app.include_router(cuestionarios.router, prefix='/cuestionarios', tags=['Etiquetas (cuestionarios)'])
 app.include_router(resultado_cuest.router, prefix='/resultados_cuestionarios', tags=['Etiquetas (resultados_cuestionarios)'])

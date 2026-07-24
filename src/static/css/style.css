@@ -12,7 +12,7 @@
     --color-secundario-light:#e0d6f7;
 
     --color-fondo:#FFFFFF;
-
+    --color-tarjetas: #f5f0f6;
     --color-header:#F3F3F3;
 
     --texto:#222222;
@@ -208,10 +208,10 @@ h2{
     font-weight:600;
     transition:.30s;
     font-size: 15px;
-
 }
 .btn-login:hover{
     background: var(--color-secundario-hover);
     transform:translateY(-2px);
     box-shadow:0px 8px 20px rgba(166,138,239,.35);
 }
+

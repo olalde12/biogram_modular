@@ -6,13 +6,19 @@ Inicio
 
 {% block contenido %}
 
+{% block css %}
+
+<link rel="stylesheet" href="{{ url_for('static', path='css/identificacion.css') }}">
+
+{% endblock %}
+
 <section class="home">
-    
+
     <div class="left-content">
 
         <h2>¿Qué deseas hacer hoy?</h2>
 
-        <button class="btn btn-principal">
+        <button class="btn btn-principal" data-url="/identificacion">
             Identificar bacteria
         </button>
 
@@ -25,24 +31,24 @@ Inicio
     <div class="right-content">
         <div class="text-intro">
             <h1>
-            {% if usuario %}
+                {% if usuario %}
                 ¡Hola, {{ usuario.nombre }}!
-            {% else %}
+                {% else %}
                 ¡Bienvenid@!
-            {% endif %}
+                {% endif %}
             </h1>
         </div>
         <div class="btn-right-content">
-        <button class="btn btn-principal">
-            {% if usuario %}
+            <button class="btn btn-principal">
+                {% if usuario %}
                 Continuar con un tutorial
-            {% else %}
+                {% else %}
                 Tutoriales
-            {% endif %}
-        </button>
-        <button class="btn btn-principal">
-            Escanear pruebas
-        </button>
+                {% endif %}
+            </button>
+            <button class="btn btn-principal">
+                Escanear pruebas
+            </button>
         </div>
 
     </div>
