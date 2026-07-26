@@ -19,14 +19,13 @@ async def inicio(request: Request):
         {"request": request}
     )
 
-# (Posiblemente se borren los CORS)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# ruta para las demas paginas 
+@app.get("/identificacion", name="identificacion")
+async def identificacion(request: Request):
+    return templates.TemplateResponse(
+        "identificacion.html",
+        {"request": request}
+    )
 
 # Rutas del Swagger del FastAPI para hacer peticiones a la base de datos
 app.include_router(usuarios.router, prefix='/usuarios', tags=['Etiquetas (usuarios)'])

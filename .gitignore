@@ -10,6 +10,7 @@ __pycache__/
 # Configuración de IDE
 .vscode/
 .idea/
+.history/
 
 # Archivos de logs
 *.log

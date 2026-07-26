@@ -1,0 +1,118 @@
+
+#pantallaCarga{
+    display: flex;
+    /*position: fixed;*/
+    top: 100px;
+    left: 0;
+    width: 100;
+    height: calc(100hv - 90px); /*para que no tape el header*/
+    min-height: 100hv;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity .8s;
+}
+#pantallaCarga h1{
+    font-size: 60px;
+    font-weight: bold;
+}
+
+#contenido{
+    display: none;
+}
+
+.progress{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 45px;
+}
+.circle{
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #68edc6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+.step{
+    width: 140px;
+    height: 65px;
+    border-radius: 40px;
+    background: #c9ffe2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+.step.active{
+
+}
+.step.completed{
+
+}
+.line{
+    width: 170px;
+    height: 5px;
+    background: #222;
+}
+.card{
+    width: 65%;
+    margin: 45px auto;
+    background: #f5f0f6;
+    border-radius: 18px;
+    padding: 45px;
+}
+.options{
+    display:flex;
+    justify-content: space-evenly;
+    margin: 55px 0;
+}
+.options button{
+    width: 270px;
+    height: 60px;
+    border-radius: 14px;
+    border: 2px solid #45c9c8;
+    background: #d0fcfc;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Poppins,sans-serif;
+    color: #45c9c8;
+    cursor: pointer;
+}
+.continue{
+    display: block;
+    margin: auto;
+    width: 170px;
+    height: 55px;
+    border: none;
+    border-radius: 30px;
+    background: #e0d6f7;
+    color: #a288e3;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: Poppins,sans-serif;
+    cursor: pointer;
+}
+.continue:hover{
+    color: white;
+    background:#a288e3;
+}
+.option{
+    background: #d0fcfc;
+    transition: .3s;
+}
+.option:hover{
+    transform: scale(1.03);
+    color: white;
+    background-color: #45c9c8;
+}
+.option.selected{
+    background: #45c9c8;
+    color: white;
+}
