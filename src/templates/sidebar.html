@@ -1,0 +1,78 @@
+<nav class="sidebar-menu">
+
+    <!-- Logo -->
+
+    <div class="sidebar-logo">
+
+        <img src="{{ url_for('static', path='img/LogoResponsivo.jpg') }}" alt="BIOGRAM">
+
+
+    </div>
+
+
+    <!-- Navegación -->
+
+    <div class="sidebar-links">
+
+        <a href="/" class="sidebar-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Inicio</span>
+        </a>
+
+        <a href="/identificacion" class="sidebar-item">
+            <i class="fa-solid fa-bacteria"></i>
+            <span>Identificación</span>
+        </a>
+
+        <a href="/diccionario" class="sidebar-item">
+            <i class="fa-solid fa-book-medical"></i>
+            <span>Diccionario</span>
+        </a>
+
+        <a href="/LabMicro" class="sidebar-item">
+            <i class="fa-solid fa-flask-vial"></i>
+            <span>Laboratorio</span>
+        </a>
+
+        <a href="/foro" class="sidebar-item">
+            <i class="fa-solid fa-comments"></i>
+            <span>Foro</span>
+        </a>
+
+
+        {% if usuario %}
+
+        <a href="/perfil" class="sidebar-item">
+
+            <i class="fa-solid fa-user"></i>
+
+            <span>Perfil</span>
+
+        </a>
+
+        {% else %}
+
+        <a href="/login" class="sidebar-item">
+
+            <i class="fa-solid fa-right-to-bracket"></i>
+
+            <span>Iniciar sesión</span>
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Parte inferior -->
+
+    <div class="sidebar-footer">
+
+        <hr>
+
+        <p>BIOGRAM v1.0</p>
+
+    </div>
+
+</nav>

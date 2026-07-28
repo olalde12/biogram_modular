@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="{{ url_for('static', path='css/identificacion.css') }}">
 {% endblock %}
 
+{% block breadcrumb %}
+Inicio > Identificacion bacteriana
+{% endblock %}
+
 {% block contenido %}
 
 <!--Pantalla inicial-->
@@ -37,9 +41,16 @@
 
     <!--Tarjeta-->
     <section class="card">
-        <h2>
-            Tinción de Gram
-        </h2>
+        <div class="card-header">
+            <h2>
+                Tinción de Gram
+            </h2>
+        </div>
+
+        <div class="card-body">
+            <p>La tincion de Gram es una tecnica que permite diferenciar bacterias segun la estructura de su pared
+                celular. Observa el color obtenido en el microscopio y selecciona la opcion correspondiente:</p>
+        </div>
 
         <div class="options">
             <button class="option">
@@ -50,9 +61,11 @@
             </button>
         </div>
 
-        <button class="continue">
-            Continuar
-        </button>
+        <div class="card-footer">
+            <button class="continue">
+                Continuar
+            </button>
+        </div>
 
     </section>
 

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% "Login" %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/login.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-top">
+                <span>{% "BIOGRAM" %}</span>
+            </div>
+            <div class="form" id="form">
+                <!-- Formulario de login -->
+                <form class="login" method="POST" action="{{ url_for('login') }}">
+                    <h2>{% login_title or "Bienvenido de nuevo" %}</h2>
+                    <p>{% login_message or "Hola de nuevo, ¡bienvenido! por favor introduce los datos para iniciar tu sesión." %}</p>
+                    <div class="input">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" name="email" id="email" placeholder="Introduce tu correo electrónico" required>
+                    </div>
+                    <div class="input">
+                        <label for="password">Contraseña</label>
+                        <input type="password" name="password" id="password" placeholder="Introduce tu contraseña" required>
+                    </div>
+                    <div class="reminder">
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="terms" name="remember">
+                            <label for="terms">Recuérdame durante 30 días</label>
+                        </div>
+                        <span class="forgot"><a href="{{ url_for('forgot_password') }}">Olvidé mi contraseña</a></span>
+                    </div>
+                    <div class="buttons">
+                        <button type="submit">Iniciar sesión</button>
+                        <button type="button">
+                            <img src="{{ url_for('static', path='img/Google.png') }}" alt="ic-google" class="icon-google">
+                            Iniciar sesión con Google
+                        </button>
+                    </div>
+                    <p class="account">¿Aún no tienes una cuenta? <a href="{{ url_for('register') }}" id="sign-up">Regístrate</a></p>
+                </form>
+
+                <!-- Formulario de registro -->
+                <form class="register" method="POST" action="{{ url_for('register') }}">
+                    <h2>{{ register_title or "Crea tu cuenta" }}</h2>
+                    <p>{{ register_message or "Usa tu correo electrónico para crear tu cuenta." }}</p>
+                    <div class="input">
+                        <label for="name">Nombre completo</label>
+                        <input type="text" name="name" id="name" placeholder="Introduce un nombre y un apellido" required>
+                    </div>
+                    <div class="input">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" name="email" id="email" placeholder="Introduce un correo electrónico" required>
+                    </div>
+                    <div class="input">
+                        <label for="password">Contraseña</label>
+                        <input type="password" name="password" id="password" placeholder="Introduce una contraseña" required>
+                    </div>
+                    <div class="buttons">
+                        <button type="submit">Registrarme</button>
+                        <button type="button">
+                            <img src="{{ url_for('static', path='img/Google.png') }}" alt="ic-google" class="icon-google">
+                            Iniciar sesión con Google
+                        </button>
+                    </div>
+                    <p class="account">¿Ya tienes una cuenta? <a href="{{ url_for('login') }}" id="sign-in">Inicia sesión</a></p>
+                </form>
+            </div>
+            <div class="form-bot">
+                <span>{{ footer or "Property Biogram" }}</span>   
+            </div>
+        </div>
+        <div class="banner" id="banner">
+            <div class="circle"></div>
+            <div class="circle-2"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', path='js/script.js') }}"></script>
+</body>
+</html>
