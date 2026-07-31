@@ -2,7 +2,9 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from src.db.base_class import Base
 
+# Definicion del modelo opcion_prueba
 class Opcion_prueba(Base):
+    __tablename__="opciones_prueba"
     id_opcion_prueba = Column(Integer, primary_key=True, index=True)
     nombre_resultado = Column(String)
     descripcion_resultado = Column(String)

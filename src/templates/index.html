@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block titulo %}
+Inicio
+{% endblock %}
+
+{% block contenido %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{{ url_for('static', path='css/identificacion.css') }}">
+
+{% endblock %}
+
+<section class="home">
+
+    <div class="left-content">
+
+        <h2>¿Qué deseas hacer hoy?</h2>
+
+        <button class="btn btn-principal" data-url="/identificacion">
+            Identificar bacteria
+        </button>
+
+        <button class="btn btn-principal">
+            Buscar bacteria
+        </button>
+
+    </div>
+
+    <div class="right-content">
+        <div class="text-intro">
+            <h1>
+                {% if usuario %}
+                ¡Hola, {{ usuario.nombre }}!
+                {% else %}
+                ¡Bienvenid@!
+                {% endif %}
+            </h1>
+        </div>
+        <div class="btn-right-content">
+            <button class="btn btn-principal">
+                {% if usuario %}
+                Continuar con un tutorial
+                {% else %}
+                Tutoriales
+                {% endif %}
+            </button>
+            <button class="btn btn-principal">
+                Escanear pruebas
+            </button>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

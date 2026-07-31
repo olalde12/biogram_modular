@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 from src.db.base_class import Base
 
 # Cargar los modelos
-from src.models.antibiograma_microorganismo import Antibiograma_microorganismo
-from src.models.antibiograma import Antibiograma
 from src.models.cuestionario import Cuestionario
 from src.models.medios_cultivo import Medio_cultivo
 from src.models.microorganismo import Microorganismo
