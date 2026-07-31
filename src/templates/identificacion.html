@@ -4,9 +4,6 @@
 <link rel="stylesheet" href="{{ url_for('static', path='css/identificacion.css') }}">
 {% endblock %}
 
-{% block breadcrumb %}
-Inicio > Identificacion bacteriana
-{% endblock %}
 
 {% block contenido %}
 
@@ -16,59 +13,68 @@ Inicio > Identificacion bacteriana
 </div>
 <!--Todo el contenido de la pagina-->
 <main id="contenido">
-    <!--Barra de progreso-->
-    <section class="progress">
-        <div class="step active">
-            Paso 1
-        </div>
-        <div class="line"></div>
-        <div class="circle">
-            2
-        </div>
-        <div class="line"></div>
-        <div class="circle">
-            3
-        </div>
-        <div class="line"></div>
-        <div class="circle">
-            4
-        </div>
-        <div class="line"></div>
-        <div class="circle">
-            5
-        </div>
-    </section>
+    <div class="identificacion-container">
+        <!--Barra de progreso-->
+        <section class="progress-container">
+            <h3 class="progress-title">
+                Identificación bacteriana
+            </h3>
 
-    <!--Tarjeta-->
-    <section class="card">
-        <div class="card-header">
-            <h2>
-                Tinción de Gram
-            </h2>
-        </div>
+            <p class="progress-text">
+                Paso
+                <span id="pasoActual">1</span>
+                de
+                <span id="totalPasos">2</span>
+            </p>
 
-        <div class="card-body">
-            <p>La tincion de Gram es una tecnica que permite diferenciar bacterias segun la estructura de su pared
-                celular. Observa el color obtenido en el microscopio y selecciona la opcion correspondiente:</p>
-        </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">
+                </div>
+            </div>
 
-        <div class="options">
-            <button class="option">
-                Gram positivo
-            </button>
-            <button class="option">
-                Gram negativo
-            </button>
-        </div>
+        </section>
 
-        <div class="card-footer">
-            <button class="continue">
-                Continuar
-            </button>
-        </div>
+        <!--Tarjeta-->
+        <section class="card">
+            <!-- Encabezado -->
+            <div class="card-header">
+                <h2 id="tituloPrueba">Tinción de Gram</h2>
 
-    </section>
+                <button class="dictionary-btn">
+                    <i class="fa-solid fa-book-open"></i>
+                    Diccionario
+                </button>
+            </div>
+            <!-- Pregunta -->
+            <p class="question" id="preguntaPrueba">
+                Selecciona el resultado obtenido.
+            </p>
 
+            <!-- Opciones -->
+            <div class="options" id="contenedorOpciones">
+                <button class="option" data-value="positivo">
+                    Gram positivo
+                </button>
+                <button class="option" data-value="negativo">
+                    Gram negativo
+                </button>
+            </div>
+
+            <!-- Navegación -->
+            <div class="card-footer">
+
+                <button class="back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Atrás
+                </button>
+
+                <button class="continue" disabled>
+                    Continuar
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+    </div>
 </main>
 
 {% block js %}
