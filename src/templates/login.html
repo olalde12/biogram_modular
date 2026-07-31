@@ -1,75 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../static/css/styleLogin.css">
+    <title>Iniciar sesión | BIOGRAM</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/login.css') }}">
 </head>
 <body>
+    <a href="/" class="back-home">
+        <i class="fa-solid fa-arrow-left"></i>
+        Volver al inicio
+    </a>
     <div class="container">
         <div class="form-container">
             <div class="form-top">
                 <span>BIOGRAM</span>
             </div>
             <div class="form" id="form">
-                <form id="login" class="login">
+                <form class="login"
+                      action="/login"
+                      method="POST">
                     <h2>Bienvenido de nuevo</h2>
                     <p>Hola de nuevo, ¡bienvenido! por favor introduce los datos para iniciar tu sesión.</p>
                     <div class="input">
-                        <label for="email">Correo electrónico</label>
-                        <input type="email" name="emailL" id="emailL" placeholder="Introduce tu correo electrónico">
-                        <div id="error_correo" class="error"></div>
+                        <label for="login-email">Correo electrónico</label>
+                        <input 
+                        type="email" 
+                        id="login-email"
+                        name="email" 
+                        required
+                        placeholder="Introduce tu correo electrónico">
                     </div>
                     <div class="input">
-                        <label for="password">Contraseña</label>
-                        <input type="password" name="passwordL" id="passwordL" placeholder="Introduce tu contraseña">
-                        <div id="error_contrasena" class="error"></div>
+                        <label for="login-password">Contraseña</label>
+                        <input 
+                        type="password" 
+                        id="login-password" 
+                        name="password" 
+                        required 
+                        placeholder="Introduce tu contraseña">
                     </div>
                     <div class="reminder">
                         <div class="checkbox-container">
-                            <input type="checkbox" id="terms">
-                            <label for="terms">Recuérdame durante 30 días</label>
+                            <input 
+                            type="checkbox" 
+                            id="remember"
+                            name="remember">
+                            <label for="remember">Recuérdame durante 30 días</label>
                         </div>
-                        <span class="forgot">Olvidé mi contraseña</span>
+                        <a href="/recuperar"
+                        class="forgot">Olvidé mi contraseña</a>
                     </div>
                     <div class="buttons">
                         <button type="submit">Iniciar sesión</button>
-                        <button>
-                            <img src="../static/img/Google.png" alt="ic-google" class="icon-google">
+                        <button type="button">
+                            <img src="{{ url_for('static', path='img/Google.png') }}"alt="ic-google" class="icon-google">
                             Iniciar sesión con Google
                         </button>
                     </div>
                     <p class="account">¿Aún no tienes una cuenta? <a href="#" id="sign-up">Regístrate</a></p>
                 </form>
 
-                <form id="CreateUser" class="register">
+                <form class="register"
+                      action="/registro"
+                      method="POST">
+                      
                     <h2>Crea tu cuenta</h2>
                     <p>Usa tu correo electrónico para crear tu cuenta.</p>
                     <div class="input">
-                        <label for="text">Nombre</label>
-                        <input type="text" name="nombre" id="nombre" placeholder="Introduce un nombre">
-                        <div id="error_nombre" class="error"></div>
+                        <label for="register-name">Nombre completo</label>
+                        <input 
+                        type="text" 
+                        id="register-name"
+                        name="name"  
+                        required
+                        placeholder="Introduce un nombre y un apellido">
                     </div>
                     <div class="input">
-                        <label for="text">Apellido</label>
-                        <input type="text" name="apellido" id="apellido" placeholder="Introduce un apellido">
-                        <div id="error_apellido" class="error"></div>
+                        <label for="register-email">Correo electrónico</label>
+                        <input 
+                        type="email" 
+                        id="register-email" 
+                        name="email" 
+                        required 
+                        placeholder="Introduce un correo electrónico">
                     </div>
                     <div class="input">
-                        <label for="email">Correo electrónico</label>
-                        <input type="email" name="email" id="email" placeholder="Introduce un correo electrónico">
-                        <div id="error_email" class="error"></div>
-                    </div>
-                    <div class="input">
-                        <label for="password">Contraseña</label>
-                        <input type="password" name="password" id="password" placeholder="Introduce una contraseña">
-                        <div id="error_password" class="error"></div>
+                        <label for="register-password">Contraseña</label>
+                        <input 
+                        type="password" 
+                        id="register-password"
+                        name="password" 
+                        required 
+                        placeholder="Introduce una contraseña">
                     </div>
                     <div class="buttons">
-                        <button>Registrarme</button>
-                        <button>
-                            <img src="../static/img/Google.png" alt="ic-google" class="icon-google">
+                        <button type="submit">Registrarme</button>
+                        <button type="button">
+                            <img src="{{ url_for('static', path='img/Google.png') }}" alt="ic-google" class="icon-google">
                             Iniciar sesión con Google
                         </button>
                     </div>
@@ -88,6 +116,6 @@
     </div>
 
 
-    <script src="../static/js/script.js"></script>
+    <script src="{{ url_for('static', path='js/script.js') }}"></script>
 </body>
 </html>

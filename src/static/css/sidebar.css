@@ -1,0 +1,121 @@
+/* ============================
+   SIDEBAR
+============================ */
+
+.sidebar {
+    width: 270px;
+    /*ancho del menu*/
+    min-height: calc(100vh - 95px);
+    background: #ffffff;
+    /*color del menu*/
+    border-right: 1px solid #e5e5e5;
+    /*linea quee separa al menu del contenido*/
+    position: fixed;
+    top: 95px;
+    left: -270px;
+    overflow-y: auto;
+    transition: .35s ease-in-out;
+    z-index: 1000;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+/* ============================
+   CONTENIDO
+============================ */
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.sidebar-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px;
+}
+
+.sidebar-logo img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #555;
+    transition: .30s;
+    font-weight: 500;
+}
+
+.sidebar-item i {
+    font-size: 20px;
+    width: 25px;
+    text-align: center;
+}
+
+.sidebar-item:hover {
+    background: #f4faf8;
+    color: #40a7a7;
+    transform: translateX(6px);
+}
+
+.sidebar-item.active {
+    background: #e8f5e9;
+    color: #40a7a7;
+    font-weight: 600;
+    border-left: 5px solid #40a7a7;
+}
+
+.sidebar-footer {
+    padding: 20px;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+}
+
+.menu-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 32px;
+    color: #333;
+    transition: .25s;
+    padding: 8px;
+}
+
+.menu-toggle:hover {
+    color: #45c9c8;
+    transform: scale(1.08);
+}
+
+.menu-toggle i {
+    pointer-events: none;
+}
+
+.content-area {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 0;
+    padding: 35px;
+}

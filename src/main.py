@@ -8,22 +8,34 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 
-# Crea la intsnacia principal de la app 
+# Crea la instancia principal de la app 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 templates = Jinja2Templates(directory="src/templates")
-@app.get("/", response_class=HTMLResponse)
+@app.get("/")
 async def inicio(request: Request):
     return templates.TemplateResponse(
         "index.html",
-        {"request": request}
+        {
+            "request": request,
+            "app_mode": False
+        }
     )
 
 # ruta para las demas paginas 
-@app.get("/identificacion", name="identificacion")
+@app.get("/identificacion")
 async def identificacion(request: Request):
     return templates.TemplateResponse(
         "identificacion.html",
+        {
+            "request": request,
+            "app_mode": True
+        }
+    )
+@app.get("/login")
+def login(request: Request):
+    return templates.TemplateResponse(
+        "login.html",
         {"request": request}
     )
 
