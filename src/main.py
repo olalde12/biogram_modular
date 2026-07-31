@@ -31,6 +31,12 @@ async def identificacion(request: Request):
             "app_mode": True
         }
     )
+@app.get("/login")
+def login(request: Request):
+    return templates.TemplateResponse(
+        "login.html",
+        {"request": request}
+    )
 
 app.include_router(usuarios.router, prefix='/usuarios', tags=['Etiquetas (usuarios)'])
 app.include_router(cuestionarios.router, prefix='/cuestionarios', tags=['Etiquetas (cuestionarios)'])

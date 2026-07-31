@@ -29,6 +29,29 @@ body{
     justify-content: space-between;
     overflow: hidden;
 }
+.back-home{
+    position: fixed;
+    top: 25px;
+    left: 25px;
+
+    text-decoration: none;
+    color: #2E7D32;      /* usa el verde de Biogram */
+    font-weight: 600;
+    font-size: 16px;
+
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    z-index: 1000;
+
+    transition: .25s;
+}
+.back-home:hover{
+    transform: translateX(-4px);
+    color: #1B5E20;
+}
 /*form*/
 .form-container{
     width: 100%;
