@@ -17,9 +17,7 @@
                 <span>BIOGRAM</span>
             </div>
             <div class="form" id="form">
-                <form class="login"
-                      action="/login"
-                      method="POST">
+                <form class="login" id="login">
                     <h2>Bienvenido de nuevo</h2>
                     <p>Hola de nuevo, ¡bienvenido! por favor introduce los datos para iniciar tu sesión.</p>
                     <div class="input">
@@ -30,6 +28,7 @@
                         name="email" 
                         required
                         placeholder="Introduce tu correo electrónico">
+                        <div class="error" id="error_correo"></div>
                     </div>
                     <div class="input">
                         <label for="login-password">Contraseña</label>
@@ -39,6 +38,7 @@
                         name="password" 
                         required 
                         placeholder="Introduce tu contraseña">
+                        <div class="error" id="error_password"></div>
                     </div>
                     <div class="reminder">
                         <div class="checkbox-container">
@@ -61,20 +61,29 @@
                     <p class="account">¿Aún no tienes una cuenta? <a href="#" id="sign-up">Regístrate</a></p>
                 </form>
 
-                <form class="register"
-                      action="/registro"
-                      method="POST">
+                <form class="register" id="form_register">
                       
                     <h2>Crea tu cuenta</h2>
                     <p>Usa tu correo electrónico para crear tu cuenta.</p>
                     <div class="input">
-                        <label for="register-name">Nombre completo</label>
+                        <label for="register-name">Nombre</label>
                         <input 
                         type="text" 
                         id="register-name"
                         name="name"  
                         required
-                        placeholder="Introduce un nombre y un apellido">
+                        placeholder="Introduce tu nombre">
+                        <div class="error" id="error_nombre"></div>
+                    </div>
+                    <div class="input">
+                        <label for="register-lastname">Apellido</label>
+                        <input 
+                        type="text" 
+                        id="register-lastname"
+                        name="lastname"  
+                        required
+                        placeholder="Introduce tu apellido">
+                        <div class="error" id="error_apellido"></div>
                     </div>
                     <div class="input">
                         <label for="register-email">Correo electrónico</label>
@@ -84,6 +93,7 @@
                         name="email" 
                         required 
                         placeholder="Introduce un correo electrónico">
+                        <div class="error" id="error_correo_register"></div>
                     </div>
                     <div class="input">
                         <label for="register-password">Contraseña</label>
@@ -93,6 +103,7 @@
                         name="password" 
                         required 
                         placeholder="Introduce una contraseña">
+                        <div class="error" id="error_password_register"></div>
                     </div>
                     <div class="buttons">
                         <button type="submit">Registrarme</button>
@@ -117,5 +128,6 @@
 
 
     <script src="{{ url_for('static', path='js/script.js') }}"></script>
+    <script src="{{ url_for('static', path='js/auth.js') }}"></script>
 </body>
 </html>

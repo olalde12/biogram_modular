@@ -137,6 +137,7 @@ body{
     flex-direction: column;
     gap: 0.4rem;
     margin-bottom: 0.9rem;
+    position: relative;
 }
 .form .input label{
     font-size: 0.7rem;
@@ -149,6 +150,28 @@ body{
     border: 1px solid var(--border-input-color);
     border-radius: 0.2rem;
     padding: 0.5rem;
+}
+/*errores*/
+.error {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: #4d4a66;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: none;
+    z-index: 100;
+}
+.error::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 15px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #4d4a66;
 }
 /*reminder*/
 .form .reminder{

@@ -1,78 +1,114 @@
+// Validación para iniciar sesion
+//Obtenemos los datos del formulario
+const getUser = document.getElementById("login");
+const correo = document.getElementById("login-email");
+const contrasena = document.getElementById("login-password");
+
+// Escondemos los mensajes de error cuando el usuario lo modifique
+correo.addEventListener("input", () => {
+    if (correo.value.trim() !== ultimoCorreoError) {
+        document.getElementById("error_correo").style.display = "none";
+    }
+});
+contrasena.addEventListener("input", () => {
+    if (contrasena.value.trim() !== ultimaContrasenaError) {
+        document.getElementById("error_password").style.display = "none";
+    }
+});
+
+getUser.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const recordar = document.getElementById("remember").checked;
+    // Hacemos un POST a la ruta del login
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/usuarios/login`, {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                correo: correo.value, 
+                contraseña: contrasena.value,
+                recordar: recordar
+            })
+        });
+        // Validamos que el correo exista y la contraseña sea la correspondiente
+        if (response.ok) {
+            window.location.href = "/";
+        } else if (response.status === 404) {
+            ultimoCorreoError = correo.value;
+            document.getElementById("error_correo").innerText = "Ese correo no es válido";
+            document.getElementById("error_correo").style.display = 'block';
+        } else if (response.status === 401) {
+            ultimaContrasenaError = contrasena.value;
+            document.getElementById("error_password").innerText = "Contraseña incorrecta";
+            document.getElementById("error_password").style.display = 'block';
+        }
+    } catch (error) {
+        console.error("Error al encontrar usuario:", error);
+    }
+});
+
 // Expresiones regulares
 const expresiones = {
     nombre: /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+$/, // Solo se permiten letras 
-    email: /^[\w.-]+@[\w.-]+\.\w{2,}$/, // Tiene un @ y un .algo
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/ // Contraseña válida
 }
 
 // Validación para crear un usuario
-const createUser = document.getElementById("CreateUser");
+// Obtenemos campos del HTML
+const createUser = document.getElementById("form_register");
+const nombre = document.getElementById("register-name");
+const apellido = document.getElementById("register-lastname");
+const email = document.getElementById("register-email");
+const password = document.getElementById("register-password");
+
+// Escondemos los mensajes de error cuando el usuario lo modifique
+nombre.addEventListener("input", () => {
+    if (nombre.value.trim() !== ultimoNombreError) {
+        document.getElementById("error_nombre").style.display = "none";
+    }
+});
+apellido.addEventListener("input", () => {
+    if (apellido.value.trim() !== ultimoApellidoError) {
+        document.getElementById("error_apellido").style.display = "none";
+    }
+});
+email.addEventListener("input", () => {
+    if (email.value.trim() !== ultimoEmailError) {
+        document.getElementById("error_correo_register").style.display = "none";
+    }
+});
+password.addEventListener("input", () => {
+    if (password.value.trim() !== ultimaPasswordError) {
+        document.getElementById("error_password_register").style.display = "none";
+    }
+});
 
 createUser.addEventListener("submit", async (event) => {
     event.preventDefault();
-    // Obtenemos campos del HTML
     const campos = {
-        nombre: document.getElementById("nombre").value.trim(),
-        apellido: document.getElementById("apellido").value.trim(),
-        correo: document.getElementById("email").value.trim(),
-        contrasena: document.getElementById("password").value.trim()
+        nombre: nombre.value.trim(),
+        apellido: apellido.value.trim(),
+        correo: email.value.trim(),
+        contrasena: password.value.trim()
     };
-    let valido = true;
 
     // Validaciones para el nombre y apellido
-    if (!campos.nombre) {
-        document.getElementById("error_nombre").innerText = "Campo obligatorio";
-        document.getElementById("error_nombre").style.display = 'block';
-        valido = false;
-    } else if (!expresiones.nombre.test(campos.nombre)) {
+    if (!expresiones.nombre.test(campos.nombre)) {
+        ultimoNombreError = nombre.value;
         document.getElementById("error_nombre").innerText = "El nombre solo debe contener letras";
         document.getElementById("error_nombre").style = 'display: block';
-    } else {
-        document.getElementById("error_nombre").style = 'display: none';
     }
-
-    if (!campos.apellido) {
-        document.getElementById("error_apellido").innerText = "Campo obligatorio";
-        document.getElementById("error_apellido").style.display = 'block';
-        valido = false;
-    } else if (!expresiones.nombre.test(campos.apellido)) {
+    if (!expresiones.nombre.test(campos.apellido)) {
+        ultimoApellidoError = apellido.value;
         document.getElementById("error_apellido").innerText = "El apellido solo debe contener letras";
         document.getElementById("error_apellido").style = 'display: block';
-    } else {
-        document.getElementById("error_apellido").style = 'display: none';
-    }
+    } 
 
-    // Validaciones para el correo y contraseña
-    if (!campos.correo) {
-        document.getElementById("error_email").innerText = "Campo obligatorio";
-        document.getElementById("error_email").style.display = 'block';
-        valido = false;
-    } else if (!expresiones.email.test(campos.correo)) {
-        document.getElementById("error_email").innerText = "Formato de correo inválido";
-        document.getElementById("error_email").style.display = 'block';
-        valido = false;
-    } else {
-        document.getElementById("error_email").style.display = 'none';
-    }
-
-    if (!campos.contrasena) {
-        document.getElementById("error_password").innerText = "Campo obligatorio";
-        document.getElementById("error_password").style.display = 'block';
-        valido = false;
-    } else if (!expresiones.password.test(campos.contrasena)) {
-        document.getElementById("error_password").innerText = "La contraseña debe contener 8 caracteres, mayúscula, minúscula, número y símbolo";
-        document.getElementById("error_password").style.display = 'block';
-    } else {
-        document.getElementById("error_password").style.display = 'none';
-    }
-
-    // Se válida que no quede nada en blanco y pasamos los campos
-    if (!valido) {
-        return;
-    }
     const userData = {nombre: campos.nombre, apellido: campos.apellido, correo: campos.correo, contraseña: campos.contrasena};
 
-    // Hacemos un POST a la base de datos
+    // Hacemos un POST a la base de datos para crear usuario
     try {
         const response = await fetch("http://127.0.0.1:8000/usuarios/create", {
             method: "POST", 
@@ -83,70 +119,17 @@ createUser.addEventListener("submit", async (event) => {
         });
         if (response.ok) {
             console.log("Usuario creado correctamente");
-            createUser.reset();
+            window.location.href = "/login";
+        } else if (response.status === 409) {
+            ultimoEmailError = email.value;
+            document.getElementById("error_correo_register").innerText = "Ese correo ya existe";
+            document.getElementById("error_correo_register").style.display = 'block';
         } else if (response.status === 400) {
-            document.getElementById("error_email").innerText = "Ese correo ya existe";
-            document.getElementById("error_email").style.display = 'block';
-        }
+            ultimaPasswordError = password.value;
+            document.getElementById("error_password_register").innerText = "La contraseña debe contener por lo menos: \n· 8 caracteres \n· 1 mayúscula \n· 1 minúscula \n· 1 número \n· 1 símbolo";
+            document.getElementById("error_password_register").style.display = 'block';
+        } 
     } catch (error) {
         console.error("Error creando usuario:", error);
-    }
-});
-
-// Validación para iniciar sesion
-const getUser = document.getElementById("login");
-
-getUser.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    // Obtenemos correo y contraseña del HTML
-    const correo = document.getElementById("emailL").value;
-    const contrasena = document.getElementById("passwordL").value;
-    let valid = true;
-
-    // Se valida que los campos no esten vacios
-    if (correo === "") {
-        document.getElementById("error_correo").innerText = "Campo obligatorio";
-        document.getElementById("error_correo").style = 'display: block';
-        valid = false;
-    } else {
-        document.getElementById("error_correo").style = 'display: none';
-    } 
-
-    if (contrasena === "") {
-        document.getElementById("error_contrasena").innerText = "Campo obligatorio";
-        document.getElementById("error_contrasena").style = 'display: block';
-        valid = false;
-    } else {
-        document.getElementById("error_contrasena").style = 'display: none';
-    } 
-
-    if (!valid) {
-        return;
-    }
-
-    // Hacemos un GET para obtener al usuario y validamos contraseña
-    try {
-        const response = await fetch(`http://127.0.0.1:8000/usuarios/${correo}`, {
-            method: "GET", 
-            headers: {
-                "Content-Type": "application/json",
-            }
-        });
-        if (response.ok) {
-            document.getElementById("error_correo").style = 'display: none';
-            const user = await response.json()
-            if (user.contraseña === contrasena) {
-                document.getElementById("error_contrasena").style = 'display: none';
-                console.log("Listo");
-            } else {
-                document.getElementById("error_contrasena").innerText = "Contraseña incorrecta";
-                document.getElementById("error_contrasena").style = 'display: block';
-            }
-        } else if (response.status === 404) {
-            document.getElementById("error_correo").innerText = "Ese correo no es válido";
-            document.getElementById("error_correo").style = 'display: block';
-        }
-    } catch (error) {
-        console.error("Error al encontrar usuario:", error);
     }
 });

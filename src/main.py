@@ -1,23 +1,31 @@
+import os
 from fastapi import FastAPI
 from src.core.config import settings
-from fastapi.middleware.cors import CORSMiddleware
 from src.api.routes import microorganismos, usuarios, publicaciones, comentarios, cuestionarios, resultado_cuest, pruebas, resultados, medios
 import src.models  
+from src.crud import usuario as usuario_crud
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi import Request
-from fastapi.responses import HTMLResponse
+from fastapi import Request, Depends
+from sqlalchemy.orm import Session
+from src.api.deps import get_db
+from starlette.middleware.sessions import SessionMiddleware
 
 # Crea la instancia principal de la app 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 templates = Jinja2Templates(directory="src/templates")
 @app.get("/")
-async def inicio(request: Request):
+async def inicio(request: Request, db: Session = Depends(get_db)):
+    usuario = None
+    id_usuario = request.session.get("id_usuario")
+    if id_usuario:
+        usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
     return templates.TemplateResponse(
         "index.html",
         {
             "request": request,
+            "usuario": usuario,
             "app_mode": False
         }
     )
@@ -38,6 +46,12 @@ def login(request: Request):
         "login.html",
         {"request": request}
     )
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key = os.getenv("SECRET_KEY"),
+    max_age = 60 * 60 * 24 * 30 
+)
 
 # Rutas del Swagger del FastAPI para hacer peticiones a la base de datos
 app.include_router(usuarios.router, prefix='/usuarios', tags=['Etiquetas (usuarios)'])

@@ -36,3 +36,9 @@ class UsuarioUpdate(UsuarioBase):
         d = super().dict(*args, **kwargs)
         d["correo"] = d["correo"].lower()
         return d
+
+# Se define la estructura minima para el inicio de sesion
+class login(BaseModel):
+    correo: EmailStr
+    contraseña: str
+    recordar: bool = False
