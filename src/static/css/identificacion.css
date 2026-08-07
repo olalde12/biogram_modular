@@ -109,15 +109,18 @@
     padding: 10px 18px;
     border: none;
     border-radius: 12px;
-    background: #F4F6FA;
+    background: white;
     color: #3A4B6A;
     cursor: pointer;
-    transition: .3s;
+    transition: .25s;
 }
 
 .dictionary-btn:hover {
-    background: #E5ECFA;
+    background: #3ABEFF;
+    color: white;
     transform: translateY(-2px);
+    box-shadow:0px 8px 20px rgba(101, 156, 219, 0.35);
+    
 }
 
 /*.question{
@@ -165,11 +168,13 @@
     font-size: 15px;
     font-family: Poppins, sans-serif;
     cursor: pointer;
+    transition: .25s;
 }
 
 .continue:hover {
     color: white;
     background: #a288e3;
+    transform: translateX(3px);
 }
 
 .continue:disabled {
@@ -190,11 +195,13 @@
     font-size: 15px;
     font-family: Poppins, sans-serif;
     cursor: pointer;
+    transition: .25s;
 }
 
 .back:hover {
     color: white;
     background: #a288e3;
+    transform: translateX(-3px);
 }
 
 .option {

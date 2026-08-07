@@ -40,9 +40,11 @@ if (menuToggle && sidebar) {
 const pruebas = [
 
     {
-        nombrePaso: "Gram",
-        titulo: "Tinción de Gram",
-        pregunta: "Selecciona el resultado obtenido.",
+        id: "gram",
+        nombrePaso: "Gram", //nombre del paso que se mostrará en la barra de progreso
+        titulo: "Tinción de Gram", //titulo que se mostrará en la parte superior de la tarjeta
+        pregunta: "Selecciona el resultado obtenido.", //es la instrucción que se mostrará en la parte inferior del título
+        conceptoDiccionario: "gram", //es el concepto que se usará para abrir el diccionario, si no se quiere usar diccionario, se puede dejar en blanco
         opciones: [
             {
                 texto: "Gram positivo",
@@ -58,9 +60,11 @@ const pruebas = [
     },
 
     {
+        id: "forma",
         nombrePaso: "Forma",
         titulo: "Forma bacteriana",
         pregunta: "¿Qué morfología presenta la bacteria?",
+        conceptoDiccionario: "forma",
         opciones: [
 
             {
@@ -79,27 +83,36 @@ const pruebas = [
 
 ];
 
+/*const estado = {
+    pasoActual: 0,
+    respuestaSeleccionada: null,
+    repuestas: []
+}; proximamente se usara estas variables para guardar las respuestas y el paso actual, pero por ahora se usara variables simples para simplificar el código.
+*/
+
 let pasoActual = 0;
 let respuestaSeleccionada = null; //aquí se irá guardando la respuesta elegida
+let respuestas = []; // de primeras es una lista vacia pero conforme el 
+            // usuario elige opciones, aquí se guardarán todas las respuestas
 const btnContinuar = document.querySelector(".continue"); //obtiene el botón Continuar
 
 //const opciones = document.querySelectorAll(".option"); //busca todos los botones que tenga la clase option
 
 
 // ===============================
-// FUNCIONES
+// FUNCION PRINCIPAL
 // ===============================
 
-function actualizarProgreso() {
-    document.getElementById("pasoActual").textContent = pasoActual + 1;
-
-    document.getElementById("totalPasos").textContent = pruebas.length;
-
-    const porcentaje = ((pasoActual + 1) / pruebas.length) * 100;
-
-    document.getElementById("progressFill").style.width = porcentaje + "%";
+function actualizarPantalla() {
+    mostrarPrueba();
+    actualizarProgreso();
+    actualizarBotones();
+    reiniciarSeleccion();
 }
 
+// ===============================
+// FUNCIONES SECUNDARIAS
+// ===============================
 
 function mostrarPrueba() {
     // Obtener la prueba actual
@@ -116,12 +129,6 @@ function mostrarPrueba() {
 
     // Limpiar las opciones anteriores
     contenedor.innerHTML = "";
-
-    // Desactivar el botón Continuar
-    btnContinuar.disabled = true;
-
-    // Reiniciar la respuesta seleccionada
-    respuestaSeleccionada = null;
 
     // Crear cada botón de la prueba
     prueba.opciones.forEach(opcion => {
@@ -160,9 +167,26 @@ function mostrarPrueba() {
 
 }
 
-function reiniciarSeleccion() {
+function actualizarProgreso() {
+    document.getElementById("pasoActual").textContent = pasoActual + 1;
 
+    document.getElementById("totalPasos").textContent = pruebas.length;
+
+    const porcentaje = ((pasoActual + 1) / pruebas.length) * 100;
+
+    document.getElementById("progressFill").style.width = porcentaje + "%";
 }
+
+function actualizarBotones() {
+    // aqui controlaremos los botones Atras y Continuar
+    // dependiendo del paso actual.
+}
+
+function reiniciarSeleccion() {
+    respuestaSeleccionada = null;
+    btnContinuar.disabled = true;
+}
+
 function abrirDiccionario() {
 
 }
@@ -171,9 +195,15 @@ function abrirDiccionario() {
 // EVENTOS
 // ===============================
 btnContinuar.addEventListener("click", () => {
-    pasoActual++;
-    if (pasoActual < pruebas.length) {
-        mostrarPrueba();
+    if (pasoActual < pruebas.length - 1) {
+        respuestas.push({
+            paso: pasoActual,
+            prueba: pruebas[pasoActual].titulo, //agrega un elemento al final del arreglo
+            respuesta: respuestaSeleccionada
+        });
+        console.log(respuestas);
+        pasoActual++;
+        actualizarPantalla();
     } else {
         alert("Identificación finalizada.");
     }
@@ -182,4 +212,4 @@ btnContinuar.addEventListener("click", () => {
 // ===============================
 // INICIALIZACIÓN
 // ===============================
-mostrarPrueba();
+actualizarPantalla();

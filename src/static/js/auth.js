@@ -59,7 +59,6 @@ const expresiones = {
 // Obtenemos campos del HTML
 const createUser = document.getElementById("form_register");
 const nombre = document.getElementById("register-name");
-const apellido = document.getElementById("register-lastname");
 const email = document.getElementById("register-email");
 const password = document.getElementById("register-password");
 
@@ -67,11 +66,6 @@ const password = document.getElementById("register-password");
 nombre.addEventListener("input", () => {
     if (nombre.value.trim() !== ultimoNombreError) {
         document.getElementById("error_nombre").style.display = "none";
-    }
-});
-apellido.addEventListener("input", () => {
-    if (apellido.value.trim() !== ultimoApellidoError) {
-        document.getElementById("error_apellido").style.display = "none";
     }
 });
 email.addEventListener("input", () => {
@@ -87,24 +81,21 @@ password.addEventListener("input", () => {
 
 createUser.addEventListener("submit", async (event) => {
     event.preventDefault();
+    const partes = nombre.value.trim().split(" ");
+    
     const campos = {
-        nombre: nombre.value.trim(),
-        apellido: apellido.value.trim(),
+        nombre: partes[0],
+        apellido: partes[1],
         correo: email.value.trim(),
         contrasena: password.value.trim()
     };
 
     // Validaciones para el nombre y apellido
-    if (!expresiones.nombre.test(campos.nombre)) {
+    if (!expresiones.nombre.test(campos.nombre) || !expresiones.nombre.test(campos.apellido)) {
         ultimoNombreError = nombre.value;
         document.getElementById("error_nombre").innerText = "El nombre solo debe contener letras";
         document.getElementById("error_nombre").style = 'display: block';
     }
-    if (!expresiones.nombre.test(campos.apellido)) {
-        ultimoApellidoError = apellido.value;
-        document.getElementById("error_apellido").innerText = "El apellido solo debe contener letras";
-        document.getElementById("error_apellido").style = 'display: block';
-    } 
 
     const userData = {nombre: campos.nombre, apellido: campos.apellido, correo: campos.correo, contraseña: campos.contrasena};
 

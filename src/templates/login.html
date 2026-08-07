@@ -1,60 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión | BIOGRAM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', path='css/login.css') }}">
 </head>
+
 <body>
-    <a href="/" class="back-home">
-        <i class="fa-solid fa-arrow-left"></i>
-        Volver al inicio
-    </a>
+
     <div class="container">
         <div class="form-container">
             <div class="form-top">
-                <span>BIOGRAM</span>
+                <a href="/" class="back-home">
+                    <span class="arrow">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </span>
+                    <span>Inicio</span>
+                </a>
             </div>
             <div class="form" id="form">
                 <form class="login" id="login">
                     <h2>Bienvenido de nuevo</h2>
-                    <p>Hola de nuevo, ¡bienvenido! por favor introduce los datos para iniciar tu sesión.</p>
+                    <p>¿Ya tienes una cuenta? Inicia sesión con tu correo y contraseña. <br> <br> Si es tu primera vez en BIOGRAM, selecciona más abajo "Regístrate" para crear una cuenta.</p>
                     <div class="input">
                         <label for="login-email">Correo electrónico</label>
-                        <input 
-                        type="email" 
-                        id="login-email"
-                        name="email" 
-                        required
-                        placeholder="Introduce tu correo electrónico">
+                        <input type="email" id="login-email" name="email" required
+                            placeholder="Introduce tu correo electrónico">
                         <div class="error" id="error_correo"></div>
                     </div>
                     <div class="input">
                         <label for="login-password">Contraseña</label>
-                        <input 
-                        type="password" 
-                        id="login-password" 
-                        name="password" 
-                        required 
-                        placeholder="Introduce tu contraseña">
+                        <input type="password" id="login-password" name="password" required 
+                            placeholder="Introduce tu contraseña">
                         <div class="error" id="error_password"></div>
                     </div>
                     <div class="reminder">
                         <div class="checkbox-container">
-                            <input 
-                            type="checkbox" 
-                            id="remember"
-                            name="remember">
+                            <input type="checkbox" id="remember" name="remember">
                             <label for="remember">Recuérdame durante 30 días</label>
                         </div>
-                        <a href="/recuperar"
-                        class="forgot">Olvidé mi contraseña</a>
+                        <a href="/recuperar" class="forgot">Olvidé mi contraseña</a>
                     </div>
                     <div class="buttons">
                         <button type="submit">Iniciar sesión</button>
                         <button type="button">
-                            <img src="{{ url_for('static', path='img/Google.png') }}"alt="ic-google" class="icon-google">
+                            <img src="{{ url_for('static', path='img/Google.png') }}" alt="ic-google"
+                                class="icon-google">
                             Iniciar sesión con Google
                         </button>
                     </div>
@@ -64,51 +58,31 @@
                 <form class="register" id="form_register">
                       
                     <h2>Crea tu cuenta</h2>
-                    <p>Usa tu correo electrónico para crear tu cuenta.</p>
+                    <p>Usa un correo electrónico para crear tu cuenta y puedas gozar de todas las herramientas de
+                        BIOGRAM.</p>
                     <div class="input">
-                        <label for="register-name">Nombre</label>
-                        <input 
-                        type="text" 
-                        id="register-name"
-                        name="name"  
-                        required
-                        placeholder="Introduce tu nombre">
+                        <label for="register-name">Nombre completo</label>
+                        <input type="text" id="register-name" name="name" required
+                            placeholder="Introduce un nombre y un apellido">
                         <div class="error" id="error_nombre"></div>
                     </div>
                     <div class="input">
-                        <label for="register-lastname">Apellido</label>
-                        <input 
-                        type="text" 
-                        id="register-lastname"
-                        name="lastname"  
-                        required
-                        placeholder="Introduce tu apellido">
-                        <div class="error" id="error_apellido"></div>
-                    </div>
-                    <div class="input">
                         <label for="register-email">Correo electrónico</label>
-                        <input 
-                        type="email" 
-                        id="register-email" 
-                        name="email" 
-                        required 
-                        placeholder="Introduce un correo electrónico">
+                        <input type="email" id="register-email" name="email" required 
+                            placeholder="Introduce un correo electrónico">
                         <div class="error" id="error_correo_register"></div>
                     </div>
                     <div class="input">
                         <label for="register-password">Contraseña</label>
-                        <input 
-                        type="password" 
-                        id="register-password"
-                        name="password" 
-                        required 
-                        placeholder="Introduce una contraseña">
+                        <input type="password" id="register-password" name="password" required
+                            placeholder="Crea una contraseña">
                         <div class="error" id="error_password_register"></div>
                     </div>
                     <div class="buttons">
                         <button type="submit">Registrarme</button>
                         <button type="button">
-                            <img src="{{ url_for('static', path='img/Google.png') }}" alt="ic-google" class="icon-google">
+                            <img src="{{ url_for('static', path='img/Google.png') }}" alt="ic-google"
+                                class="icon-google">
                             Iniciar sesión con Google
                         </button>
                     </div>
@@ -116,13 +90,13 @@
                 </form>
 
             </div>
-            <div class="form-bot">
-                <span>Property Biogram</span>   
-            </div>
+
         </div>
         <div class="banner" id="banner">
             <div class="circle"></div>
+            <img src="{{ url_for('static', path='img/logoPNG.png') }}" alt="BIOGRAM" class="banner-logo">
             <div class="circle-2"></div>
+
         </div>
     </div>
 
@@ -130,4 +104,5 @@
     <script src="{{ url_for('static', path='js/script.js') }}"></script>
     <script src="{{ url_for('static', path='js/auth.js') }}"></script>
 </body>
+
 </html>
