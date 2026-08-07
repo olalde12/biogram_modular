@@ -1,17 +1,20 @@
 @import url(https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
-*{
+
+* {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
 }
-:root{
+
+:root {
     --bg-color: #D3D1DF;
     --bg-form-color: #FFFFFF;
     --bg-banner-color: #F4F5F9;
     --border-input-color: #CBCBCB;
-    --primary-color:#9288e3;
+    --primary-color: #9288e3;
 }
-body{
+
+body {
     width: 100%;
     height: 100vh;
     background-color: var(--bg-color);
@@ -19,8 +22,9 @@ body{
     align-items: center;
     justify-content: center;
 }
+
 /*container*/
-.container{
+.container {
     width: 64rem;
     height: 40rem;
     border-radius: 0.3rem;
@@ -29,39 +33,71 @@ body{
     justify-content: space-between;
     overflow: hidden;
 }
+
+.form-top {
+    display: flex;
+    align-items: center;
+    padding: .5rem 0;
+}
+
+.back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .55rem 1rem;
+    border-radius: 30px;
+    background: white;
+    border: 2px solid #9288e3;
+    color: #9288e3;
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 600;
+    transition: all .25s ease;
+}
+
+.back-home:hover {
+    background: #9288e3;
+    color: white;
+    transform: translateX(-3px);
+    box-shadow: 0 8px 20px rgba(146, 136, 227, .30);
+}
+
+.arrow {
+    font-size: 1rem;
+    font-weight: bold;
+    transition: transform .25s;
+}
+
+.back-home:hover .arrow {
+
+    transform: translateX(-3px);
+}
+
 /*form*/
-.form-container{
+.form-container {
     width: 100%;
     display: flex;
     flex-direction: column;
     padding: 1rem 1.2rem;
 }
+
 /*form - top*/
-.form-container .form-top{
+.form-container .form-top {
     font-size: 0.8rem;
     font-weight: 600;
     margin-left: 0.9rem;
     position: relative;
 }
-.form-container .form-top span::before{
-    content: '';
-    position: absolute;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background-color:black;
-    top: 50%;
-    left: -0.7rem;
-    transform:translateY(-50%);
-}
+
 /*form - bot*/
-.form-container .form-bot{
+.form-container .form-bot {
     font-size: 0.6rem;
     font-weight: 600;
     opacity: 0.4;
 }
+
 /*form*/
-.form{
+.form {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -70,56 +106,65 @@ body{
     position: relative;
     overflow: hidden;
 }
+
 /*login*/
 .login,
-.register{
+.register {
     width: 55%;
     position: absolute;
     top: 50%;
 }
-.login{
+
+.login {
     transform: translateY(-50%);
     transition: transform 0.8s, opacity 0.8s;
     opacity: 1;
 }
-.form.toggle .login{
+
+.form.toggle .login {
     transform: translateY(-170%);
     opacity: 0;
 }
 
-.register{
+.register {
     transform: translateY(100%);
     transition: transform 0.8s, opacity 0.8s;
     opacity: 0;
 }
-.form.toggle .register{
+
+.form.toggle .register {
     transform: translateY(-50%);
     opacity: 1;
 }
 
 /*H2*/
-.form h2{
+.form h2 {
     font-weight: 600;
     font-size: 1.5rem;
     margin-bottom: 0.8rem;
 }
-.form p{
+
+.form p {
     font-size: 0.8rem;
     margin-bottom: 1.8rem;
 }
+
 /*input*/
-.form .input{
+.form .input {
 
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
     margin-bottom: 0.9rem;
+    position: relative;
 }
-.form .input label{
+
+.form .input label {
     font-size: 0.7rem;
     font-weight: 600;
 }
-.form .input input{
+
+.form .input input {
     font-size: 0.7rem;
     outline: none;
     border: none;
@@ -127,35 +172,60 @@ body{
     border-radius: 0.2rem;
     padding: 0.5rem;
 }
+/*errores*/
+.error {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: #4d4a66;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: none;
+    z-index: 100;
+}
+.error::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 15px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #4d4a66;
+}
 /*reminder*/
-.form .reminder{
+.form .reminder {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
 }
-.form .checkbox-container{
+
+.form .checkbox-container {
     font-size: 0.6rem;
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 0.2rem;
 }
-.form .forgot{
+
+.form .forgot {
     font-size: 0.6rem;
     font-weight: 600;
     color: var(--primary-color);
     cursor: pointer;
-} 
+}
 
 /*buttons*/
-.form .buttons{
+.form .buttons {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
     margin-bottom: 1rem;
 }
-.form .buttons button{
+
+.form .buttons button {
     width: 100%;
     padding: 0.7rem;
     font-size: 0.8rem;
@@ -168,68 +238,112 @@ body{
     justify-content: center;
     gap: 0.5rem;
 }
-.form .buttons .icon-google{
+
+.form .buttons .icon-google {
     width: 1rem;
 }
-.form .buttons button:first-child{
+
+.form .buttons button:first-child {
     background-color: var(--primary-color);
     color: white;
 }
-.form .buttons button:last-child{
+
+.form .buttons button:last-child {
     background-color: var(--bg-form-color);
     border: 2px solid var(--border-input-color);
 }
+
 /*account*/
-.form .account{
+.form .account {
     text-align: center;
     font-size: 0.75rem;
 }
 
 /*banner*/
-.banner{
+.banner {
     background-color: var(--bg-banner-color);
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    overflow: hidden;
 }
-.circle{
-    background-color: var(--primary-color);
+
+.circle {
+    /*background-color: var(--primary-color);
     width: 10rem;
     height: 10rem;
+    border-radius: 50%;*/
+
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
+    background: var(--primary-color);
+    position: absolute;
+    z-index: 1;
+    transition: all .8s ease;
 }
-.circle-2{
-    width:16rem;
+
+.banner-logo {
+    width: 180px;
+    position: absolute;
+    z-index: 2;
+    transition: all .8s ease;
+    filter: drop-shadow(0 12px 30px rgba(146, 136, 227, .35));
+}
+
+.circle-2 {
+    /*width: 16rem;
     height: 16rem;
     background-color: rgba(255, 255, 255, 0.2);
-    border-radius:50%;
+    border-radius: 50%;
     position: absolute;
     backdrop-filter: blur(8px);
     clip-path: inset(50% 0 0 0);
-    transition: clip-path 0.8s ease-in-out;
+    transition: clip-path 0.8s ease-in-out;*/
+
+    width: 260px;
+    height: 260px;
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .18);
+    backdrop-filter: blur(8px);
+    clip-path: inset(50% 0 0 0);
+    transition: clip-path .8s ease;
+    z-index: 3;
 }
-.banner.toggle .circle-2{
+
+.banner.toggle .circle-2 {
     clip-path: inset(0 0 50% 0);
 }
+
+.banner.toggle .banner-logo {
+    transform: none;
+}
+
 /*responsive*/
-@media(max-width:1088px){
-    body{
+@media(max-width:1088px) {
+    body {
         background-color: var(--bg-form-color);
     }
-    .container{
+
+    .container {
         flex-direction: column;
     }
-    .container .form-container{
+
+    .container .form-container {
         padding: 0;
         height: 80%;
         order: 2;
     }
-    .form-top,.form-bot{
+
+    .form-top,
+    .form-bot {
         display: none;
     }
-    .container .banner{
+
+    .container .banner {
         width: 100%;
         height: 20%;
         order: 1;
@@ -237,25 +351,53 @@ body{
         margin-bottom: 2.5rem;
         background-color: transparent;
     }
-    .circle{
+
+    .circle {
+
+        width: 120px;
+
+        height: 120px;
+    }
+
+    .circle-2 {
+
+        width: 160px;
+
+        height: 160px;
+    }
+
+    .banner-logo {
+
+        width: 90px;
+    }
+
+    /*
+    .circle {
         width: 4rem;
         height: 4rem;
     }
-    .circle-2{
+
+    .circle-2 {
         width: 6 rem;
         height: 6 rem;
     }
-    .form .login,.form .register{
+*/
+    .form .login,
+    .form .register {
         width: 18rem;
         height: 100%;
     }
-    .form h2, .form p{
+
+    .form h2,
+    .form p {
         text-align: center;
     }
 }
 
-@media(max-width: 350px){
-    .form .login,.form .register{
+@media(max-width: 350px) {
+
+    .form .login,
+    .form .register {
         width: 90%;
     }
 }

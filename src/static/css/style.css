@@ -50,7 +50,6 @@ body{
     font-weight: 400;
 }
 
-
 .logo img{
     width:250px;
 }
@@ -79,12 +78,6 @@ body{
     align-items: flex-start;
     width: 90%;
     margin: 50px auto;
-
-    /*display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-    min-height: calc(100vh - 95px);
-    padding:70 90px;*/
 }
 
 .left-content{
@@ -102,16 +95,6 @@ body{
     flex-direction: column;
     align-items: flex-end;
     min-height: 500px;
-
-    /*
-    width: 40%;
-    min-height: 500px;*/
-
-    /*align-items: center;
-    padding-top: 15px;
-    padding-right: 45px;
-    gap: 45px;*/
-
 }
 .text-intro{
     width: 100%;
@@ -140,29 +123,6 @@ body{
     font-size: 20px;
     font-weight: 700;
 }
-/*
-.btn-right-content{
-    border: 3px solid green;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    align-content: flex-start;
-    gap: 35px;
-    padding-bottom: 10%;
-    
-}*/
-/*
-.right-content h1{
-    border: 3px solid red;
-    line-height: 65px;
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 120px;
-    padding-right: 30px;
-}*/
 
 h1{
     font-size:58px;
@@ -215,3 +175,8 @@ h2{
     box-shadow:0px 8px 20px rgba(166,138,239,.35);
 }
 
+.app-layout{ 
+    display: flex;
+    min-height: calc(100vh - 95px);
+    width: 100%;
+}

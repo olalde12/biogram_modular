@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!--CSS general-->
     <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
-    
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/sidebar.css') }}">
+
     <!--CSS especifico de cada pagina-->
     {% block css %}
 
     {% endblock %}
 
     <title>{% block title %}BIOGRAM{% endblock %}</title>
-    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+        rel="stylesheet">
 </head>
+
 <body>
-     <!-- ===== HEADER ===== -->
+    <!-- ===== HEADER ===== -->
 
     <header>
 
@@ -32,10 +36,17 @@
 
             <div class="logo">
 
-                <img src="{{ url_for('static', path='img/logoBiogram.jpg') }}"
-                     alt="Logo">
+                <img src="{{ url_for('static', path='img/logoBiogram.jpg') }}" alt="Logo">
 
             </div>
+
+            {% if app_mode %}
+            <button id="menuToggle" class="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            {% endif %}
+
+            {% if not app_mode %}
 
             <ul class="menu">
 
@@ -49,6 +60,8 @@
 
             </ul>
 
+            {% endif %}
+
             {% if usuario %}
             <a href="/perfil" class="btn-login">
                 Perfil
@@ -58,23 +71,44 @@
             <a href="/login" class="btn-login">
                 Iniciar sesión
             </a>
-            
             {% endif %}
-            
+
 
         </nav>
 
     </header>
 
-    <!-- ===== CONTENIDO ===== -->
+    <!-- ===== ÁREA PRINCIPAL - Para colocar el Sidebar y del otro lado el contenido ===== -->
 
-    <main>
+    <div class="{% if app_mode %}app-layout{% endif %}">
 
-        {% block contenido %}
+        <!-- ===== SIDEBAR ===== -->
 
-        {% endblock %}
+        {% if app_mode %}
+        <aside id="sidebar" class="sidebar">
 
-    </main>
+            {% include "sidebar.html" %}
+
+        </aside>
+        {% endif %}
+
+        <!-- ===== CONTENIDO ===== -->
+
+        <section class="content-area{% if not app_mode %}landing{% endif %}"> <!-- Todo lo que cambie de una pagina a otra estara aqui -->
+
+
+            <!-- Contenido de cada página -->
+           
+            <main>
+                {% block contenido %}
+
+                {% endblock %}
+            </main>
+        
+
+        </section>
+
+    </div>
 
     <script src="{{ url_for('static', path='js/script.js') }}"></script>
     {% block js %}
@@ -82,4 +116,5 @@
     {% endblock %}
 
 </body>
+
 </html>

@@ -18,7 +18,7 @@ Inicio
 
         <h2>¿Qué deseas hacer hoy?</h2>
 
-        <button class="btn btn-principal" data-url="/identificacion">
+        <button class="btn btn-principal" onclick="window.location.href='identificacion'">
             Identificar bacteria
         </button>
 
@@ -32,7 +32,7 @@ Inicio
         <div class="text-intro">
             <h1>
                 {% if usuario %}
-                ¡Hola, {{ usuario.nombre }}!
+                ¡Hola, {{ usuario.nombre|capitalize }}!
                 {% else %}
                 ¡Bienvenid@!
                 {% endif %}
