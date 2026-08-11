@@ -63,7 +63,7 @@
             <!-- Navegación -->
             <div class="card-footer">
 
-                <button class="back">
+                <button class="back" id="btnAtras">
                     <i class="fa-solid fa-caret-left"></i>
                     Atrás
                 </button>
@@ -72,6 +72,32 @@
                     Continuar
                     <i class="fa-solid fa-caret-right"></i>
                 </button>
+            </div>
+        </section>
+
+        <!-- Resultados -->
+        <section id="resultadoIdentificacion" class="resultado-identificacion">
+
+            <h2>Identificación completada</h2>
+
+            <div class="resultado-card">
+
+                <p class="resultado-label">
+                    Microorganismo con mayor coincidencias:
+                </p>
+                <h1 id="nombreBacteria"></h1>
+                <p>
+                    Coincidencia:
+                    <strong id="porcentajeCoincidencia"></strong>
+                </p>
+            </div>
+            <div class="detalle-resultado">
+
+                <h3>¿Por qué se obtuvo este resultado?</h3>
+                <p>El microorganismo fue seleccionado comparando los resultados obtenidos con
+                    las características de cada bacteria.
+                </p>
+                <div id="tablaCoincidencias"></div>
             </div>
         </section>
     </div>
