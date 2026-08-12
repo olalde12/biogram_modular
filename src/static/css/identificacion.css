@@ -118,6 +118,7 @@
 
 .dictionary-btn {
     flex-shrink: 0;
+    white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -330,4 +331,38 @@
 
 .coincidencia.incorrecta .detalle-icono {
     color: #d9534f;
+}
+
+.diccionario-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 5000;
+    justify-content: center;
+    align-items: center;
+}
+
+.diccionario-modal.abierto {
+    display: flex;
+}
+
+.diccionario-contenido {
+    width: min(600px, 90%);
+    max-height: 80vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    position: relative;
+}
+
+.cerrar-diccionario {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
 }
