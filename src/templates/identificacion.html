@@ -4,15 +4,14 @@
 <link rel="stylesheet" href="{{ url_for('static', path='css/identificacion.css') }}">
 {% endblock %}
 
-
 {% block contenido %}
 
 <!--Pantalla inicial-->
-<div id="pantallaCarga">
+<div id="pantallaCargaIdentificacion">
     <h1>Identificación bacteriana</h1>
 </div>
 <!--Todo el contenido de la pagina-->
-<main id="contenido">
+<main id="contenidoIdentificacion">
     <div class="identificacion-container">
         <!--Barra de progreso-->
         <section class="progress-container">
@@ -94,8 +93,12 @@
             <div class="detalle-resultado">
 
                 <h3>¿Por qué se obtuvo este resultado?</h3>
-                <p>El microorganismo fue seleccionado comparando los resultados obtenidos con
-                    las características de cada bacteria.
+                <p>Este microorganismo se obtuvo al comparar los resultados que proporcionaste,
+                    con las características conocidas de los microorganismos registrados
+                    en el sistema.<br> La identificación debe interpresarse como una
+                    aproximación y no como un resultado que pueda ser considerado definitivo. 
+                    Se recomienda realizar pruebas adicionales para confirmar la identificación del 
+                    microorganismo de ser necesario.
                 </p>
                 <div id="tablaCoincidencias"></div>
             </div>

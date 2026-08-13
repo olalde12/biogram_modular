@@ -37,6 +37,12 @@ def login(request: Request):
         "login.html",
         {"request": request}
     )
+@app.get("/diccionario")
+async def diccionario(request: Request):
+    return templates.TemplateResponse(
+        "diccionario.html",
+        {"request": request}
+    )
 
 app.include_router(usuarios.router, prefix='/usuarios', tags=['Etiquetas (usuarios)'])
 app.include_router(cuestionarios.router, prefix='/cuestionarios', tags=['Etiquetas (cuestionarios)'])

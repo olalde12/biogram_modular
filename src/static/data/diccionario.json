@@ -1,0 +1,130 @@
+{
+    "gram": {
+        "titulo": "Tinción de Gram",
+        "busqueda": [
+            "gram",
+            "gram positivo",
+            "gram negativo",
+            "coloración de gram",
+            "tincion de gram"
+        ],
+        "definicion": "La tinción de Gram es una técnica de coloración utilizada para observar y diferenciar bacterias de acuerdo con las características de su pared celular. Es una de las primeras herramientas utilizadas en la identificación microbiológica.",
+        "interpretacion": "Las bacterias se clasifican principalmente como Gram positivas o Gram negativas según su reacción a la tinción. En el proceso de identificación bacteriana, esta característica permite orientar la selección de las pruebas posteriores."
+    },
+
+    "forma": {
+        "titulo": "Morfología bacteriana",
+        "busqueda": [
+            "forma",
+            "morfologia",
+            "morfología",
+            "cocos",
+            "bacilos",
+            "forma bacteriana"
+        ],
+        "definicion": "La morfología bacteriana describe la forma que presentan las células bacterianas cuando se observan al microscopio. Entre las formas más comunes se encuentran los cocos y los bacilos.",
+        "interpretacion": "Los cocos presentan una forma aproximadamente esférica, mientras que los bacilos presentan una forma alargada. La morfología observada, junto con la reacción de Gram y otras características, ayuda a orientar la identificación del microorganismo."
+    },
+
+    "glu": {
+        "titulo": "Fermentación de glucosa",
+        "busqueda": [
+            "glucosa",
+            "fermentacion de glucosa",
+            "fermentación de glucosa",
+            "fermenta glucosa"
+        ],
+        "definicion": "La prueba de fermentación de glucosa permite determinar si un microorganismo es capaz de utilizar la glucosa mediante una vía fermentativa, produciendo cambios detectables en el medio utilizado.",
+        "interpretacion": "Un resultado positivo indica que se detectó la utilización fermentativa de la glucosa bajo las condiciones de la prueba. Un resultado negativo indica que no se observó la reacción esperada. Este resultado se interpreta junto con otras pruebas bioquímicas para diferenciar microorganismos."
+    },
+
+    "lac": {
+        "titulo": "Fermentación de lactosa",
+        "busqueda": [
+            "lactosa",
+            "fermentacion de lactosa",
+            "fermentación de lactosa",
+            "fermenta lactosa"
+        ],
+        "definicion": "La prueba de fermentación de lactosa permite determinar si un microorganismo puede utilizar este carbohidrato mediante fermentación bajo las condiciones establecidas para la prueba.",
+        "interpretacion": "Un resultado positivo indica que se produjo la reacción asociada a la fermentación de lactosa. Un resultado negativo indica que no se observó dicha reacción. La fermentación de lactosa es una característica útil para diferenciar grupos de bacilos Gram negativos."
+    },
+
+    "sac": {
+        "titulo": "Fermentación de sacarosa",
+        "busqueda": [
+            "sacarosa",
+            "fermentacion de sacarosa",
+            "fermentación de sacarosa",
+            "fermenta sacarosa"
+        ],
+        "definicion": "La prueba de fermentación de sacarosa permite determinar si un microorganismo puede utilizar este carbohidrato mediante fermentación.",
+        "interpretacion": "Un resultado positivo indica que se observó la reacción correspondiente a la fermentación de sacarosa. Un resultado negativo indica que no se observó la reacción esperada. Esta característica puede utilizarse junto con otras pruebas para diferenciar microorganismos."
+    },
+
+    "ure": {
+        "titulo": "Prueba de ureasa",
+        "busqueda": [
+            "ureasa",
+            "prueba de ureasa",
+            "urea",
+            "hidrolisis de urea",
+            "hidrólisis de urea"
+        ],
+        "definicion": "La prueba de ureasa permite determinar si un microorganismo produce la enzima ureasa, capaz de hidrolizar la urea.",
+        "interpretacion": "Un resultado positivo indica que se produjo la reacción asociada a la actividad de la ureasa. Un resultado negativo indica que no se detectó dicha actividad bajo las condiciones de la prueba. La reacción de ureasa puede ser utilizada como característica diferencial durante la identificación bacteriana."
+    },
+
+    "cit": {
+        "titulo": "Utilización de citrato",
+        "busqueda": [
+            "citrato",
+            "prueba de citrato",
+            "utilizacion de citrato",
+            "utilización de citrato",
+            "citrato de simmons"
+        ],
+        "definicion": "La prueba de utilización de citrato permite evaluar si un microorganismo puede utilizar el citrato como fuente de carbono bajo las condiciones establecidas por el medio de prueba.",
+        "interpretacion": "Un resultado positivo indica crecimiento acompañado de la reacción característica del medio cuando el microorganismo utiliza el citrato. Un resultado negativo indica ausencia de la reacción esperada. El resultado se utiliza junto con otras pruebas bioquímicas para diferenciar microorganismos."
+    },
+
+    "mov": {
+        "titulo": "Prueba de movilidad",
+        "busqueda": [
+            "movilidad",
+            "motilidad",
+            "prueba de movilidad",
+            "prueba de motilidad",
+            "bacteria movil",
+            "bacteria móvil"
+        ],
+        "definicion": "La prueba de movilidad permite determinar si una bacteria presenta capacidad de desplazamiento bajo las condiciones utilizadas en la prueba.",
+        "interpretacion": "Un resultado positivo indica que se observó evidencia de movilidad bacteriana. Un resultado negativo indica que no se observó movilidad bajo las condiciones de la prueba. La movilidad constituye una característica útil para diferenciar microorganismos con características morfológicas similares."
+    },
+
+    "ind": {
+        "titulo": "Producción de indol",
+        "busqueda": [
+            "indol",
+            "prueba de indol",
+            "produccion de indol",
+            "producción de indol",
+            "indole"
+        ],
+        "definicion": "La prueba de indol permite determinar si un microorganismo produce indol a partir del metabolismo del aminoácido triptófano.",
+        "interpretacion": "Un resultado positivo indica la detección de indol mediante el sistema indicador utilizado. Un resultado negativo indica que no se detectó la reacción correspondiente. Esta prueba forma parte de diferentes esquemas de identificación de bacilos Gram negativos."
+    },
+
+    "oxidasa": {
+        "titulo": "Prueba de oxidasa",
+        "busqueda": [
+            "oxidasa",
+            "prueba de oxidasa",
+            "citocromo oxidasa",
+            "oxidasa positiva",
+            "oxidasa negativa"
+        ],
+        "definicion": "La prueba de oxidasa se utiliza para detectar la presencia de actividad de citocromo oxidasa en un microorganismo mediante un reactivo que produce una reacción característica cuando la prueba es positiva.",
+        "interpretacion": "Un resultado positivo indica que se observó la reacción característica de la prueba de oxidasa. Un resultado negativo indica que dicha reacción no se presentó bajo las condiciones de la prueba. En la identificación de bacilos Gram negativos, la oxidasa puede funcionar como una prueba diferencial importante."
+    }
+}

@@ -6,7 +6,7 @@
     padding: 0;
 }
 
-#pantallaCarga {
+#pantallaCargaIdentificacion {
     display: flex;
     position: fixed;
     top: 0;
@@ -24,7 +24,7 @@
     transition: opacity .8s;
 }
 
-#pantallaCarga h1 {
+#pantallaCargaIdentificacion h1 {
     font-size: 60px;
     font-weight: bold;
     text-align: center;
@@ -229,6 +229,29 @@
 .option.selected {
     background: #45c9c8;
     color: white;
+}
+
+#btnNuevaIdentificacion {
+    display: block;
+    margin: 30px auto 0;
+    width: 200px;
+    height: 55px;
+    border: none;
+    border-radius: 30px;
+    background: #e0d6f7;
+    color: #a288e3;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: Poppins, sans-serif;
+    cursor: pointer;
+    transition: .25s;
+}
+
+#btnNuevaIdentificacion:hover {
+    color: white;
+    background: #a288e3;
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 20px rgba(162, 136, 227, 0.25);
 }
 
 /* Resultados de la identificación */

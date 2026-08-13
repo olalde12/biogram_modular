@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/diccionario.css') }}">
+{% endblock %}
+
+{% block contenido %}
+
+<!-- Pantalla inicial -->
+<div id="pantallaCargaDiccionario">
+    <h1>Diccionario microbiológico</h1>
+</div>
+<!-- Contenido principal -->
+<main id="contenidoDiccionario">
+
+    <div class="diccionario-container">
+
+        <!-- Encabezado -->
+        <section class="diccionario-header">
+
+            <p>
+                Consulta información sobre pruebas y conceptos microbiológicos.
+            </p>
+
+        </section>
+
+        <!-- Buscador -->
+        <section class="buscador-diccionario">
+
+            <div class="buscador-contenedor">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text" id="buscadorDiccionario" placeholder="Escribe aquí el término que buscas..."
+                    autocomplete="off" >
+
+            </div>
+
+        </section>
+
+        <!-- Resultados de búsqueda -->
+        <section id="resultadosDiccionario" class="resultados-diccionario">
+        </section>
+
+        <!-- Ficha del concepto -->
+        <section id="fichaDiccionario" class="ficha-diccionario">
+
+            <button id="cerrarFicha" class="cerrar-ficha" type="button">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h2 id="fichaTitulo"></h2>
+
+            <div class="ficha-seccion">
+                <h3>Definición</h3>
+                <p id="fichaDefinicion"></p>
+            </div>
+
+            <div class="ficha-seccion">
+                <h3>Interpretación</h3>
+                <p id="fichaInterpretacion"></p>
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+{% block js %}
+
+<script src="{{ url_for('static', path='js/diccionario.js') }}"></script>
+
+{% endblock %}
+
+{% endblock %}

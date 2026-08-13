@@ -1,12 +1,12 @@
 // ===============================
-// ANIMACIONES
+// ANIMACION DE CARGA
 // ===============================
 window.onload = function () {
     setTimeout(() => {
-        document.getElementById("pantallaCarga").style.opacity = "0";
+        document.getElementById("pantallaCargaIdentificacion").style.opacity = "0";
         setTimeout(() => {
-            document.getElementById("pantallaCarga").style.display = "none";
-            document.getElementById("contenido").style.display = "block";
+            document.getElementById("pantallaCargaIdentificacion").style.display = "none";
+            document.getElementById("contenidoIdentificacion").style.display = "block";
         }, 800);
     }, 2000);
 }
