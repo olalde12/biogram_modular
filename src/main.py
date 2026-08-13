@@ -46,6 +46,12 @@ def login(request: Request):
         "login.html",
         {"request": request}
     )
+@app.get("/diccionario")
+async def diccionario(request: Request):
+    return templates.TemplateResponse(
+        "diccionario.html",
+        {"request": request}
+    )
 
 app.add_middleware(
     SessionMiddleware,

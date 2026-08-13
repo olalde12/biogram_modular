@@ -6,7 +6,7 @@
     padding: 0;
 }
 
-#pantallaCarga {
+#pantallaCargaIdentificacion {
     display: flex;
     position: fixed;
     top: 0;
@@ -24,7 +24,7 @@
     transition: opacity .8s;
 }
 
-#pantallaCarga h1 {
+#pantallaCargaIdentificacion h1 {
     font-size: 60px;
     font-weight: bold;
     text-align: center;
@@ -118,6 +118,7 @@
 
 .dictionary-btn {
     flex-shrink: 0;
+    white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -230,6 +231,29 @@
     color: white;
 }
 
+#btnNuevaIdentificacion {
+    display: block;
+    margin: 30px auto 0;
+    width: 200px;
+    height: 55px;
+    border: none;
+    border-radius: 30px;
+    background: #e0d6f7;
+    color: #a288e3;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: Poppins, sans-serif;
+    cursor: pointer;
+    transition: .25s;
+}
+
+#btnNuevaIdentificacion:hover {
+    color: white;
+    background: #a288e3;
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 20px rgba(162, 136, 227, 0.25);
+}
+
 /* Resultados de la identificación */
 #resultadoIdentificacion {
     display: none;
@@ -330,4 +354,38 @@
 
 .coincidencia.incorrecta .detalle-icono {
     color: #d9534f;
+}
+
+.diccionario-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 5000;
+    justify-content: center;
+    align-items: center;
+}
+
+.diccionario-modal.abierto {
+    display: flex;
+}
+
+.diccionario-contenido {
+    width: min(600px, 90%);
+    max-height: 80vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    position: relative;
+}
+
+.cerrar-diccionario {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
 }

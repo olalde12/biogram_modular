@@ -1,12 +1,12 @@
 // ===============================
-// ANIMACIONES
+// ANIMACION DE CARGA
 // ===============================
 window.onload = function () {
     setTimeout(() => {
-        document.getElementById("pantallaCarga").style.opacity = "0";
+        document.getElementById("pantallaCargaIdentificacion").style.opacity = "0";
         setTimeout(() => {
-            document.getElementById("pantallaCarga").style.display = "none";
-            document.getElementById("contenido").style.display = "block";
+            document.getElementById("pantallaCargaIdentificacion").style.display = "none";
+            document.getElementById("contenidoIdentificacion").style.display = "block";
         }, 800);
     }, 2000);
 }
@@ -347,6 +347,9 @@ let respuestas = []; // de primeras es una lista vacia pero conforme el
 // usuario elige opciones, aquí se guardarán todas las respuestas
 const btnContinuar = document.querySelector(".continue"); //obtiene el botón Continuar
 const btnAtras = document.getElementById("btnAtras"); //obtiene el botón Atrás
+const btnDiccionario = document.querySelector(".dictionary-btn"); //obtiene el botón Diccionario
+const diccionarioModal = document.getElementById("diccionarioModal"); //obtiene el modal del diccionario
+const cerrarDiccionario = document.getElementById("cerrarDiccionario"); //obtiene el botón de cerrar del modal del diccionario
 
 // ===============================
 // FUNCION PRINCIPAL
@@ -364,6 +367,7 @@ function actualizarPantalla() {
 // ===============================
 
 function mostrarPrueba() {
+
     // Obtener la prueba actual
     const prueba = pruebas[pasoActual];
 
@@ -373,40 +377,68 @@ function mostrarPrueba() {
     // Cambiar la pregunta
     document.getElementById("preguntaPrueba").textContent = prueba.pregunta;
 
-    // Obtener el contenedor de los botones
+    // Obtener el contenedor de opciones
     const contenedor = document.getElementById("contenedorOpciones");
 
     // Limpiar las opciones anteriores
     contenedor.innerHTML = "";
 
-    // Crear cada botón de la prueba
+    // Buscar si esta prueba ya había sido respondida
+    const respuestaAnterior = respuestas.find(
+        respuesta => respuesta.prueba === prueba.id
+    );
+
+    // Crear las opciones de la prueba actual
     prueba.opciones.forEach(opcion => {
+
         const boton = document.createElement("button");
+
         boton.className = "option";
+
         boton.textContent = opcion.texto;
+
         boton.dataset.value = opcion.valor;
-        // Evento cuando el usuario selecciona una opción
+
+        // Si ya había una respuesta guardada,
+        // volver a marcarla
+        if (
+            respuestaAnterior &&
+            respuestaAnterior.respuesta === opcion.valor
+        ) {
+            boton.classList.add("selected");
+        }
+
+        // Evento de selección
         boton.addEventListener("click", () => {
 
-            // Quitar la selección anterior
+            // Quitar selección anterior
             document.querySelectorAll(".option").forEach(btn => {
                 btn.classList.remove("selected");
             });
 
-            // Marcar la nueva selección
+            // Marcar opción seleccionada
             boton.classList.add("selected");
-            // Guardar la respuesta
-            respuestaSeleccionada = opcion.valor;
-            // Activar el botón Continuar
-            btnContinuar.disabled = false;
 
+            // Guardar respuesta temporal
+            respuestaSeleccionada = opcion.valor;
+
+            // Activar Continuar
+            btnContinuar.disabled = false;
         });
 
-        // Agregar el botón al contenedor
+        // Agregar botón al contenedor
         contenedor.appendChild(boton);
-
     });
 
+    // Si ya había una respuesta guardada,
+    // mantenerla como respuesta seleccionada
+    if (respuestaAnterior) {
+        respuestaSeleccionada = respuestaAnterior.respuesta;
+        btnContinuar.disabled = false;
+    } else {
+        respuestaSeleccionada = null;
+        btnContinuar.disabled = true;
+    }
 }
 
 function actualizarProgreso() {
@@ -417,13 +449,24 @@ function actualizarProgreso() {
 }
 
 function actualizarBotones() {
-    // aqui controlaremos los botones Atras y Continuar
-    // dependiendo del paso actual.
+    if (pasoActual === 0) {
+        btnAtras.disabled = true;
+    } else {
+        btnAtras.disabled = false;
+    }
 }
 
 function reiniciarSeleccion() {
-    respuestaSeleccionada = null;
-    btnContinuar.disabled = true;
+    const respuestaAnterior = respuestas.find(
+        respuesta => respuesta.prueba === pruebas[pasoActual].id
+    );
+    if (respuestaAnterior) {
+        respuestaSeleccionada = respuestaAnterior.respuesta;
+        btnContinuar.disabled = false;
+    } else {
+        respuestaSeleccionada = null;
+        btnContinuar.disabled = true;
+    }
 }
 
 function obtenerSiguientePrueba() {
@@ -441,14 +484,12 @@ function obtenerSiguientePrueba() {
         return opcionElegida.siguiente;
     }
 
-    // Si no hay un camino especial,
-    // continuar con la siguiente prueba
+    // Si no hay un camino especial, continuar con la siguiente prueba
     if (pasoActual < pruebas.length - 1) {
         return pruebas[pasoActual + 1].id;
     }
 
-    // Si estamos en la última prueba,
-    // terminar la identificación
+    // Si estamos en la última prueba, terminar la identificación
     return null;
 }
 
@@ -511,7 +552,6 @@ function calcularCoincidencias() {
 
         });
 
-
         // PORCENTAJE
 
         let porcentaje = 0;
@@ -558,7 +598,6 @@ function mostrarResultados(resultados) {
 
     contenedorDetalle.innerHTML = "";
 
-
     mejorResultado.detalle.forEach(detalle => {
 
         const fila = document.createElement("div");
@@ -572,7 +611,6 @@ function mostrarResultados(resultados) {
         const prueba = pruebas.find(
             prueba => prueba.id === detalle.prueba
         );
-
 
         const nombrePrueba =
             prueba ? prueba.nombrePaso : detalle.prueba;
@@ -621,20 +659,25 @@ btnContinuar.addEventListener("click", () => {
         return;
     }
 
-
     // 2. Obtener la prueba actual
     const pruebaActual = pruebas[pasoActual];
 
-
     // 3. Guardar la respuesta
-    respuestas.push({
-        paso: pasoActual,
-        prueba: pruebaActual.id,
-        respuesta: respuestaSeleccionada
-    });
+    const respuestaExistente = respuestas.find(
+        respuesta => respuesta.prueba === pruebaActual.id
+    );
+    if (respuestaExistente) {
+        respuestaExistente.respuesta = respuestaSeleccionada;
+    }
+    else {
+        respuestas.push({
+            paso: pasoActual,
+            prueba: pruebaActual.id,
+            respuesta: respuestaSeleccionada
+        });
+    }
 
     console.log("Respuestas:", respuestas);
-
 
     // 4. Obtener la siguiente prueba
     const siguienteId = obtenerSiguientePrueba();
@@ -673,6 +716,33 @@ btnContinuar.addEventListener("click", () => {
         }
     }
 
+});
+
+btnAtras.addEventListener("click", () => {
+    if (pasoActual > 0) {
+        pasoActual--;
+        actualizarPantalla();
+    }
+});
+
+btnDiccionario.addEventListener("click", () => {
+    const prueba = pruebas[pasoActual];
+    const concepto = prueba.conceptoDiccionario;
+    console.log("Concepto solicitado:", concepto);
+    diccionarioModal.classList.add("abierto");
+});
+
+cerrarDiccionario.addEventListener("click", () => {
+    diccionarioModal.classList.remove("abierto");
+});
+
+document.getElementById("btnNuevaIdentificacion").addEventListener("click", () => {
+    pasoActual = 0;
+    respuestas = [];
+    respuestaSeleccionada = null;
+    document.getElementById("resultadoIdentificacion").style.display = "none";
+    document.querySelector(".card").style.display = "block";
+    actualizarPantalla();
 });
 
 // ===============================
