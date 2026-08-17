@@ -1,3 +1,4 @@
+from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 from src.models.microorganismo import Microorganismo
 from src.models.resultado_prueba_micro import Resultado_prueba_micro
@@ -41,3 +42,12 @@ def delete_microorganismo(db: Session, id_microorganismo: int):
     db.delete(db_microorganismo)
     db.commit()
     return db_microorganismo
+
+# Funcion para la ruta del buscador
+def buscar_microorganismo(resp_usuario: str, db: Session):
+    return db.query(Microorganismo).filter(
+        or_(
+            func.unaccent(Microorganismo.nombre).ilike(func.unaccent(f"%{resp_usuario}%")),
+            func.unaccent(Microorganismo.descripcion).ilike(func.unaccent(f"%{resp_usuario}%"))
+        )
+    ).all()
