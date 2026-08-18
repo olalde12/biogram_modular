@@ -31,6 +31,15 @@ async def identificacion(request: Request):
             "app_mode": True
         }
     )
+@app.get("/buscarbacteria")
+async def buscarbacteria(request: Request):
+    return templates.TemplateResponse(
+        "buscarbacteria.html",
+        {
+            "request": request,
+            "app_mode": True
+        }
+    )
 @app.get("/login")
 def login(request: Request):
     return templates.TemplateResponse(
