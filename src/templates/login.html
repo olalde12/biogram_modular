@@ -22,18 +22,20 @@
                 </a>
             </div>
             <div class="form" id="form">
-                <form class="login" action="/login" method="POST">
+                <form class="login" id="login">
                     <h2>Bienvenido de nuevo</h2>
                     <p>¿Ya tienes una cuenta? Inicia sesión con tu correo y contraseña. <br> <br> Si es tu primera vez en BIOGRAM, selecciona más abajo "Regístrate" para crear una cuenta.</p>
                     <div class="input">
                         <label for="login-email">Correo electrónico</label>
                         <input type="email" id="login-email" name="email" required
                             placeholder="Introduce tu correo electrónico">
+                        <div class="error" id="error_correo"></div>
                     </div>
                     <div class="input">
                         <label for="login-password">Contraseña</label>
-                        <input type="password" id="login-password" name="password" required
+                        <input type="password" id="login-password" name="password" required 
                             placeholder="Introduce tu contraseña">
+                        <div class="error" id="error_password"></div>
                     </div>
                     <div class="reminder">
                         <div class="checkbox-container">
@@ -53,8 +55,8 @@
                     <p class="account">¿Aún no tienes una cuenta? <a href="#" id="sign-up">Regístrate</a></p>
                 </form>
 
-                <form class="register" action="/registro" method="POST">
-
+                <form class="register" id="form_register">
+                      
                     <h2>Crea tu cuenta</h2>
                     <p>Usa un correo electrónico para crear tu cuenta y puedas gozar de todas las herramientas de
                         BIOGRAM.</p>
@@ -62,16 +64,19 @@
                         <label for="register-name">Nombre completo</label>
                         <input type="text" id="register-name" name="name" required
                             placeholder="Introduce un nombre y un apellido">
+                        <div class="error" id="error_nombre"></div>
                     </div>
                     <div class="input">
                         <label for="register-email">Correo electrónico</label>
-                        <input type="email" id="register-email" name="email" required
+                        <input type="email" id="register-email" name="email" required 
                             placeholder="Introduce un correo electrónico">
+                        <div class="error" id="error_correo_register"></div>
                     </div>
                     <div class="input">
                         <label for="register-password">Contraseña</label>
                         <input type="password" id="register-password" name="password" required
                             placeholder="Crea una contraseña">
+                        <div class="error" id="error_password_register"></div>
                     </div>
                     <div class="buttons">
                         <button type="submit">Registrarme</button>
@@ -97,6 +102,7 @@
 
 
     <script src="{{ url_for('static', path='js/script.js') }}"></script>
+    <script src="{{ url_for('static', path='js/auth.js') }}"></script>
 </body>
 
 </html>

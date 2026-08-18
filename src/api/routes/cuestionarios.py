@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import List
 from src.api.deps import get_db
@@ -13,7 +14,7 @@ router = APIRouter()
 @router.get('/', response_model=List[cuestionarios_schema.Cuestionario])
 def read_cuestionarios(id_usuario: int, db: Session = Depends(get_db)):
     db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=id_usuario)
-    if not db_usuario:
+    if not db_usuario or db_usuario.estado is False:
         raise HTTPException(status_code=404, detail='Ese usuario no exite')
     db_cuestionarios = (db.query(Cuestionario).filter(Cuestionario.id_usuario == id_usuario).all())
     if not db_cuestionarios:
@@ -22,20 +23,26 @@ def read_cuestionarios(id_usuario: int, db: Session = Depends(get_db)):
 
 # Ruta para obtener un cuestionario por id
 @router.get('/{id_cuestionario}', response_model=cuestionarios_schema.Cuestionario)
-def read_cuestionario_by_id(id_cuestionario: int, db: Session = Depends(get_db)):
-    db_cuestionario = cuestionarios_crud.get_cuestionario_by_id(db, id_cuestionario=id_cuestionario)
+def read_cuestionario_by_id(id_usuario: int, id_cuestionario: int, db: Session = Depends(get_db)):
+    db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=id_usuario)
+    if not db_usuario or db_usuario.estado is False:
+        raise HTTPException(status_code=404, detail='Ese usuario no exite')
+    db_cuestionario = (db.query(Cuestionario).filter(
+        Cuestionario.id_cuestionario == id_cuestionario,
+        Cuestionario.id_usuario == id_usuario
+    ).first())
     if db_cuestionario is None:
-        raise HTTPException(status_code=404, detail='Cuestionario no encontrado')
+        raise HTTPException(status_code=404, detail="Ese cuestionaorio no existe")
     return db_cuestionario
 
 # Ruta para obtener un cuestionario por nombre
 @router.get('/name/{nombre}', response_model=cuestionarios_schema.Cuestionario)
 def read_cuestionario_by_name(nombre: str, id_usuario: int, db: Session = Depends(get_db)):
     db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=id_usuario)
-    if not db_usuario:
+    if not db_usuario or db_usuario.estado is False:
         raise HTTPException(status_code=404, detail='Ese usuario no exite')
     db_cuestionario = (db.query(Cuestionario).filter(
-        Cuestionario.nombre == nombre,
+        func.lower(Cuestionario.nombre) == nombre.lower(),
         Cuestionario.id_usuario == id_usuario
     ).first())
     if db_cuestionario is None:
@@ -46,10 +53,10 @@ def read_cuestionario_by_name(nombre: str, id_usuario: int, db: Session = Depend
 @router.post('/create', response_model=cuestionarios_schema.Cuestionario)
 def create_cuestionario(cuestionario: cuestionarios_schema.CuestionarioCreate, db: Session = Depends(get_db)):
     db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=cuestionario.id_usuario)
-    if not db_usuario:
+    if not db_usuario or db_usuario.estado is False:
         raise HTTPException(status_code=404, detail='Ese usuario no exite')
     db_cuestionario = (db.query(Cuestionario).filter(
-        Cuestionario.nombre == cuestionario.nombre,
+        func.lower(Cuestionario.nombre) == cuestionario.nombre.lower(),
         Cuestionario.id_usuario == cuestionario.id_usuario
     ).first())
     if db_cuestionario:
@@ -58,16 +65,18 @@ def create_cuestionario(cuestionario: cuestionarios_schema.CuestionarioCreate, d
 
 # Ruta para modificar un cuestionario
 @router.put("/update/{id_cuestionario}", response_model=cuestionarios_schema.Cuestionario)
-def update_cuestionario(id_cuestionario: int, cuestionario: cuestionarios_schema.CuestionarioCreate, db: Session = Depends(get_db)):
+def update_cuestionario(id_cuestionario: int, id_usuario: int, cuestionario: cuestionarios_schema.CuestionarioUpdate, db: Session = Depends(get_db)):
     db_cuestionario = cuestionarios_crud.get_cuestionario_by_id(db, id_cuestionario=id_cuestionario)
     if db_cuestionario is None:
         raise HTTPException(status_code=404, detail="Ese cuestionario no existe")
-    db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=cuestionario.id_usuario)
-    if not db_usuario:
+    db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=id_usuario)
+    if not db_usuario or db_usuario.estado is False:
         raise HTTPException(status_code=404, detail="Ese usuario no existe")
+    if db_cuestionario.id_usuario != id_usuario:
+        raise HTTPException(status_code=403, detail="Ese cuestionario no pertenece a ese usuario")
     db_cuestionario_existente = (db.query(Cuestionario).filter(
-            Cuestionario.nombre == cuestionario.nombre,
-            Cuestionario.id_usuario == cuestionario.id_usuario,
+            func.lower(Cuestionario.nombre) == cuestionario.nombre.lower(),
+            Cuestionario.id_usuario == id_usuario,
             Cuestionario.id_cuestionario != id_cuestionario 
         ).first())
     if db_cuestionario_existente:
@@ -78,7 +87,7 @@ def update_cuestionario(id_cuestionario: int, cuestionario: cuestionarios_schema
 @router.delete('/delete/{id_cuestionario}', response_model=cuestionarios_schema.Cuestionario)
 def delete_cuestionario(id_cuestionario: int, id_usuario: int, db: Session = Depends(get_db)):
     db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=id_usuario)
-    if not db_usuario:
+    if not db_usuario or db_usuario.estado is False:
         raise HTTPException(status_code=404, detail='Ese usuario no exite')
     db_cuestionario = (db.query(Cuestionario).filter(
         Cuestionario.id_cuestionario == id_cuestionario,

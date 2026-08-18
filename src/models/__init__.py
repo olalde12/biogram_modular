@@ -7,3 +7,5 @@ from .pruebas_bioquimicas import Pruebas_bioquimicas
 from .resultado_cuestionario import Resultado_cuestionario
 from .resultado_prueba_micro import Resultado_prueba_micro
 from .usuarios import Usuarios
+from .publicaciones import Publicaciones
+from .comentarios import Comentarios

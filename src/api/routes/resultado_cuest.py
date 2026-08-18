@@ -11,7 +11,7 @@ from src.schemas import resultado_cuestionario as resultado_schema
 router = APIRouter()
 
 # Ruta para obtener todos los resultados
-@router.get('/', response_model=List[resultado_schema.ResultadoCuest])
+@router.get('/cuestionario/', response_model=List[resultado_schema.ResultadoCuest])
 def read_resultado_cues(id_cuestionario: int, db: Session = Depends(get_db)):
     db_cuestionario = cuestionario_crud.get_cuestionario_by_id(db, id_cuestionario=id_cuestionario)
     if not db_cuestionario:
@@ -48,14 +48,16 @@ def create_resultado(resultado: resultado_schema.ResultadoCuestCreate, db: Sessi
 
 # Ruta para modificar un resultado
 @router.put("/update/{id_rescues}", response_model=resultado_schema.ResultadoCuest)
-def update_resultado(id_resultado: int, resultado: resultado_schema.ResultadoCuestCreate, db: Session = Depends(get_db)):
+def update_resultado(id_resultado: int, id_cuestionario: int, id_prueba: int, resultado: resultado_schema.ResultadoCuestUpdate, db: Session = Depends(get_db)):
     db_resultado = resultado_crud.get_rescues_by_id(db, id_resultado_cues=id_resultado)
     if db_resultado is None:
         raise HTTPException(status_code=404, detail="No existe tal resultado")
-    db_cuestionario = cuestionario_crud.get_cuestionario_by_id(db, id_cuestionario=resultado.id_cuesti)
+    db_cuestionario = cuestionario_crud.get_cuestionario_by_id(db, id_cuestionario=id_cuestionario)
     if not db_cuestionario:
         raise HTTPException(status_code=404, detail="Ese cuestionario no existe")
-    db_prueba = pruebas.get_prueba_by_id(db, id_prueba=resultado.id_prueba)
+    if db_resultado.id_cuesti != id_cuestionario:
+        raise HTTPException(status_code=403, detail="No puedes modificar ese cuestionario")
+    db_prueba = pruebas.get_prueba_by_id(db, id_prueba=id_prueba)
     if not db_prueba:
         raise HTTPException(status_code=404, detail="Esa prueba no existe")
     return resultado_crud.update_rescues(db=db, id_resultado_cues=id_resultado, resultado=resultado)

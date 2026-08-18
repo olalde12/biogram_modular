@@ -1,4 +1,3 @@
-from datetime import date
 from sqlalchemy import Column, Integer, String, Boolean, Date
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -16,3 +15,5 @@ class Usuarios(Base):
     estado = Column(Boolean, default=True)
 
     cuestionario = relationship('Cuestionario', back_populates='usuario')
+    publicaciones = relationship('Publicaciones', back_populates='usuario_publicacion')
+    comentarios_usuario = relationship('Comentarios', back_populates='usuario_comentario')

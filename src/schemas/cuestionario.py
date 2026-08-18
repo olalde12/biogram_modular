@@ -10,7 +10,6 @@ class Cuestionario(CuestionarioBase):
     id_cuestionario: int
     fecha: date
     id_usuario: int
-    estado: bool
 
     class Config:
         from_attributes: True
@@ -18,3 +17,6 @@ class Cuestionario(CuestionarioBase):
 # Se necesita el campo para el usuario (FK)
 class CuestionarioCreate(CuestionarioBase):
     id_usuario: int
+
+class CuestionarioUpdate(CuestionarioBase):
+    nombre: str    

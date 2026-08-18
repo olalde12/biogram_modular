@@ -9,7 +9,6 @@ class Cuestionario(Base):
     id_cuestionario = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, index=True)
     fecha = Column(Date, server_default=func.current_date())
-    estado = Column(Boolean, default=True)
     id_usuario = Column(Integer, ForeignKey("usuarios.id_usuario"))
 
     usuario = relationship("Usuarios", back_populates="cuestionario")

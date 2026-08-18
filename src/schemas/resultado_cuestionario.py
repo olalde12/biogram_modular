@@ -17,3 +17,7 @@ class ResultadoCuest(ResultadoCuestBase):
 class ResultadoCuestCreate(ResultadoCuestBase):
     id_cuesti: int
     id_prueba: int
+
+# Base para actualizar un resultado
+class ResultadoCuestUpdate(ResultadoCuestBase):
+    resultado: str

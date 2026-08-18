@@ -32,7 +32,7 @@ Inicio
         <div class="text-intro">
             <h1>
                 {% if usuario %}
-                ¡Hola, {{ usuario.nombre }}!
+                ¡Hola, {{ usuario.nombre|capitalize }}!
                 {% else %}
                 ¡Bienvenid@!
                 {% endif %}
