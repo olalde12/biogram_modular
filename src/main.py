@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI
 from src.core.config import settings
-from src.api.routes import microorganismos, usuarios, publicaciones, comentarios, cuestionarios, resultado_cuest, pruebas, resultados, medios
+from src.api.routes import microorganismos, usuarios, publicaciones, comentarios, cuestionarios, resultado_cuest, pruebas, resultados, medios, buscador
 import src.models  
 from src.crud import usuario as usuario_crud
 from fastapi.staticfiles import StaticFiles
@@ -78,3 +78,4 @@ app.include_router(pruebas.router, prefix='/pruebas', tags=['Etiquetas (pruebas)
 app.include_router(resultados.router, prefix='/resultados', tags=['Etiquetas (resultados)'])
 app.include_router(microorganismos.router, prefix='/microorganismos', tags=['Etiquetas (microorganismos)'])
 app.include_router(medios.router, prefix='/medios', tags=['Etiquetas (medios)'])
+app.include_router(buscador.router, prefix='/buscar', tags=['Etiquetas (buscador)'])

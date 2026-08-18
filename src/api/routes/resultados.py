@@ -38,12 +38,6 @@ def create_resultado(resultado: resultado_schema.ResultadoCreate, db: Session = 
     db_prueba = pruebas.get_prueba_by_id(db, id_prueba=resultado.id_prueba)
     if not db_prueba:
         raise HTTPException(status_code=404, detail="Esa prueba no existe")
-    db_resultado_existente = (db.query(Resultado_prueba_micro).filter(
-            Resultado_prueba_micro.id_micro == resultado.id_micro,
-            Resultado_prueba_micro.id_prueba == resultado.id_prueba
-        ).first())
-    if db_resultado_existente:
-        raise HTTPException(status_code=400, detail="Esa prueba ya está registrada")
     return resultado_crud.create_resultado(db=db, resultado=resultado)
 
 # Ruta para modificar un resultado

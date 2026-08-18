@@ -1,3 +1,4 @@
+from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 from src.models.medios_cultivo import Medio_cultivo
 from src.models.medio_microorganismo import Medio_microorganismo
@@ -66,3 +67,13 @@ def delete_medio(db: Session, id_medio: int):
     db.query(Medio_microorganismo).filter(Medio_microorganismo.id_medio == id_medio).delete()
     db.commit()
     return db_medio
+
+# Funcion para la ruta del buscador
+def buscar_medio(resp_usuario: str, db: Session):
+    return db.query(Medio_cultivo).filter(
+        or_(
+            func.unaccent(Medio_cultivo.nombre).ilike(func.unaccent(f"%{resp_usuario}%")),
+            func.unaccent(Medio_cultivo.procedimiento).ilike(func.unaccent(f"%{resp_usuario}%")),
+            func.unaccent(Medio_cultivo.descripcion).ilike(func.unaccent(f"%{resp_usuario}%"))
+        )
+    ).all()
