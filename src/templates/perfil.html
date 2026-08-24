@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Mi perfil | BIOGRAM{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/perfil.css') }}">
+{% endblock %}
+
+{% block contenido %}
+
+<div class="perfil-pagina">
+
+    <a href="/" class="btn-regresar">
+        Regresar al inicio
+    </a>
+
+    <section class="perfil-header">
+
+        <div class="avatar-container">
+            <div class="avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+        </div>
+
+        <h1>
+            {{ usuario.nombre }} {{ usuario.apellido }}
+        </h1>
+
+        <p class="correo-principal">
+            {{ usuario.correo }}
+        </p>
+
+    </section>
+
+
+    <section class="perfil-contenido">
+
+        <h2>Información</h2>
+
+        <div class="dato-perfil">
+
+            <label>Correo electrónico</label>
+
+            <div class="dato">
+                {{ usuario.correo }}
+            </div>
+
+        </div>
+
+
+        <button class="opcion-perfil">
+            <i class="fa-solid fa-lock"></i>
+
+            <span>
+                <strong>Cambiar contraseña</strong>
+                <small>Actualiza la contraseña de tu cuenta</small>
+            </span>
+
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+
+        <button class="opcion-perfil">
+            <i class="fa-solid fa-circle-info"></i>
+
+            <span>
+                <strong>Sobre nosotros</strong>
+                <small>Conoce al equipo detrás de BIOGRAM</small>
+            </span>
+
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+
+        <button class="opcion-perfil cerrar-sesion">
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>
+                <strong>Cerrar sesión</strong>
+                <small>Salir de tu cuenta</small>
+            </span>
+        </button>
+
+    </section>
+
+</div>
+
+{% endblock %}

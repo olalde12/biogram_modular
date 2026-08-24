@@ -7,6 +7,7 @@ from src.crud import usuario as usuario_crud
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi import Request, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from src.api.deps import get_db
 from starlette.middleware.sessions import SessionMiddleware
@@ -54,6 +55,33 @@ def login(request: Request):
     return templates.TemplateResponse(
         "login.html",
         {"request": request}
+    )
+@app.get("/perfil", response_class=HTMLResponse)
+async def perfil(request: Request, db: Session = Depends(get_db)):
+
+    id_usuario = request.session.get("id_usuario")
+
+    if not id_usuario:
+        return RedirectResponse(
+            url="/login",
+            status_code=303
+        )
+
+    usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
+
+    if not usuario:
+        return RedirectResponse(
+            url="/login",
+            status_code=303
+        )
+
+    return templates.TemplateResponse(
+        "perfil.html",
+        {
+            "request": request,
+            "usuario": usuario,
+            "app_mode": False
+        }
     )
 @app.get("/diccionario")
 async def diccionario(request: Request):
