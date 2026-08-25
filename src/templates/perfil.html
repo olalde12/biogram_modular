@@ -16,11 +16,15 @@
 
     <section class="perfil-header">
 
-        <div class="avatar-container">
-            <div class="avatar">
-                <i class="fa-solid fa-user"></i>
-            </div>
-        </div>
+        <button class="avatar" id="btnAvatar" type="button">
+
+            <img id="avatarActual" src="{{ url_for('static', path='img/avatars/avatar1.png') }}" alt="Avatar">
+
+            <span class="avatar-editar">
+                <i class="fa-solid fa-pencil"></i>
+            </span>
+
+        </button>
 
         <h1>
             {{ usuario.nombre }} {{ usuario.apellido }}
@@ -32,6 +36,87 @@
 
     </section>
 
+    <div id="modalAvatar" class="modal-avatar">
+
+        <div class="modal-avatar-contenido">
+
+            <button id="cerrarAvatar" class="cerrar-modal" type="button">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h2>Elige tu avatar</h2>
+
+            <p>
+                Selecciona el personaje que quieres utilizar en BIOGRAM.
+            </p>
+
+            <div class="avatares-grid">
+
+                <button class="avatar-opcion" data-avatar="avatar1.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar1.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar2.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar2.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar3.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar3.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar4.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar4.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar5.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar5.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar6.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar6.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar7.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar7.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar8.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar8.png') }}">
+                </button>
+                
+                <button class="avatar-opcion" data-avatar="avatar9.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar9.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar10.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar10.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar11.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar11.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar12.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar12.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar13.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar13.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar14.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar14.png') }}">
+                </button>
+
+                <button class="avatar-opcion" data-avatar="avatar15.png">
+                    <img src="{{ url_for('static', path='img/avatars/avatar15.png') }}">
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
     <section class="perfil-contenido">
 
@@ -60,7 +145,7 @@
         </button>
 
 
-        <button class="opcion-perfil">
+        <a href="/sobre-nosotros" class="opcion-perfil">
             <i class="fa-solid fa-circle-info"></i>
 
             <span>
@@ -69,20 +154,23 @@
             </span>
 
             <i class="fa-solid fa-chevron-right"></i>
-        </button>
+        </a>
 
 
-        <button class="opcion-perfil cerrar-sesion">
+        <a href="/logout" class="opcion-perfil cerrar-sesion">
             <i class="fa-solid fa-right-from-bracket"></i>
-
             <span>
                 <strong>Cerrar sesión</strong>
                 <small>Salir de tu cuenta</small>
             </span>
-        </button>
+        </a>
 
     </section>
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', path='js/perfil.js') }}"></script>
 {% endblock %}

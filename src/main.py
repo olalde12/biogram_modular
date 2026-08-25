@@ -80,14 +80,46 @@ async def perfil(request: Request, db: Session = Depends(get_db)):
         {
             "request": request,
             "usuario": usuario,
+            "app_mode": False,
+            "hide_navbar": True
+        }
+    )
+@app.get("/logout")
+async def logout(request: Request):
+
+    request.session.clear()
+
+    return RedirectResponse(
+        url="/",
+        status_code=303
+    )
+@app.get("/sobre-nosotros", response_class=HTMLResponse)
+async def sobre_nosotros(request: Request):
+
+    return templates.TemplateResponse(
+        "sobre_nosotros.html",
+        {
+            "request": request,
+            "hide_navbar": True,
             "app_mode": False
         }
     )
+
 @app.get("/diccionario")
 async def diccionario(request: Request):
     return templates.TemplateResponse(
         "diccionario.html",
         {"request": request}
+    )
+
+@app.get("/foro", response_class=HTMLResponse)
+async def foro(request: Request):
+    
+    return templates.TemplateResponse(
+        "foro.html",
+        {
+            "request": request
+        }
     )
 
 app.add_middleware(

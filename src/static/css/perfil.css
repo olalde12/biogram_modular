@@ -1,64 +1,80 @@
+/* =========================================================
+   PÁGINA PRINCIPAL
+   ========================================================= */
 
 .perfil-pagina {
     min-height: calc(100vh - 95px);
+
     background: #ffffff;
+
     padding: 28px 75px 60px;
+
+    box-sizing: border-box;
 }
 
 
-/* ===== REGRESAR ===== */
+/* =========================================================
+   BOTÓN REGRESAR
+   ========================================================= */
 
 .btn-regresar {
-    /*display: inline-block;
-    padding: 11px 30px;
-    background: #9a86df;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    transition: 0.2s;*/
-
     display: inline-flex;
     align-items: center;
+
     gap: .5rem;
+
     padding: .55rem 1rem;
+
     border-radius: 30px;
-    background: white;
     border: 2px solid #9288e3;
+
+    background: white;
+
     color: #9288e3;
+
     text-decoration: none;
+
     font-size: .85rem;
     font-weight: 600;
+
     transition: all .25s ease;
 }
 
+
 .btn-regresar:hover {
-    /*background: #8872d1;*/
     background: #9288e3;
+
     color: white;
+
     transform: translateX(-3px);
+
     box-shadow: 0 8px 20px rgba(146, 136, 227, .30);
 }
 
 
-/* ===== ENCABEZADO DEL PERFIL ===== */
+/* =========================================================
+   ENCABEZADO DEL PERFIL
+   ========================================================= */
 
 .perfil-header {
     text-align: center;
+
     padding-top: 35px;
 }
 
 
-.avatar-container {
-    display: flex;
-    justify-content: center;
-}
-
+/* =========================================================
+   AVATAR
+   ========================================================= */
 
 .avatar {
     width: 120px;
     height: 120px;
 
+    padding: 0;
+    margin: 0 auto;
+
+    border: none;
     border-radius: 50%;
 
     background: #3eb4e8;
@@ -67,43 +83,386 @@
     align-items: center;
     justify-content: center;
 
+    position: relative;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
     font-size: 45px;
     color: #1c2930;
+
+    box-sizing: border-box;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
+
+.avatar:hover {
+    transform: scale(1.04);
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
+}
+
+
+/* =========================================================
+   IMAGEN DEL AVATAR
+   ========================================================= */
+
+#avatarActual {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =========================================================
+   ICONO DE EDITAR AVATAR
+   ========================================================= */
+
+.avatar-editar {
+    position: absolute;
+
+    right: 5px;
+    bottom: 5px;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #7865c5;
+
+    font-size: 14px;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .15);
+
+    pointer-events: none;
+}
+
+
+.avatar-editar i {
+    margin: 0;
+}
+
+
+/* =========================================================
+   NOMBRE
+   ========================================================= */
 
 .perfil-header h1 {
     margin: 18px 0 4px;
 
     font-size: 30px;
     font-weight: 600;
+
+    color: #222;
 }
 
+
+/* =========================================================
+   CORREO PRINCIPAL
+   ========================================================= */
 
 .correo-principal {
     margin: 0;
 
     font-size: 16px;
+
     color: #666;
 }
 
 
-/* ===== CONTENIDO ===== */
+/* =========================================================
+   MODAL DE AVATARES
+   ========================================================= */
+
+.modal-avatar {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 20px;
+
+    background: rgba(20, 20, 30, .45);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    z-index: 1000;
+
+    overflow-y: auto;
+}
+
+
+/*
+   Esta clase debe ser agregada por perfil.js
+   cuando el modal se abra.
+*/
+
+.modal-avatar.activo {
+    display: flex;
+}
+
+
+/* =========================================================
+   CONTENIDO DEL MODAL
+   ========================================================= */
+
+.modal-avatar-contenido {
+    width: min(500px, 100%);
+
+    padding: 30px;
+
+    background: white;
+
+    border-radius: 24px;
+
+    position: relative;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .20);
+
+    animation: aparecerModal .2s ease;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   ANIMACIÓN DEL MODAL
+   ========================================================= */
+
+@keyframes aparecerModal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(10px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0) scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   TÍTULO DEL MODAL
+   ========================================================= */
+
+.modal-avatar-contenido h2 {
+    margin: 0 0 8px;
+
+    text-align: center;
+
+    font-size: 23px;
+    font-weight: 600;
+
+    color: #222;
+}
+
+
+/* =========================================================
+   TEXTO DEL MODAL
+   ========================================================= */
+
+.modal-avatar-contenido p {
+    margin: 0 0 25px;
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   BOTÓN CERRAR MODAL
+   ========================================================= */
+
+.cerrar-modal {
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    width: 35px;
+    height: 35px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f2f2f5;
+
+    color: #555;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all .2s ease;
+}
+
+
+.cerrar-modal:hover {
+    background: #9288e3;
+    color: white;
+    transform: rotate(5deg);
+}
+
+
+.cerrar-modal i {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   GRID DE AVATARES
+   ========================================================= */
+
+.avatares-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    justify-items: center;
+    overflow-y: auto;
+    padding: 5px 10px 10px 5px;
+    max-height: 420px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   OPCIÓN DE AVATAR
+   ========================================================= */
+
+.avatar-opcion {
+    width: 105px;
+    height: 105px;
+
+    padding: 8px;
+
+    border: 2px solid transparent;
+
+    border-radius: 20px;
+
+    background: #f7f7fa;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.avatar-opcion:hover {
+    border-color: #9288e3;
+
+    background: #f0eefb;
+
+    transform: translateY(-3px);
+}
+
+
+.avatar-opcion img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+/*
+   Avatar seleccionado.
+   perfil.js debe agregar la clase
+   "seleccionado" al avatar elegido.
+*/
+
+.avatar-opcion.seleccionado {
+    border-color: #7865c5;
+
+    background: #eeeafb;
+
+    box-shadow: 0 5px 15px rgba(120, 101, 197, .20);
+}
+
+
+/* =========================================================
+   CONTENIDO DEL PERFIL
+   ========================================================= */
 
 .perfil-contenido {
     width: min(700px, 90%);
+
     margin: 45px auto 0;
+
+    box-sizing: border-box;
 }
 
+
+/* =========================================================
+   TÍTULO "INFORMACIÓN"
+   ========================================================= */
 
 .perfil-contenido h2 {
+    margin: 0 0 25px;
+
     font-size: 21px;
+
     font-weight: 500;
-    margin-bottom: 25px;
+
+    color: #222;
 }
 
 
-/* ===== CORREO ===== */
+/* =========================================================
+   CORREO
+   ========================================================= */
 
 .dato-perfil {
     margin-bottom: 20px;
@@ -116,6 +475,8 @@
     margin-bottom: 8px;
 
     font-size: 16px;
+
+    color: #222;
 }
 
 
@@ -123,48 +484,73 @@
     padding: 13px 18px;
 
     border: 1.5px solid #222;
+
     border-radius: 15px;
 
     background: transparent;
 
     font-weight: 500;
+
+    color: #333;
+
+    box-sizing: border-box;
 }
 
 
-/* ===== OPCIONES ===== */
+/*OPCIONES DEL PERFIL*/
 
 .opcion-perfil {
     width: 100%;
 
+    padding: 18px 10px;
+
     border: none;
+    border-bottom: 1px solid #ddd;
+
     background: transparent;
+
+    color: inherit;
+
+    text-decoration: none;
 
     display: flex;
     align-items: center;
 
     gap: 18px;
 
-    padding: 18px 10px;
-
     text-align: left;
 
     cursor: pointer;
 
-    border-bottom: 1px solid #ddd;
-
     font-family: inherit;
 
-    transition: 0.2s;
+    box-sizing: border-box;
+
+    transition:
+        background .2s ease,
+        transform .2s ease;
 }
 
+
+/* =========================================================
+   HOVER DE LAS OPCIONES
+   ========================================================= */
 
 .opcion-perfil:hover {
-    background: rgba(255, 255, 255, 0.55);
+    background: #f7f5ff;
+
+    transform: translateX(3px);
 }
 
 
-.opcion-perfil > i:first-child {
+/* =========================================================
+   ICONO IZQUIERDO
+   ========================================================= */
+
+.opcion-perfil>i:first-child {
     width: 30px;
+
+    flex-shrink: 0;
 
     text-align: center;
 
@@ -174,43 +560,285 @@
 }
 
 
+/* =========================================================
+   CONTENIDO DE LA OPCIÓN
+   ========================================================= */
+
 .opcion-perfil span {
     flex: 1;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 3px;
+
+    min-width: 0;
 }
 
+
+/* =========================================================
+   TÍTULO DE LA OPCIÓN
+   ========================================================= */
 
 .opcion-perfil strong {
     font-size: 16px;
+
     font-weight: 500;
+
+    color: #222;
 }
 
+
+/* =========================================================
+   DESCRIPCIÓN DE LA OPCIÓN
+   ========================================================= */
 
 .opcion-perfil small {
     color: #777;
+
     font-size: 13px;
+
+    line-height: 1.4;
 }
 
 
-.opcion-perfil > i:last-child {
+/* =========================================================
+   CHEVRON
+   ========================================================= */
+
+.opcion-perfil>i:last-child {
     color: #888;
+
+    flex-shrink: 0;
 }
 
 
-/* ===== CERRAR SESIÓN ===== */
+/* =========================================================
+   CERRAR SESIÓN
+   ========================================================= */
 
 .opcion-perfil.cerrar-sesion {
-    color: #c94b5a;
+    margin-top: 15px;
+
     border-bottom: none;
 
-    margin-top: 15px;
+    color: #c94b5a;
 }
 
 
-.opcion-perfil.cerrar-sesion > i:first-child {
+.opcion-perfil.cerrar-sesion>i:first-child {
     color: #c94b5a;
+}
+
+
+.opcion-perfil.cerrar-sesion strong {
+    color: #c94b5a;
+}
+
+
+.opcion-perfil.cerrar-sesion:hover {
+    background: #fff5f6;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .perfil-pagina {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - CELULAR
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .perfil-pagina {
+        min-height: calc(100vh - 80px);
+
+        padding: 20px 20px 45px;
+    }
+
+
+    /* ---------- Regresar ---------- */
+
+    .btn-regresar {
+        padding: .5rem .9rem;
+
+        font-size: .8rem;
+    }
+
+
+    /* ---------- Encabezado ---------- */
+
+    .perfil-header {
+        padding-top: 28px;
+    }
+
+
+    /* ---------- Avatar ---------- */
+
+    .avatar {
+        width: 105px;
+        height: 105px;
+    }
+
+
+    .avatar-editar {
+        width: 29px;
+        height: 29px;
+
+        right: 4px;
+        bottom: 4px;
+
+        font-size: 12px;
+    }
+
+
+    /* ---------- Nombre ---------- */
+
+    .perfil-header h1 {
+        margin-top: 16px;
+
+        font-size: 25px;
+    }
+
+
+    /* ---------- Correo ---------- */
+
+    .correo-principal {
+        font-size: 14px;
+
+        word-break: break-word;
+    }
+
+
+    /* ---------- Contenido ---------- */
+
+    .perfil-contenido {
+        width: 100%;
+
+        margin-top: 35px;
+    }
+
+
+    .perfil-contenido h2 {
+        font-size: 20px;
+
+        margin-bottom: 20px;
+    }
+
+
+    /* ---------- Modal ---------- */
+
+    .modal-avatar {
+        padding: 15px;
+    }
+
+
+    .modal-avatar-contenido {
+        padding: 25px 18px;
+
+        border-radius: 20px;
+    }
+
+
+    .modal-avatar-contenido h2 {
+        font-size: 21px;
+
+        padding-right: 25px;
+    }
+
+
+    /* ---------- Avatares ---------- */
+
+    .avatares-grid {
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 15px;
+    }
+
+
+    .avatar-opcion {
+        width: 95px;
+        height: 95px;
+    }
+
+
+    /* ---------- Opciones ---------- */
+
+    .opcion-perfil {
+        gap: 13px;
+
+        padding: 16px 6px;
+    }
+
+
+    .opcion-perfil>i:first-child {
+        width: 27px;
+
+        font-size: 18px;
+    }
+
+
+    .opcion-perfil strong {
+        font-size: 15px;
+    }
+
+
+    .opcion-perfil small {
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   CELULARES MUY PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .perfil-pagina {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+
+    .avatar {
+        width: 95px;
+        height: 95px;
+    }
+
+
+    .perfil-header h1 {
+        font-size: 22px;
+    }
+
+
+    .avatares-grid {
+        gap: 10px;
+    }
+
+
+    .avatar-opcion {
+        width: 85px;
+        height: 85px;
+    }
+
+
+    .modal-avatar-contenido {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
 }

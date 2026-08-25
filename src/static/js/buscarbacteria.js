@@ -1,6 +1,4 @@
-// ===============================
 // ANIMACION DE CARGA
-// ===============================
 window.onload = function () {
     setTimeout(() => {
         document.getElementById("pantallaCargaBacteria").style.opacity = "0";
@@ -10,6 +8,19 @@ window.onload = function () {
         }, 800);
     }, 2000);
 }
+
+// ===============================
+// SIDEBAR
+// ===============================
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.getElementById("sidebar");
+
+if (menuToggle && sidebar) {
+    menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+    });
+}
+
 
 // ===============================
 // CARGAR BASE DE DATOS DE BACTERIAS

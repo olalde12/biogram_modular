@@ -1,0 +1,928 @@
+/* ==========================================================
+   FORO BIOGRAM
+   ========================================================== */
+
+
+/* ==========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================== */
+
+.foro-pagina {
+
+    width: min(1100px, 90%);
+
+    margin: 0 auto;
+
+    padding: 55px 0 70px;
+
+    font-family: 'Poppins', sans-serif;
+
+}
+
+
+/* ==========================================================
+   ENCABEZADO
+   ========================================================== */
+
+.foro-hero {
+
+    text-align: center;
+
+    margin-bottom: 40px;
+
+}
+
+
+.foro-hero-texto {
+
+    max-width: 760px;
+
+    margin: 0 auto;
+
+}
+
+
+/* Pequeña etiqueta superior */
+
+.foro-etiqueta {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 16px;
+
+    border-radius: 30px;
+
+    background-color: #eaf8fd;
+
+    color: #36aee2;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 18px;
+
+}
+
+
+.foro-etiqueta i {
+
+    font-size: 14px;
+
+}
+
+
+/* Título */
+
+.foro-hero h1 {
+
+    margin: 0;
+
+    color: #171717;
+
+    font-size: clamp(34px, 5vw, 52px);
+
+    font-weight: 700;
+
+    line-height: 1.15;
+
+}
+
+
+/* Descripción */
+
+.foro-hero p {
+
+    max-width: 650px;
+
+    margin: 18px auto 0;
+
+    color: #666;
+
+    font-size: 17px;
+
+    line-height: 1.7;
+
+    font-weight: 400;
+
+}
+
+
+/* ==========================================================
+   HERRAMIENTAS
+   ========================================================== */
+
+.foro-herramientas {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 35px;
+
+}
+
+
+/* Buscador */
+
+.foro-buscador {
+
+    flex: 1;
+
+    height: 54px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 0 20px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #e4e4e4;
+
+    border-radius: 14px;
+
+    transition: 0.25s ease;
+
+}
+
+
+.foro-buscador i {
+
+    color: #8b8b8b;
+
+    font-size: 17px;
+
+}
+
+
+.foro-buscador input {
+
+    width: 100%;
+
+    height: 100%;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 14px;
+
+    color: #222;
+
+}
+
+
+.foro-buscador input::placeholder {
+
+    color: #9b9b9b;
+
+}
+
+
+.foro-buscador:focus-within {
+
+    border-color: #39afe3;
+
+    box-shadow: 0 0 0 3px rgba(57, 175, 227, 0.10);
+
+}
+
+
+/* Botón nueva pregunta */
+
+.foro-btn-nueva {
+
+    height: 54px;
+
+    padding: 0 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background-color: #3aaee2;
+
+    color: white;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+
+}
+
+
+.foro-btn-nueva:hover {
+
+    background-color: #299dce;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 7px 18px rgba(58, 174, 226, 0.20);
+
+}
+
+
+.foro-btn-nueva i {
+
+    font-size: 14px;
+
+}
+
+
+/* ==========================================================
+   CATEGORÍAS
+   ========================================================== */
+
+.foro-categorias {
+
+    margin-bottom: 45px;
+
+}
+
+
+.foro-categorias h2 {
+
+    margin: 0 0 16px;
+
+    font-size: 19px;
+
+    color: #222;
+
+    font-weight: 600;
+
+}
+
+
+.foro-categorias-lista {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+}
+
+
+/* Botones */
+
+.categoria-btn {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 17px;
+
+    border: 1px solid #dedede;
+
+    border-radius: 30px;
+
+    background-color: white;
+
+    color: #555;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+
+}
+
+
+.categoria-btn i {
+
+    font-size: 13px;
+
+}
+
+
+.categoria-btn:hover {
+
+    border-color: #3aaee2;
+
+    color: #3aaee2;
+
+    background-color: #f4fbfe;
+
+}
+
+
+/* Categoría seleccionada */
+
+.categoria-btn.categoria-activa {
+
+    background-color: #3aaee2;
+
+    border-color: #3aaee2;
+
+    color: white;
+
+}
+
+
+/* ==========================================================
+   PUBLICACIONES
+   ========================================================== */
+
+.foro-publicaciones {
+
+    width: 100%;
+
+}
+
+
+.foro-publicaciones-header {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.foro-publicaciones-header h2 {
+
+    margin: 0;
+
+    color: #1b1b1b;
+
+    font-size: 25px;
+
+    font-weight: 600;
+
+}
+
+
+.foro-publicaciones-header p {
+
+    margin: 5px 0 0;
+
+    color: #888;
+
+    font-size: 13px;
+
+}
+
+
+/* Ordenar */
+
+.foro-ordenar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #666;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+}
+
+
+.foro-ordenar:hover {
+
+    color: #3aaee2;
+
+}
+
+
+.foro-ordenar i {
+
+    font-size: 10px;
+
+}
+
+
+/* ==========================================================
+   TARJETAS
+   ========================================================== */
+
+.foro-card {
+
+    background-color: #ffffff;
+
+    border: 1px solid #e8e8e8;
+
+    border-radius: 18px;
+
+    padding: 25px 28px 20px;
+
+    margin-bottom: 17px;
+
+    transition: 0.25s ease;
+
+}
+
+
+.foro-card:hover {
+
+    transform: translateY(-3px);
+
+    border-color: rgba(58, 174, 226, 0.35);
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+
+}
+
+
+/* Contenido */
+
+.foro-card-contenido {
+
+    padding-bottom: 20px;
+
+}
+
+
+/* Categoría */
+
+.foro-card-categoria {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #35aee1;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.3px;
+
+}
+
+
+.foro-card-categoria i {
+
+    font-size: 13px;
+
+}
+
+
+/* Título */
+
+.foro-card h3 {
+
+    margin: 11px 0 8px;
+
+    color: #202020;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    line-height: 1.45;
+
+}
+
+
+.foro-card h3:hover {
+
+    color: #35aee1;
+
+}
+
+
+/* Descripción */
+
+.foro-card-descripcion {
+
+    margin: 0;
+
+    max-width: 850px;
+
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+}
+
+
+/* ==========================================================
+   ETIQUETAS
+   ========================================================== */
+
+.foro-card-etiquetas {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 17px;
+
+}
+
+
+.foro-card-etiquetas span {
+
+    padding: 5px 10px;
+
+    border-radius: 7px;
+
+    background-color: #f3f9fc;
+
+    color: #4b9fc2;
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+}
+
+
+/* ==========================================================
+   FOOTER DE LA TARJETA
+   ========================================================== */
+
+.foro-card-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-top: 17px;
+
+    border-top: 1px solid #eeeeee;
+
+}
+
+
+/* Autor */
+
+.foro-autor {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.foro-avatar {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #b7e9f8;
+
+    color: #287c9d;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+.foro-avatar-morado {
+
+    background-color: #e6ddff;
+
+    color: #7760c4;
+
+}
+
+
+.foro-avatar-rosa {
+
+    background-color: #ffdce9;
+
+    color: #b85b7d;
+
+}
+
+
+.foro-avatar-azul {
+
+    background-color: #dceeff;
+
+    color: #3679b0;
+
+}
+
+
+.foro-autor div:last-child {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+}
+
+
+.foro-autor strong {
+
+    color: #333;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+
+.foro-autor span {
+
+    color: #999;
+
+    font-size: 11px;
+
+}
+
+
+/* Respuestas */
+
+.foro-respuestas {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #888;
+
+    font-size: 12px;
+
+}
+
+
+.foro-respuestas i {
+
+    color: #3aaee2;
+
+    font-size: 14px;
+
+}
+
+
+/* ==========================================================
+   COLORES DE CATEGORÍAS
+   ========================================================== */
+
+
+/* Laboratorio */
+
+.categoria-laboratorio {
+
+    color: #8c78dc;
+
+}
+
+
+/* Microbiología */
+
+.categoria-micro {
+
+    color: #4cae8c;
+
+}
+
+
+/* Pruebas bioquímicas */
+
+.categoria-pruebas {
+
+    color: #d98a65;
+
+}
+
+
+/* ==========================================================
+   MENSAJE FINAL
+   ========================================================== */
+
+.foro-final {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    max-width: 650px;
+
+    margin: 45px auto 0;
+
+    padding: 20px 25px;
+
+    border-radius: 15px;
+
+    background-color: #f7fbfd;
+
+    color: #777;
+
+    text-align: center;
+
+}
+
+
+.foro-final i {
+
+    color: #3aaee2;
+
+    font-size: 20px;
+
+}
+
+
+.foro-final p {
+
+    margin: 0;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+
+/* Tablets */
+
+@media (max-width: 800px) {
+
+    .foro-pagina {
+
+        width: 88%;
+
+        padding-top: 40px;
+
+    }
+
+
+    .foro-herramientas {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+
+    .foro-btn-nueva {
+
+        width: 100%;
+
+    }
+
+
+    .foro-publicaciones-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .foro-ordenar {
+
+        padding: 0;
+
+    }
+
+}
+
+
+/* Celulares */
+
+@media (max-width: 550px) {
+
+    .foro-pagina {
+
+        width: 92%;
+
+        padding: 30px 0 50px;
+
+    }
+
+
+    .foro-hero h1 {
+
+        font-size: 32px;
+
+    }
+
+
+    .foro-hero p {
+
+        font-size: 14px;
+
+    }
+
+
+    .foro-card {
+
+        padding: 20px;
+
+    }
+
+
+    .foro-card h3 {
+
+        font-size: 16px;
+
+    }
+
+
+    .foro-card-footer {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 15px;
+
+    }
+
+
+    .foro-final {
+
+        padding: 17px;
+
+    }
+
+}
