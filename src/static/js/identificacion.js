@@ -1,6 +1,4 @@
-// ===============================
-// ANIMACION DE CARGA
-// ===============================
+// Animacion de carga
 window.onload = function () {
     setTimeout(() => {
         document.getElementById("pantallaCargaIdentificacion").style.opacity = "0";
@@ -11,9 +9,7 @@ window.onload = function () {
     }, 2000);
 }
 
-// ===============================
-// NAVEGACIÓN
-// ===============================
+// Navegación
 document.querySelectorAll(".btn-principal").forEach(boton => {
     boton.addEventListener("click", () => {
         if (boton.dataset.url) {
@@ -22,9 +18,7 @@ document.querySelectorAll(".btn-principal").forEach(boton => {
     });
 });
 
-// ===============================
-// SIDEBAR
-// ===============================
+// Sidebar
 const menuToggle = document.getElementById("menuToggle");
 const sidebar = document.getElementById("sidebar");
 
@@ -34,313 +28,49 @@ if (menuToggle && sidebar) {
     });
 }
 
-// ===============================
-// PRUEBAS DEL MOTOR DE IDENTIFICACIÓN
-// ===============================
-
-const pruebas = [
-
-    {
-        id: "gram",
-        nombrePaso: "Gram",
-        titulo: "Tinción de Gram",
-        pregunta: "Selecciona el resultado obtenido.",
-        conceptoDiccionario: "gram",
-
-        opciones: [
-            {
-                texto: "Gram positivo",
-                valor: "positivo"
+let pruebas = [];
+let microorganismos = []; 
+async function cargarMicroorganismos() {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/microorganismos`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
             },
-            {
-                texto: "Gram negativo",
-                valor: "negativo"
-            }
-        ]
-    },
+        });
 
-    {
-        id: "forma",
-        nombrePaso: "Morfología",
-        titulo: "Forma bacteriana",
-        pregunta: "¿Qué morfología presenta la bacteria?",
-        conceptoDiccionario: "forma",
+        if (!response.ok) {
+            throw new Error("No se pudieron cargar las pruebas desde la API.");
+        }
 
-        opciones: [
-            {
-                texto: "Cocos",
-                valor: "cocos"
-            },
-            {
-                texto: "Bacilos",
-                valor: "bacilos"
-            }
-        ]
-    },
+        microorganismos = await response.json();
 
-    {
-        id: "glu",
-        nombrePaso: "Glucosa",
-        titulo: "Fermentación de glucosa",
-        pregunta: "¿Cuál fue el resultado de la prueba de glucosa?",
-        conceptoDiccionario: "glucosa",
-
-        opciones: [
-            {
-                texto: "Positiva",
-                valor: "+"
-            },
-            {
-                texto: "Negativa",
-                valor: "-"
-            }
-        ]
-    },
-
-    {
-        id: "lac",
-        nombrePaso: "Lactosa",
-        titulo: "Fermentación de lactosa",
-        pregunta: "¿Cuál fue el resultado de la prueba de lactosa?",
-        conceptoDiccionario: "lactosa",
-
-        opciones: [
-            {
-                texto: "Positiva",
-                valor: "+"
-            },
-            {
-                texto: "Negativa",
-                valor: "-"
-            }
-        ]
-    },
-
-    {
-        id: "sac",
-        nombrePaso: "Sacarosa",
-        titulo: "Fermentación de sacarosa",
-        pregunta: "¿Cuál fue el resultado de la prueba de sacarosa?",
-        conceptoDiccionario: "sacarosa",
-
-        opciones: [
-            {
-                texto: "Positiva",
-                valor: "+"
-            },
-            {
-                texto: "Negativa",
-                valor: "-"
-            }
-        ]
-    },
-
-    {
-        id: "ure",
-        nombrePaso: "Ureasa",
-        titulo: "Prueba de ureasa",
-        pregunta: "¿Cuál fue el resultado de la prueba de ureasa?",
-        conceptoDiccionario: "ureasa",
-
-        opciones: [
-            {
-                texto: "Positiva",
-                valor: "+"
-            },
-            {
-                texto: "Negativa",
-                valor: "-"
-            }
-        ]
-    },
-
-    {
-        id: "cit",
-        nombrePaso: "Citrato",
-        titulo: "Utilización de citrato",
-        pregunta: "¿Cuál fue el resultado de la prueba de citrato?",
-        conceptoDiccionario: "citrato",
-
-        opciones: [
-            {
-                texto: "Positiva",
-                valor: "+"
-            },
-            {
-                texto: "Negativa",
-                valor: "-"
-            }
-        ]
-    },
-
-    {
-        id: "mov",
-        nombrePaso: "Movilidad",
-        titulo: "Prueba de movilidad",
-        pregunta: "¿La bacteria presentó movilidad?",
-        conceptoDiccionario: "movilidad",
-
-        opciones: [
-            {
-                texto: "Positiva",
-                valor: "+"
-            },
-            {
-                texto: "Negativa",
-                valor: "-"
-            }
-        ]
-    },
-
-    {
-        id: "ind",
-        nombrePaso: "Indol",
-        titulo: "Producción de indol",
-        pregunta: "¿Cuál fue el resultado de la prueba de indol?",
-        conceptoDiccionario: "indol",
-
-        opciones: [
-            {
-                texto: "Positiva",
-                valor: "+"
-            },
-            {
-                texto: "Negativa",
-                valor: "-"
-            }
-        ]
-    },
-
-    {
-        id: "oxidasa",
-        nombrePaso: "Oxidasa",
-        titulo: "Prueba de oxidasa",
-        pregunta: "¿Cuál fue el resultado de la prueba de oxidasa?",
-        conceptoDiccionario: "oxidasa",
-
-        opciones: [
-            {
-                texto: "Positiva",
-                valor: "+"
-            },
-            {
-                texto: "Negativa",
-                valor: "-"
-            }
-        ]
+    } catch (error) {
+        console.error("Error al cargar pruebas:", error);
     }
+}
 
-];
+async function cargarPruebas() {
+    try {
 
-// ===============================
-// BASE DE DATOS DE MICROORGANISMOS
-// ===============================
+        const response = await fetch(
+            "http://127.0.0.1:8000/pruebas"
+        );
 
-const bacterias = [
-
-    {
-        id: "e_coli",
-        nombre: "Escherichia coli",
-
-        gram: "negativo",
-        forma: "bacilos",
-
-        pruebas: {
-            glu: "+",
-            sac: "+",
-            lac: "+",
-            ure: "-",
-            cit: "-",
-            mov: "+",
-            ind: "+",
-            oxidasa: "-",
-            h2s: "-",
-            gas: "+",
-            mr: "+",
-            vp: "-",
-            orn: "+",
-            nit: "+",
-            gel: "-"
+        if (!response.ok) {
+            throw new Error("No se pudieron cargar las pruebas.");
         }
-    },
 
-    {
-        id: "k_pneumoniae",
-        nombre: "Klebsiella pneumoniae",
+        pruebas = await response.json();
 
-        gram: "negativo",
-        forma: "bacilos",
+        console.log("Pruebas cargadas:", pruebas);
 
-        pruebas: {
-            glu: "+",
-            sac: "+",
-            lac: "+",
-            ure: "+",
-            cit: "+",
-            mov: "-",
-            ind: "-",
-            oxidasa: "-",
-            h2s: "-",
-            gas: "+",
-            mr: "-",
-            vp: "+",
-            orn: "-",
-            nit: "+",
-            gel: "-"
-        }
-    },
-
-    {
-        id: "e_aerogenes",
-        nombre: "Enterobacter aerogenes",
-        gram: "negativo",
-
-        pruebas: {
-            glu: "+",
-            sac: "+",
-            lac: "+",
-            ure: "-",
-            cit: "+",
-            mov: "+",
-            ind: "-",
-            oxidasa: "-",
-            h2s: "-",
-            gas: "+",
-            mr: "-",
-            vp: "+",
-            orn: "+",
-            nit: "+",
-            gel: "-"
-        }
-    },
-
-    {
-        id: "p_mirabilis",
-        nombre: "Proteus mirabilis",
-        gram: "negativo",
-
-        pruebas: {
-            glu: "+",
-            sac: "-",
-            lac: "-",
-            ure: "+",
-            cit: "+",
-            mov: "+",
-            ind: "-",
-            oxidasa: "-",
-            h2s: "+",
-            gas: "+",
-            mr: "+",
-            vp: "-",
-            orn: "+",
-            nit: "+",
-            gel: "+"
-        }
+    } catch (error) {
+        console.error("Error al cargar pruebas:", error);
     }
+}
 
-];
-
-
+// Definimos variables necesarias y obtenemos elementos del HTML
 let pasoActual = 0;
 let respuestaSeleccionada = null; //aquí se irá guardando la respuesta elegida
 let respuestas = []; // de primeras es una lista vacia pero conforme el 
@@ -351,10 +81,7 @@ const btnDiccionario = document.querySelector(".dictionary-btn"); //obtiene el b
 const diccionarioModal = document.getElementById("diccionarioModal"); //obtiene el modal del diccionario
 const cerrarDiccionario = document.getElementById("cerrarDiccionario"); //obtiene el botón de cerrar del modal del diccionario
 
-// ===============================
-// FUNCION PRINCIPAL
-// ===============================
-
+// Función principal
 function actualizarPantalla() {
     mostrarPrueba();
     actualizarProgreso();
@@ -362,20 +89,16 @@ function actualizarPantalla() {
     reiniciarSeleccion();
 }
 
-// ===============================
-// FUNCIONES SECUNDARIAS
-// ===============================
-
+// Función para obtener las pruebas
 function mostrarPrueba() {
-
     // Obtener la prueba actual
     const prueba = pruebas[pasoActual];
 
     // Cambiar el título
-    document.getElementById("tituloPrueba").textContent = prueba.titulo;
+    document.getElementById("tituloPrueba").textContent = prueba.nombre;
 
     // Cambiar la pregunta
-    document.getElementById("preguntaPrueba").textContent = prueba.pregunta;
+    document.getElementById("preguntaPrueba").textContent = prueba.nombre;
 
     // Obtener el contenedor de opciones
     const contenedor = document.getElementById("contenedorOpciones");
@@ -385,25 +108,25 @@ function mostrarPrueba() {
 
     // Buscar si esta prueba ya había sido respondida
     const respuestaAnterior = respuestas.find(
-        respuesta => respuesta.prueba === prueba.id
+        respuesta => respuesta.prueba === prueba.id_prueba
     );
 
     // Crear las opciones de la prueba actual
-    prueba.opciones.forEach(opcion => {
+    prueba.opc_prueba.forEach(opcion => {
 
         const boton = document.createElement("button");
 
         boton.className = "option";
 
-        boton.textContent = opcion.texto;
+        boton.textContent = opcion.nombre_resultado;
 
-        boton.dataset.value = opcion.valor;
+        boton.dataset.idOpcion = opcion.id_opcion;
 
         // Si ya había una respuesta guardada,
         // volver a marcarla
         if (
             respuestaAnterior &&
-            respuestaAnterior.respuesta === opcion.valor
+            respuestaAnterior.respuesta === opcion.nombre_resultado
         ) {
             boton.classList.add("selected");
         }
@@ -420,7 +143,10 @@ function mostrarPrueba() {
             boton.classList.add("selected");
 
             // Guardar respuesta temporal
-            respuestaSeleccionada = opcion.valor;
+            respuestaSeleccionada = {
+                id_opcion: opcion.id_opcion_prueba,
+                nombre_resultado: opcion.nombre_resultado
+            };
 
             // Activar Continuar
             btnContinuar.disabled = false;
@@ -458,7 +184,7 @@ function actualizarBotones() {
 
 function reiniciarSeleccion() {
     const respuestaAnterior = respuestas.find(
-        respuesta => respuesta.prueba === pruebas[pasoActual].id
+        respuesta => respuesta.prueba === pruebas[pasoActual].id_prueba
     );
     if (respuestaAnterior) {
         respuestaSeleccionada = respuestaAnterior.respuesta;
@@ -470,23 +196,9 @@ function reiniciarSeleccion() {
 }
 
 function obtenerSiguientePrueba() {
-    // Obtener la prueba actual
-    const pruebaActual = pruebas[pasoActual];
-
-    // Buscar la opción seleccionada
-    const opcionElegida = pruebaActual.opciones.find(
-        opcion => opcion.valor === respuestaSeleccionada
-    );
-
-    // Si posteriormente queremos crear
-    // un camino específico, podemos usar "siguiente"
-    if (opcionElegida && opcionElegida.siguiente) {
-        return opcionElegida.siguiente;
-    }
-
     // Si no hay un camino especial, continuar con la siguiente prueba
     if (pasoActual < pruebas.length - 1) {
-        return pruebas[pasoActual + 1].id;
+        return pasoActual + 1;
     }
 
     // Si estamos en la última prueba, terminar la identificación
@@ -497,76 +209,62 @@ function obtenerSiguientePrueba() {
 // MOTOR DE IDENTIFICACIÓN
 // ===============================
 
-function calcularCoincidencias() {
-
+function calcularCoincidencias(microorganismos) {
     const resultados = [];
 
-    // Recorrer todas las bacterias disponibles
-    bacterias.forEach(bacteria => {
+    microorganismos.forEach(microorganismo => {
 
         let coincidencias = 0;
         let pruebasComparadas = 0;
         const detalle = [];
 
-        // Comparar cada respuesta del alumno
         respuestas.forEach(respuesta => {
+            const resultadoEsperado = microorganismo.res_prueba_micro.find(
+                resultado =>
+                    resultado.id_prueba === respuesta.id_prueba
+            );
 
-            const idPrueba = respuesta.prueba;
-            const valorAlumno = respuesta.respuesta;
+            // Buscar la prueba
+            const prueba = pruebas.find(
+                prueba => prueba.id_prueba === respuesta.id_prueba
+            );
 
-            let valorBacteria = null;
+            // Buscar el nombre de la opción esperada
+            const opcionEsperada = prueba?.opc_prueba.find(
+                opcion =>
+                    opcion.id_opcion_prueba === resultadoEsperado?.id_opcion
+            );
 
-            // CARACTERÍSTICAS GENERALES
+            const coincidencia =
+                    resultadoEsperado &&
+                    resultadoEsperado.id_opcion === respuesta.id_opcion
 
-            if (idPrueba === "gram") {
-                valorBacteria = bacteria.gram;
+            pruebasComparadas++;
+            
+            if (coincidencia) {
+                coincidencias++;
             }
-            else if (idPrueba === "forma") {
-                valorBacteria = bacteria.forma;
-            }
-
-            // PRUEBAS BIOQUÍMICAS
-
-            else if (bacteria.pruebas[idPrueba] !== undefined) {
-                valorBacteria = bacteria.pruebas[idPrueba];
-            }
-
-            // COMPARACIÓN
-
-            if (valorBacteria !== null) {
-
-                pruebasComparadas++;
-
-                const coincide = valorAlumno === valorBacteria;
-
-                if (coincide) {
-                    coincidencias++;
-                }
-                detalle.push({
-                    prueba: idPrueba,
-                    resultadoAlumno: valorAlumno,
-                    resultadoEsperado: valorBacteria,
-                    coincide: coincide
-                });
-            }
-
+        
+            detalle.push({
+                prueba: respuesta.id_prueba,
+                resultadoAlumno: respuesta.respuesta,
+                resultadoEsperado: opcionEsperada
+                    ? opcionEsperada.nombre_resultado
+                    : "Sin resultado",
+                coincide: !!coincidencia
+            });
         });
 
-        // PORCENTAJE
-
-        let porcentaje = 0;
-
-        if (pruebasComparadas > 0) {
-            porcentaje = (coincidencias / pruebasComparadas) * 100;
-        }
+        const porcentaje = pruebasComparadas > 0
+            ? (coincidencias / pruebasComparadas) * 100 : 0;
 
         resultados.push({
-            id: bacteria.id,
-            nombre: bacteria.nombre,
-            coincidencias: coincidencias,
-            pruebasComparadas: pruebasComparadas,
-            porcentaje: porcentaje,
-            detalle: detalle
+            id: microorganismo.id_microorganismo,
+            nombre: microorganismo.nombre,
+            coincidencias,
+            pruebasComparadas,
+            porcentaje, 
+            detalle
         });
 
     });
@@ -609,11 +307,11 @@ function mostrarResultados(resultados) {
 
 
         const prueba = pruebas.find(
-            prueba => prueba.id === detalle.prueba
+            prueba => prueba.id_prueba === detalle.prueba
         );
 
         const nombrePrueba =
-            prueba ? prueba.nombrePaso : detalle.prueba;
+            prueba ? prueba.nombre : detalle.prueba;
 
 
         fila.innerHTML = `
@@ -664,49 +362,32 @@ btnContinuar.addEventListener("click", () => {
 
     // 3. Guardar la respuesta
     const respuestaExistente = respuestas.find(
-        respuesta => respuesta.prueba === pruebaActual.id
+        respuesta => respuesta.id_prueba === pruebaActual.id_prueba
     );
     if (respuestaExistente) {
-        respuestaExistente.respuesta = respuestaSeleccionada;
+        respuestaExistente.id_opcion = respuestaSeleccionada.id_opcion;
+        respuestaExistente.respuesta = respuestaSeleccionada.nombre_resultado;
     }
     else {
         respuestas.push({
             paso: pasoActual,
-            prueba: pruebaActual.id,
-            respuesta: respuestaSeleccionada
+            id_prueba: pruebaActual.id_prueba,
+            id_opcion: respuestaSeleccionada.id_opcion,
+            respuesta: respuestaSeleccionada.nombre_resultado
         });
     }
 
     console.log("Respuestas:", respuestas);
 
     // 4. Obtener la siguiente prueba
-    const siguienteId = obtenerSiguientePrueba();
-
-    console.log("Siguiente prueba:", siguienteId);
-
+    const siguientePaso = obtenerSiguientePrueba();
     // 5. ¿Existe una siguiente prueba?
-    if (siguienteId) {
-
-        const siguientePrueba = pruebas.find(prueba => prueba.id === siguienteId);
-
-        if (siguientePrueba) {
-            // Cambiar al indice de la siguiente prueba y actualizar la pantalla
-            pasoActual = pruebas.indexOf(siguientePrueba);
-            actualizarPantalla();
-        } else {
-            console.error("No se encontró la prueba con id:", siguienteId);
-        }
-
+    if (siguientePaso !== null) {
+        pasoActual = siguientePaso;
+        actualizarPantalla();
     } else {
-
-        // IDENTIFICACIÓN FINALIZADA
-
-        console.log("Identificación finalizada.");
-
-        console.log("Respuestas del alumno:", respuestas);
-
         // Calcular coincidencias
-        const resultados = calcularCoincidencias();
+        const resultados = calcularCoincidencias(microorganismos);
 
         console.log("Resultados de identificación:", resultados);
 
@@ -748,4 +429,15 @@ document.getElementById("btnNuevaIdentificacion").addEventListener("click", () =
 // ===============================
 // INICIALIZACIÓN
 // ===============================
-actualizarPantalla();
+async function iniciarIdentificacion() {
+
+    await cargarPruebas();
+    await cargarMicroorganismos();
+
+    console.log("Pruebas disponibles:", pruebas);
+    console.log("Microorganismos disponibles:", microorganismos);
+
+    actualizarPantalla();
+}
+
+iniciarIdentificacion();
