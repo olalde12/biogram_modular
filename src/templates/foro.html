@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+
+{% block title %}Foro | BIOGRAM{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/foro.css') }}">
+{% endblock %}
+
+{% block contenido %}
+
+<div class="foro-pagina">
+
+    <!-- ENCABEZADO DEL FORO -->
+
+    <section class="foro-hero">
+
+        <div class="foro-hero-texto">
+
+            <span class="foro-etiqueta">
+                <i class="fa-solid fa-users"></i>
+                Comunidad BIOGRAM
+            </span>
+
+            <h1>Pregunta, comparte y aprende.</h1>
+
+            <p>
+                Un espacio para compartir conocimientos,
+                resolver dudas y aprender sobre el mundo microscópico.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- BARRA DE BÚSQUEDA -->
+
+    <section class="foro-herramientas">
+
+        <div class="foro-buscador">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                placeholder="Buscar una pregunta..."
+                aria-label="Buscar una pregunta"
+            >
+
+        </div>
+
+
+        <button class="foro-btn-nueva">
+
+            <i class="fa-solid fa-plus"></i>
+
+            Nueva pregunta
+
+        </button>
+
+    </section>
+
+
+    <!-- CATEGORÍAS -->
+
+    <section class="foro-categorias">
+
+        <h2>Categorías</h2>
+
+        <div class="foro-categorias-lista">
+
+            <button class="categoria-btn categoria-activa">
+                Todas
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-bacterium"></i>
+                Bacteriología
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-flask"></i>
+                Laboratorio
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-dna"></i>
+                Microbiología
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-vial"></i>
+                Pruebas bioquímicas
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-book-open"></i>
+                Estudio
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ENCABEZADO DE PUBLICACIONES -->
+
+    <section class="foro-publicaciones">
+
+        <div class="foro-publicaciones-header">
+
+            <div>
+
+                <h2>Preguntas recientes</h2>
+
+                <p>
+                    Descubre lo que está preguntando la comunidad.
+                </p>
+
+            </div>
+
+            <button class="foro-ordenar">
+                Más recientes
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+        </div>
+
+
+        <!-- PUBLICACIÓN 1 -->
+
+        <article class="foro-card">
+
+            <div class="foro-card-contenido">
+
+                <div class="foro-card-categoria">
+
+                    <i class="fa-solid fa-bacterium"></i>
+
+                    Bacteriología
+
+                </div>
+
+                <h3>
+                    ¿Cómo puedo diferenciar una bacteria
+                    Gram positiva de una Gram negativa?
+                </h3>
+
+                <p class="foro-card-descripcion">
+
+                    Estoy estudiando identificación bacteriana y
+                    todavía tengo algunas dudas sobre las diferencias
+                    entre ambos tipos de bacterias.
+
+                </p>
+
+                <div class="foro-card-etiquetas">
+
+                    <span>#tincióndeGram</span>
+                    <span>#bacterias</span>
+                    <span>#identificación</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="foro-card-footer">
+
+                <div class="foro-autor">
+
+                    <div class="foro-avatar">
+                        H
+                    </div>
+
+                    <div>
+
+                        <strong>Hannia</strong>
+
+                        <span>Hace 2 horas</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="foro-respuestas">
+
+                    <i class="fa-regular fa-comment"></i>
+
+                    <span>6 respuestas</span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PUBLICACIÓN 2 -->
+
+        <article class="foro-card">
+
+            <div class="foro-card-contenido">
+
+                <div class="foro-card-categoria categoria-laboratorio">
+
+                    <i class="fa-solid fa-flask"></i>
+
+                    Laboratorio
+
+                </div>
+
+                <h3>
+                    ¿Qué función tiene la prueba de catalasa?
+                </h3>
+
+                <p class="foro-card-descripcion">
+
+                    Estoy repasando las pruebas bioquímicas para
+                    identificación bacteriana y me gustaría entender
+                    qué información nos proporciona esta prueba.
+
+                </p>
+
+                <div class="foro-card-etiquetas">
+
+                    <span>#catalasa</span>
+                    <span>#bioquímica</span>
+                    <span>#laboratorio</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="foro-card-footer">
+
+                <div class="foro-autor">
+
+                    <div class="foro-avatar foro-avatar-morado">
+                        M
+                    </div>
+
+                    <div>
+
+                        <strong>María</strong>
+
+                        <span>Ayer</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="foro-respuestas">
+
+                    <i class="fa-regular fa-comment"></i>
+
+                    <span>8 respuestas</span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PUBLICACIÓN 3 -->
+
+        <article class="foro-card">
+
+            <div class="foro-card-contenido">
+
+                <div class="foro-card-categoria categoria-micro">
+
+                    <i class="fa-solid fa-dna"></i>
+
+                    Microbiología
+
+                </div>
+
+                <h3>
+                    ¿Cuál es la diferencia entre una bacteria
+                    y un microorganismo?
+                </h3>
+
+                <p class="foro-card-descripcion">
+
+                    Tengo un poco de confusión con estos conceptos.
+                    ¿Todas las bacterias son microorganismos?
+
+                </p>
+
+                <div class="foro-card-etiquetas">
+
+                    <span>#microbiología</span>
+                    <span>#conceptos</span>
+                    <span>#estudio</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="foro-card-footer">
+
+                <div class="foro-autor">
+
+                    <div class="foro-avatar foro-avatar-rosa">
+                        A
+                    </div>
+
+                    <div>
+
+                        <strong>Andrea</strong>
+
+                        <span>Hace 2 días</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="foro-respuestas">
+
+                    <i class="fa-regular fa-comment"></i>
+
+                    <span>4 respuestas</span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PUBLICACIÓN 4 -->
+
+        <article class="foro-card">
+
+            <div class="foro-card-contenido">
+
+                <div class="foro-card-categoria categoria-pruebas">
+
+                    <i class="fa-solid fa-vial"></i>
+
+                    Pruebas bioquímicas
+
+                </div>
+
+                <h3>
+                    ¿Para qué sirve la prueba de oxidasa?
+                </h3>
+
+                <p class="foro-card-descripcion">
+
+                    ¿En qué momento de una identificación bacteriana
+                    es recomendable utilizar esta prueba?
+
+                </p>
+
+                <div class="foro-card-etiquetas">
+
+                    <span>#oxidasa</span>
+                    <span>#pruebas</span>
+                    <span>#identificación</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="foro-card-footer">
+
+                <div class="foro-autor">
+
+                    <div class="foro-avatar foro-avatar-azul">
+                        J
+                    </div>
+
+                    <div>
+
+                        <strong>José</strong>
+
+                        <span>Hace 3 días</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="foro-respuestas">
+
+                    <i class="fa-regular fa-comment"></i>
+
+                    <span>3 respuestas</span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+    <!-- MENSAJE INFERIOR -->
+
+    <div class="foro-final">
+
+        <i class="fa-solid fa-microscope"></i>
+
+        <p>
+            Comparte tus conocimientos y ayuda a otros
+            miembros de la comunidad BIOGRAM.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

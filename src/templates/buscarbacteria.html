@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/buscarbacteria.css') }}">
+{% endblock %}
+
+{% block contenido %}
+
+<!-- Pantalla inicial -->
+<div id="pantallaCargaBacteria">
+    <h1>Buscar bacteria</h1>
+</div>
+
+<!-- Contenido principal -->
+<main id="contenidoBacterias">
+
+    <div class="bacterias-container">
+
+        <!-- Encabezado -->
+        <section class="bacterias-header">
+
+            <p>
+                Consulta las características y pruebas esperadas
+                de diferentes bacterias.
+            </p>
+
+        </section>
+
+
+        <!-- Buscador -->
+        <section class="buscador-bacterias">
+
+            <div class="buscador-contenedor">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text" id="buscadorBacteria" placeholder="Escribe el nombre de la bacteria..."
+                    autocomplete="off">
+
+            </div>
+
+        </section>
+
+
+        <!-- Resultados de búsqueda -->
+        <section id="resultadosBacterias" class="resultados-bacterias">
+        </section>
+
+
+        <!-- Ficha de la bacteria -->
+        <section id="fichaBacteria" class="ficha-bacteria">
+
+            <button id="cerrarFichaBacteria" class="cerrar-ficha-bacteria" type="button">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="ficha-encabezado">
+                <h2 id="fichaNombreBacteria"></h2>
+                <p id="fichaBacteriaDescripcion"></p>
+            </div>
+
+            <!-- Características generales -->
+            <div class="ficha-seccion">
+
+                <h3>Características generales</h3>
+
+                <div id="caracteristicasBacteria" class="datos-bacteria">
+                </div>
+
+            </div>
+
+
+            <!-- Pruebas bioquímicas -->
+            <div class="ficha-seccion">
+
+                <h3>Pruebas bioquímicas</h3>
+
+                <div id="pruebasBacteria" class="datos-bacteria">
+                </div>
+
+            </div>
+
+
+            <!-- Observaciones -->
+            <div class="ficha-seccion">
+
+                <h3>Observaciones</h3>
+
+                <ul id="observacionesBacteria">
+                </ul>
+
+            </div>
+            
+        </section>
+
+    </div>
+
+</main>
+
+
+{% block js %}
+
+<script src="{{ url_for('static', path='js/buscarbacteria.js') }}"></script>
+
+{% endblock %}
+
+{% endblock %}

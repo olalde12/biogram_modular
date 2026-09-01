@@ -7,6 +7,7 @@ from src.crud import usuario as usuario_crud
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi import Request, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from src.api.deps import get_db
 from starlette.middleware.sessions import SessionMiddleware
@@ -40,17 +41,85 @@ async def identificacion(request: Request):
             "app_mode": True
         }
     )
+@app.get("/buscarbacteria")
+async def buscarbacteria(request: Request):
+    return templates.TemplateResponse(
+        "buscarbacteria.html",
+        {
+            "request": request,
+            "app_mode": True
+        }
+    )
 @app.get("/login")
 def login(request: Request):
     return templates.TemplateResponse(
         "login.html",
         {"request": request}
     )
+@app.get("/perfil", response_class=HTMLResponse)
+async def perfil(request: Request, db: Session = Depends(get_db)):
+
+    id_usuario = request.session.get("id_usuario")
+
+    if not id_usuario:
+        return RedirectResponse(
+            url="/login",
+            status_code=303
+        )
+
+    usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
+
+    if not usuario:
+        return RedirectResponse(
+            url="/login",
+            status_code=303
+        )
+
+    return templates.TemplateResponse(
+        "perfil.html",
+        {
+            "request": request,
+            "usuario": usuario,
+            "app_mode": False,
+            "hide_navbar": True
+        }
+    )
+@app.get("/logout")
+async def logout(request: Request):
+
+    request.session.clear()
+
+    return RedirectResponse(
+        url="/",
+        status_code=303
+    )
+@app.get("/sobre-nosotros", response_class=HTMLResponse)
+async def sobre_nosotros(request: Request):
+
+    return templates.TemplateResponse(
+        "sobre_nosotros.html",
+        {
+            "request": request,
+            "hide_navbar": True,
+            "app_mode": False
+        }
+    )
+
 @app.get("/diccionario")
 async def diccionario(request: Request):
     return templates.TemplateResponse(
         "diccionario.html",
         {"request": request}
+    )
+
+@app.get("/foro", response_class=HTMLResponse)
+async def foro(request: Request):
+    
+    return templates.TemplateResponse(
+        "foro.html",
+        {
+            "request": request
+        }
     )
 
 app.add_middleware(

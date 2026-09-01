@@ -75,9 +75,12 @@ let pasoActual = 0;
 let respuestaSeleccionada = null; //aquí se irá guardando la respuesta elegida
 let respuestas = []; // de primeras es una lista vacia pero conforme el 
 // usuario elige opciones, aquí se guardarán todas las respuestas
+
 const btnContinuar = document.querySelector(".continue"); //obtiene el botón Continuar
 const btnAtras = document.getElementById("btnAtras"); //obtiene el botón Atrás
+
 const btnDiccionario = document.querySelector(".dictionary-btn"); //obtiene el botón Diccionario
+
 const diccionarioModal = document.getElementById("diccionarioModal"); //obtiene el modal del diccionario
 const cerrarDiccionario = document.getElementById("cerrarDiccionario"); //obtiene el botón de cerrar del modal del diccionario
 
@@ -407,10 +410,40 @@ btnAtras.addEventListener("click", () => {
 });
 
 btnDiccionario.addEventListener("click", () => {
+
+    // Obtener la prueba actual
     const prueba = pruebas[pasoActual];
-    const concepto = prueba.conceptoDiccionario;
-    console.log("Concepto solicitado:", concepto);
+
+    // Obtener el identificador del concepto
+    const idConcepto = prueba.conceptoDiccionario;
+
+    console.log("Concepto solicitado:", idConcepto);
+
+    // Buscar el concepto dentro del diccionario
+    const concepto = diccionario[idConcepto];
+
+    // Verificar que exista
+    if (!concepto) {
+
+        console.error(
+            "No se encontró el concepto en el diccionario:",
+            idConcepto
+        );
+        return;
+    }
+
+    // Mostrar información del concepto
+    diccionarioTitulo.textContent = concepto.titulo;
+
+    diccionarioDefinicion.textContent =
+        concepto.definicion || "Información próximamente disponible.";
+
+    diccionarioInterpretacion.textContent =
+        concepto.interpretacion || "Información próximamente disponible.";
+
+    // Abrir el modal
     diccionarioModal.classList.add("abierto");
+
 });
 
 cerrarDiccionario.addEventListener("click", () => {

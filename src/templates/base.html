@@ -29,7 +29,7 @@
 
 <body>
     <!-- ===== HEADER ===== -->
-
+    {% if not hide_navbar %}
     <header>
 
         <nav class="navbar">
@@ -77,6 +77,7 @@
         </nav>
 
     </header>
+    {% endif %}
 
     <!-- ===== ÁREA PRINCIPAL - Para colocar el Sidebar y del otro lado el contenido ===== -->
 

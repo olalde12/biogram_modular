@@ -276,8 +276,8 @@ body {
     height: 10rem;
     border-radius: 50%;*/
 
-    width: 160px;
-    height: 160px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     background: var(--primary-color);
     position: absolute;
@@ -286,7 +286,7 @@ body {
 }
 
 .banner-logo {
-    width: 180px;
+    width: 120px;
     position: absolute;
     z-index: 2;
     transition: all .8s ease;
@@ -303,8 +303,8 @@ body {
     clip-path: inset(50% 0 0 0);
     transition: clip-path 0.8s ease-in-out;*/
 
-    width: 260px;
-    height: 260px;
+    width: 230px;
+    height: 230px;
     position: absolute;
     border-radius: 50%;
     background: rgba(255, 255, 255, .18);

@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
 #pantallaCargaDiccionario {
     display: flex;
     position: fixed;
@@ -25,14 +34,21 @@
 }
 
 .diccionario-header {
-    margin-bottom: 15px;
+    text-align: center;
+    margin-top: 45px;
+    margin-bottom: 35px;
 }
 
 .diccionario-header p {
     color: #666;
-    font-size: 16px;
-    line-height: 1.5;
+    font-size: 17px;
+    line-height: 1.6;
 }
+
+.buscador-diccionario {
+    margin-bottom: 20px;
+}
+
 .diccionario-container {
     width: 100%;
     max-width: 900px;
@@ -40,19 +56,51 @@
     padding-top: 25px;
 }
 
+.buscador-contenedor i {
+
+    color: #888;
+
+    font-size: 18px;
+}
+
 .buscador-contenedor {
+
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
+    padding: 0 18px;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 15px;
+
+    transition: .25s;
 }
 
 .buscador-contenedor input {
     width: 100%;
-    padding: 15px 20px;
-    border-radius: 15px;
-    border: 1px solid #ddd;
+
+    padding: 15px 5px;
+
+    border: none;
+
+    outline: none;
+
     font-size: 16px;
 }
+
+.buscador-contenedor:focus-within {
+
+    border-color: #a288e3;
+
+    box-shadow: 0 0 0 3px rgba(69, 201, 200, .12);
+}
+
 
 .resultado-busqueda {
     display: block;
@@ -187,6 +235,7 @@
     transform: scale(1.01);
 
 }
+
 /*
 .resultados.busqueda.seleccionado {
     background: #a68ffa;

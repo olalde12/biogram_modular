@@ -251,7 +251,7 @@
     color: white;
     background: #a288e3;
     transform: translateY(-2px);
-    box-shadow: 0px 8px 20px rgba(162, 136, 227, 0.25);
+    /*box-shadow: 0px 8px 20px rgba(162, 136, 227, 0.25);*/
 }
 
 /* Resultados de la identificación */
@@ -378,6 +378,25 @@
     border-radius: 20px;
     padding: 35px;
     position: relative;
+}
+
+.diccionario-seccion {
+    margin-top: 25px;
+}
+
+.diccionario-seccion h3 {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    background: #f0eef3;
+    color: #3A4B6A;
+    font-size: 16px;
+}
+
+.diccionario-seccion p {
+    color: #666;
+    line-height: 1.6;
 }
 
 .cerrar-diccionario {

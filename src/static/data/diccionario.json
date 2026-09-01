@@ -26,7 +26,7 @@
         "interpretacion": "Los cocos presentan una forma aproximadamente esférica, mientras que los bacilos presentan una forma alargada. La morfología observada, junto con la reacción de Gram y otras características, ayuda a orientar la identificación del microorganismo."
     },
 
-    "glu": {
+    "glucosa": {
         "titulo": "Fermentación de glucosa",
         "busqueda": [
             "glucosa",
@@ -38,7 +38,7 @@
         "interpretacion": "Un resultado positivo indica que se detectó la utilización fermentativa de la glucosa bajo las condiciones de la prueba. Un resultado negativo indica que no se observó la reacción esperada. Este resultado se interpreta junto con otras pruebas bioquímicas para diferenciar microorganismos."
     },
 
-    "lac": {
+    "lactosa": {
         "titulo": "Fermentación de lactosa",
         "busqueda": [
             "lactosa",
@@ -50,7 +50,7 @@
         "interpretacion": "Un resultado positivo indica que se produjo la reacción asociada a la fermentación de lactosa. Un resultado negativo indica que no se observó dicha reacción. La fermentación de lactosa es una característica útil para diferenciar grupos de bacilos Gram negativos."
     },
 
-    "sac": {
+    "sacarosa": {
         "titulo": "Fermentación de sacarosa",
         "busqueda": [
             "sacarosa",
@@ -62,7 +62,7 @@
         "interpretacion": "Un resultado positivo indica que se observó la reacción correspondiente a la fermentación de sacarosa. Un resultado negativo indica que no se observó la reacción esperada. Esta característica puede utilizarse junto con otras pruebas para diferenciar microorganismos."
     },
 
-    "ure": {
+    "ureasa": {
         "titulo": "Prueba de ureasa",
         "busqueda": [
             "ureasa",
@@ -75,7 +75,7 @@
         "interpretacion": "Un resultado positivo indica que se produjo la reacción asociada a la actividad de la ureasa. Un resultado negativo indica que no se detectó dicha actividad bajo las condiciones de la prueba. La reacción de ureasa puede ser utilizada como característica diferencial durante la identificación bacteriana."
     },
 
-    "cit": {
+    "citrato": {
         "titulo": "Utilización de citrato",
         "busqueda": [
             "citrato",
@@ -88,7 +88,7 @@
         "interpretacion": "Un resultado positivo indica crecimiento acompañado de la reacción característica del medio cuando el microorganismo utiliza el citrato. Un resultado negativo indica ausencia de la reacción esperada. El resultado se utiliza junto con otras pruebas bioquímicas para diferenciar microorganismos."
     },
 
-    "mov": {
+    "movilidad": {
         "titulo": "Prueba de movilidad",
         "busqueda": [
             "movilidad",
@@ -102,7 +102,7 @@
         "interpretacion": "Un resultado positivo indica que se observó evidencia de movilidad bacteriana. Un resultado negativo indica que no se observó movilidad bajo las condiciones de la prueba. La movilidad constituye una característica útil para diferenciar microorganismos con características morfológicas similares."
     },
 
-    "ind": {
+    "indol": {
         "titulo": "Producción de indol",
         "busqueda": [
             "indol",

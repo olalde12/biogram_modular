@@ -1,0 +1,112 @@
+{
+    "e_coli": {
+        "nombre": "Escherichia coli",
+        "descripcion": "Bacteria Gram negativa con morfología de bacilo, utilizada aquí como microorganismo de referencia para probar el sistema de consulta.",
+
+        "caracteristicas": {
+            "gram": "Negativo",
+            "forma": "Bacilo",
+            "movilidad": "Positiva"
+        },
+
+        "pruebas": {
+            "glucosa": "+",
+            "lactosa": "+",
+            "sacarosa": "+",
+            "ureasa": "-",
+            "citrato": "-",
+            "indol": "+",
+            "oxidasa": "-"
+        },
+
+        "observaciones": [
+            "Fermentación de lactosa positiva.",
+            "Indol positivo.",
+            "Oxidasa negativa."
+        ]
+    },
+
+    "k_pneumoniae": {
+        "nombre": "Klebsiella pneumoniae",
+        "descripcion": "Bacteria Gram negativa con morfología de bacilo, utilizada aquí como microorganismo de referencia para probar el sistema de consulta.",
+
+        "caracteristicas": {
+            "gram": "Negativo",
+            "forma": "Bacilo",
+            "movilidad": "Negativa"
+        },
+
+        "pruebas": {
+            "glucosa": "+",
+            "lactosa": "+",
+            "sacarosa": "+",
+            "ureasa": "+",
+            "citrato": "+",
+            "indol": "-",
+            "oxidasa": "-"
+        },
+
+        "observaciones": [
+            "Fermentación de lactosa positiva.",
+            "Ureasa positiva.",
+            "Citrato positivo.",
+            "Oxidasa negativa."
+        ]
+    },
+
+    "e_aerogenes": {
+        "nombre": "Enterobacter aerogenes",
+        "descripcion": "Bacteria Gram negativa con morfología de bacilo, utilizada aquí como microorganismo de referencia para probar el sistema de consulta.",
+
+        "caracteristicas": {
+            "gram": "Negativo",
+            "forma": "Bacilo",
+            "movilidad": "Positiva"
+        },
+
+        "pruebas": {
+            "glucosa": "+",
+            "lactosa": "+",
+            "sacarosa": "+",
+            "ureasa": "-",
+            "citrato": "+",
+            "indol": "-",
+            "oxidasa": "-"
+        },
+
+        "observaciones": [
+            "Fermentación de lactosa positiva.",
+            "Citrato positivo.",
+            "Indol negativo.",
+            "Oxidasa negativa."
+        ]
+    },
+
+    "p_mirabilis": {
+        "nombre": "Proteus mirabilis",
+        "descripcion": "Bacteria Gram negativa con morfología de bacilo, utilizada aquí como microorganismo de referencia para probar el sistema de consulta.",
+
+        "caracteristicas": {
+            "gram": "Negativo",
+            "forma": "Bacilo",
+            "movilidad": "Positiva"
+        },
+
+        "pruebas": {
+            "glucosa": "+",
+            "lactosa": "-",
+            "sacarosa": "-",
+            "ureasa": "+",
+            "citrato": "+",
+            "indol": "-",
+            "oxidasa": "-"
+        },
+
+        "observaciones": [
+            "Fermentación de lactosa negativa.",
+            "Ureasa positiva.",
+            "Movilidad positiva.",
+            "Indol negativo."
+        ]
+    }
+}
