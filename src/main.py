@@ -16,6 +16,7 @@ from starlette.middleware.sessions import SessionMiddleware
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 templates = Jinja2Templates(directory="src/templates")
+
 @app.get("/")
 async def inicio(request: Request, db: Session = Depends(get_db)):
     usuario = None
@@ -23,7 +24,7 @@ async def inicio(request: Request, db: Session = Depends(get_db)):
     if id_usuario:
         usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
     return templates.TemplateResponse(
-        "index.html",
+        "index.html", 
         {
             "request": request,
             "usuario": usuario,
@@ -33,20 +34,30 @@ async def inicio(request: Request, db: Session = Depends(get_db)):
 
 # ruta para las demas paginas 
 @app.get("/identificacion")
-async def identificacion(request: Request):
+async def identificacion(request: Request, db: Session = Depends(get_db)):
+    usuario = None
+    id_usuario = request.session.get("id_usuario")
+    if id_usuario:
+        usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
     return templates.TemplateResponse(
         "identificacion.html",
         {
             "request": request,
+            "usuario": usuario,
             "app_mode": True
         }
     )
 @app.get("/buscarbacteria")
-async def buscarbacteria(request: Request):
+async def buscarbacteria(request: Request, db: Session = Depends(get_db)):
+    usuario = None
+    id_usuario = request.session.get("id_usuario")
+    if id_usuario:
+        usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
     return templates.TemplateResponse(
         "buscarbacteria.html",
         {
             "request": request,
+            "usuario": usuario,
             "app_mode": True
         }
     )
@@ -106,19 +117,33 @@ async def sobre_nosotros(request: Request):
     )
 
 @app.get("/diccionario")
-async def diccionario(request: Request):
+async def diccionario(request: Request, db: Session = Depends(get_db)):
+    usuario = None
+    id_usuario = request.session.get("id_usuario")
+    if id_usuario:
+        usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
     return templates.TemplateResponse(
         "diccionario.html",
-        {"request": request}
+        {
+            "request": request,
+            "usuario": usuario,
+            "app_mode": False
+        }
     )
 
 @app.get("/foro", response_class=HTMLResponse)
-async def foro(request: Request):
+async def foro(request: Request, db: Session = Depends(get_db)):
+    usuario = None
+    id_usuario = request.session.get("id_usuario")
+    if id_usuario:
+        usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
     
     return templates.TemplateResponse(
         "foro.html",
         {
-            "request": request
+            "request": request,
+            "usuario": usuario,
+            "app_mode": False
         }
     )
 

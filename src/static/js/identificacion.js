@@ -1,14 +1,3 @@
-// Animacion de carga
-window.onload = function () {
-    setTimeout(() => {
-        document.getElementById("pantallaCargaIdentificacion").style.opacity = "0";
-        setTimeout(() => {
-            document.getElementById("pantallaCargaIdentificacion").style.display = "none";
-            document.getElementById("contenidoIdentificacion").style.display = "block";
-        }, 800);
-    }, 2000);
-}
-
 // Navegación
 document.querySelectorAll(".btn-principal").forEach(boton => {
     boton.addEventListener("click", () => {
@@ -28,6 +17,7 @@ if (menuToggle && sidebar) {
     });
 }
 
+// Obtener pruebas y microorganismos desde la base de datos
 let pruebas = [];
 let microorganismos = []; 
 async function cargarMicroorganismos() {
@@ -38,7 +28,7 @@ async function cargarMicroorganismos() {
                 "Content-Type": "application/json",
             },
         });
-
+        
         if (!response.ok) {
             throw new Error("No se pudieron cargar las pruebas desde la API.");
         }
@@ -72,17 +62,15 @@ async function cargarPruebas() {
 
 // Definimos variables necesarias y obtenemos elementos del HTML
 let pasoActual = 0;
-let respuestaSeleccionada = null; //aquí se irá guardando la respuesta elegida
-let respuestas = []; // de primeras es una lista vacia pero conforme el 
-// usuario elige opciones, aquí se guardarán todas las respuestas
+let respuestaSeleccionada = null; // Aquí se irá guardando la respuesta elegida
+let respuestas = []; // Aquí se guardarán todas las respuestas
 
-const btnContinuar = document.querySelector(".continue"); //obtiene el botón Continuar
-const btnAtras = document.getElementById("btnAtras"); //obtiene el botón Atrás
-
-const btnDiccionario = document.querySelector(".dictionary-btn"); //obtiene el botón Diccionario
-
-const diccionarioModal = document.getElementById("diccionarioModal"); //obtiene el modal del diccionario
-const cerrarDiccionario = document.getElementById("cerrarDiccionario"); //obtiene el botón de cerrar del modal del diccionario
+// Obtiene los botones necesarios (junto con el modal de diccionario)
+const btnContinuar = document.querySelector(".continue"); 
+const btnAtras = document.getElementById("btnAtras"); 
+const btnDiccionario = document.querySelector(".dictionary-btn"); 
+const diccionarioModal = document.getElementById("diccionarioModal"); 
+const cerrarDiccionario = document.getElementById("cerrarDiccionario"); 
 
 // Función principal
 function actualizarPantalla() {
@@ -92,18 +80,14 @@ function actualizarPantalla() {
     reiniciarSeleccion();
 }
 
-// Función para obtener las pruebas
+// Función para crear cada pregunta con las pruebas
 function mostrarPrueba() {
     // Obtener la prueba actual
     const prueba = pruebas[pasoActual];
 
-    // Cambiar el título
+    // Cambiar informacion para cada prueba
     document.getElementById("tituloPrueba").textContent = prueba.nombre;
-
-    // Cambiar la pregunta
     document.getElementById("preguntaPrueba").textContent = prueba.nombre;
-
-    // Obtener el contenedor de opciones
     const contenedor = document.getElementById("contenedorOpciones");
 
     // Limpiar las opciones anteriores
@@ -116,28 +100,19 @@ function mostrarPrueba() {
 
     // Crear las opciones de la prueba actual
     prueba.opc_prueba.forEach(opcion => {
-
         const boton = document.createElement("button");
-
         boton.className = "option";
-
         boton.textContent = opcion.nombre_resultado;
-
         boton.dataset.idOpcion = opcion.id_opcion;
 
-        // Si ya había una respuesta guardada,
-        // volver a marcarla
-        if (
-            respuestaAnterior &&
-            respuestaAnterior.respuesta === opcion.nombre_resultado
-        ) {
+        // Si ya había una respuesta guardada, marcarla
+        if (respuestaAnterior && respuestaAnterior.respuesta === opcion.nombre_resultado) {
             boton.classList.add("selected");
         }
 
-        // Evento de selección
+        // Evento para marcar la seleccion
         boton.addEventListener("click", () => {
-
-            // Quitar selección anterior
+            // Quitar selección anterior 
             document.querySelectorAll(".option").forEach(btn => {
                 btn.classList.remove("selected");
             });
@@ -151,7 +126,7 @@ function mostrarPrueba() {
                 nombre_resultado: opcion.nombre_resultado
             };
 
-            // Activar Continuar
+            // Activar boton Continuar
             btnContinuar.disabled = false;
         });
 
@@ -159,8 +134,7 @@ function mostrarPrueba() {
         contenedor.appendChild(boton);
     });
 
-    // Si ya había una respuesta guardada,
-    // mantenerla como respuesta seleccionada
+    // Si ya había una respuesta guardada, mantenerla como respuesta seleccionada
     if (respuestaAnterior) {
         respuestaSeleccionada = respuestaAnterior.respuesta;
         btnContinuar.disabled = false;
@@ -170,6 +144,7 @@ function mostrarPrueba() {
     }
 }
 
+// Función para actualizar el progreso segun lo que lleve el usuario
 function actualizarProgreso() {
     document.getElementById("pasoActual").textContent = pasoActual + 1;
     document.getElementById("totalPasos").textContent = pruebas.length;
@@ -177,6 +152,7 @@ function actualizarProgreso() {
     document.getElementById("progressFill").style.width = porcentaje + "%";
 }
 
+// Función para actualizar los botones para la siguiente prueba
 function actualizarBotones() {
     if (pasoActual === 0) {
         btnAtras.disabled = true;
@@ -208,42 +184,46 @@ function obtenerSiguientePrueba() {
     return null;
 }
 
-// ===============================
-// MOTOR DE IDENTIFICACIÓN
-// ===============================
-
+// Función para comparar y obtener un microorganismo
 function calcularCoincidencias(microorganismos) {
     const resultados = [];
 
     microorganismos.forEach(microorganismo => {
-
         let coincidencias = 0;
         let pruebasComparadas = 0;
         const detalle = [];
 
         respuestas.forEach(respuesta => {
-            const resultadoEsperado = microorganismo.res_prueba_micro.find(
-                resultado =>
-                    resultado.id_prueba === respuesta.id_prueba
-            );
+            let coincidencia = false;
+            let resultadoEsperado = null;
+            let opcionEsperada = null;
+            if (respuesta.id_prueba === "gram") {
+                resultadoEsperado = microorganismo.gram;
+                coincidencia = (respuesta.respuesta === resultadoEsperado);
+                opcionEsperada = { nombre_resultado: resultadoEsperado };
+            } else {
+                const resultadoEsperado = microorganismo.res_prueba_micro.find(
+                    resultado =>
+                        resultado.id_prueba === respuesta.id_prueba
+                );
 
-            // Buscar la prueba
-            const prueba = pruebas.find(
-                prueba => prueba.id_prueba === respuesta.id_prueba
-            );
+                // Buscar la prueba
+                const prueba = pruebas.find(
+                    prueba => prueba.id_prueba === respuesta.id_prueba
+                );
 
-            // Buscar el nombre de la opción esperada
-            const opcionEsperada = prueba?.opc_prueba.find(
-                opcion =>
-                    opcion.id_opcion_prueba === resultadoEsperado?.id_opcion
-            );
+                // Buscar el nombre de la opción esperada
+                opcionEsperada = prueba?.opc_prueba.find(
+                    opcion =>
+                        opcion.id_opcion_prueba === resultadoEsperado?.id_opcion
+                );
 
-            const coincidencia =
-                    resultadoEsperado &&
-                    resultadoEsperado.id_opcion === respuesta.id_opcion
+                coincidencia =
+                        resultadoEsperado &&
+                        resultadoEsperado.id_opcion === respuesta.id_opcion
+            }
 
             pruebasComparadas++;
-            
             if (coincidencia) {
                 coincidencias++;
             }
@@ -251,9 +231,7 @@ function calcularCoincidencias(microorganismos) {
             detalle.push({
                 prueba: respuesta.id_prueba,
                 resultadoAlumno: respuesta.respuesta,
-                resultadoEsperado: opcionEsperada
-                    ? opcionEsperada.nombre_resultado
-                    : "Sin resultado",
+                resultadoEsperado: resultadoEsperado || "Sin resultado",
                 coincide: !!coincidencia
             });
         });
@@ -280,6 +258,7 @@ function calcularCoincidencias(microorganismos) {
     return resultados;
 }
 
+// Función para mostrar los resultados obtenidos
 function mostrarResultados(resultados) {
     // Obtiene el mejor resultado
     const mejorResultado = resultados[0];
@@ -288,26 +267,18 @@ function mostrarResultados(resultados) {
     const nombreBacteria = document.getElementById("nombreBacteria");
     const porcentajeCoincidencia = document.getElementById("porcentajeCoincidencia");
 
-    // Mostrar el nombre del microorganismo
+    // Mostrar la información del microorganismo
     nombreBacteria.textContent = mejorResultado.nombre;
-
-    // Mostrar el porcentaje de coincidencia
     porcentajeCoincidencia.textContent = mejorResultado.porcentaje.toFixed(0) + "%";
-
-    // Detalle de coincidencias
     const contenedorDetalle = document.getElementById("tablaCoincidencias");
-
     contenedorDetalle.innerHTML = "";
 
     mejorResultado.detalle.forEach(detalle => {
-
         const fila = document.createElement("div");
-
         fila.className =
             detalle.coincide
                 ? "coincidencia correcta"
                 : "coincidencia incorrecta";
-
 
         const prueba = pruebas.find(
             prueba => prueba.id_prueba === detalle.prueba
@@ -315,7 +286,6 @@ function mostrarResultados(resultados) {
 
         const nombrePrueba =
             prueba ? prueba.nombre : detalle.prueba;
-
 
         fila.innerHTML = `
             <div class="detalle-prueba">
@@ -338,32 +308,24 @@ function mostrarResultados(resultados) {
         `;
 
         contenedorDetalle.appendChild(fila);
-
     });
+
     // Ocultar la tarjeta de identificación y mostrar la de resultados
     document.querySelector(".card").style.display = "none";
     document.getElementById("resultadoIdentificacion").style.display = "block";
 }
 
-function abrirDiccionario() {
-
-}
-
-
-// ===============================
-// EVENTOS
-// ===============================
+// Eventos para el boton continuar
 btnContinuar.addEventListener("click", () => {
-
-    // 1. Verificar que haya respuesta
+    // Verificar que haya respuesta
     if (respuestaSeleccionada === null) {
         return;
     }
 
-    // 2. Obtener la prueba actual
+    // Obtener la prueba actual
     const pruebaActual = pruebas[pasoActual];
 
-    // 3. Guardar la respuesta
+    // Guardar la respuesta
     const respuestaExistente = respuestas.find(
         respuesta => respuesta.id_prueba === pruebaActual.id_prueba
     );
@@ -380,11 +342,9 @@ btnContinuar.addEventListener("click", () => {
         });
     }
 
-    console.log("Respuestas:", respuestas);
-
-    // 4. Obtener la siguiente prueba
+    // Obtener la siguiente prueba
     const siguientePaso = obtenerSiguientePrueba();
-    // 5. ¿Existe una siguiente prueba?
+    // ¿Existe una siguiente prueba?
     if (siguientePaso !== null) {
         pasoActual = siguientePaso;
         actualizarPantalla();
@@ -392,16 +352,14 @@ btnContinuar.addEventListener("click", () => {
         // Calcular coincidencias
         const resultados = calcularCoincidencias(microorganismos);
 
-        console.log("Resultados de identificación:", resultados);
-
         // Mostrar el microorganismo con mayor coincidencia
         if (resultados.length > 0) {
             mostrarResultados(resultados);
         }
     }
-
 });
 
+// Retroceder a una prueba anterior
 btnAtras.addEventListener("click", () => {
     if (pasoActual > 0) {
         pasoActual--;
@@ -409,22 +367,19 @@ btnAtras.addEventListener("click", () => {
     }
 });
 
+// Mostrar concepto de la prueba
 btnDiccionario.addEventListener("click", () => {
-
     // Obtener la prueba actual
     const prueba = pruebas[pasoActual];
 
     // Obtener el identificador del concepto
     const idConcepto = prueba.conceptoDiccionario;
 
-    console.log("Concepto solicitado:", idConcepto);
-
     // Buscar el concepto dentro del diccionario
     const concepto = diccionario[idConcepto];
 
     // Verificar que exista
     if (!concepto) {
-
         console.error(
             "No se encontró el concepto en el diccionario:",
             idConcepto
@@ -434,16 +389,13 @@ btnDiccionario.addEventListener("click", () => {
 
     // Mostrar información del concepto
     diccionarioTitulo.textContent = concepto.titulo;
-
     diccionarioDefinicion.textContent =
         concepto.definicion || "Información próximamente disponible.";
-
     diccionarioInterpretacion.textContent =
         concepto.interpretacion || "Información próximamente disponible.";
 
     // Abrir el modal
     diccionarioModal.classList.add("abierto");
-
 });
 
 cerrarDiccionario.addEventListener("click", () => {
@@ -459,18 +411,33 @@ document.getElementById("btnNuevaIdentificacion").addEventListener("click", () =
     actualizarPantalla();
 });
 
-// ===============================
-// INICIALIZACIÓN
-// ===============================
+// Iniciar la identificacion
 async function iniciarIdentificacion() {
-
+    // Llamar a funciones para obtener data
     await cargarPruebas();
     await cargarMicroorganismos();
 
-    console.log("Pruebas disponibles:", pruebas);
-    console.log("Microorganismos disponibles:", microorganismos);
+    // Crear prueba Gram (porque esta en otro campo)
+    const pruebaGram = {
+        id_prueba: "gram",
+        nombre: "Tinción de Gram",
+        opc_prueba: [
+            { id_opcion_prueba: "gram_pos", nombre_resultado: "Positivo" },
+            { id_opcion_prueba: "gram_neg", nombre_resultado: "Negativo" }
+        ],
+        conceptoDiccionario: "gram"
+    };
 
+    // Insertar al inicio del cuestionario
+    pruebas.unshift(pruebaGram);
     actualizarPantalla();
+
+    // Animación de carga (hasta que se obtenga la data)
+    document.getElementById("pantallaCargaIdentificacion").style.opacity = "0";
+        setTimeout(() => {
+            document.getElementById("pantallaCargaIdentificacion").style.display = "none";
+            document.getElementById("contenidoIdentificacion").style.display = "block";
+    }, 800);
 }
 
 iniciarIdentificacion();
