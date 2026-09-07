@@ -372,27 +372,12 @@ btnDiccionario.addEventListener("click", () => {
     // Obtener la prueba actual
     const prueba = pruebas[pasoActual];
 
-    // Obtener el identificador del concepto
-    const idConcepto = prueba.conceptoDiccionario;
-
-    // Buscar el concepto dentro del diccionario
-    const concepto = diccionario[idConcepto];
-
-    // Verificar que exista
-    if (!concepto) {
-        console.error(
-            "No se encontró el concepto en el diccionario:",
-            idConcepto
-        );
-        return;
-    }
-
     // Mostrar información del concepto
-    diccionarioTitulo.textContent = concepto.titulo;
+    diccionarioTitulo.textContent = prueba.nombre;
     diccionarioDefinicion.textContent =
-        concepto.definicion || "Información próximamente disponible.";
+        prueba.descripcion || "Información próximamente disponible.";
     diccionarioInterpretacion.textContent =
-        concepto.interpretacion || "Información próximamente disponible.";
+        prueba.fundamento || "Información próximamente disponible.";
 
     // Abrir el modal
     diccionarioModal.classList.add("abierto");
@@ -425,7 +410,9 @@ async function iniciarIdentificacion() {
             { id_opcion_prueba: "gram_pos", nombre_resultado: "Positivo" },
             { id_opcion_prueba: "gram_neg", nombre_resultado: "Negativo" }
         ],
-        conceptoDiccionario: "gram"
+        conceptoDiccionario: "gram",
+        descripcion: "La tinción de Gram es una técnica de coloración utilizada para observar y diferenciar bacterias de acuerdo con las características de su pared celular. Es una de las primeras herramientas utilizadas en la identificación microbiológica.",
+        fundamento: "Las bacterias se clasifican principalmente como Gram positivas o Gram negativas según su reacción a la tinción. En el proceso de identificación bacteriana, esta característica permite orientar la selección de las pruebas posteriores."
     };
 
     // Insertar al inicio del cuestionario
