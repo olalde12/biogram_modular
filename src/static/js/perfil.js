@@ -2,7 +2,6 @@ const btnAvatar = document.getElementById("btnAvatar");
 const modalAvatar = document.getElementById("modalAvatar");
 const cerrarAvatar = document.getElementById("cerrarAvatar");
 const avatarActual = document.getElementById("avatarActual");
-const opcionesAvatar = document.querySelectorAll(".avatar-opcion");
 
 
 // ABRIR SELECTOR
@@ -30,26 +29,71 @@ modalAvatar.addEventListener("click", (event) => {
 
 });
 
-// SELECCIONAR AVATAR
-opcionesAvatar.forEach((opcion) => {
+const projectUrl = "https://zwusokregrpbywttromy.supabase.co/storage/v1/object/public/Base%20de%20datos";
 
-    opcion.addEventListener("click", () => {
+document.querySelectorAll(".avatar-opcion").forEach(btn => {
 
-        const avatar = opcion.dataset.avatar;
+    btn.addEventListener("click", async () => {
 
-        avatarActual.src =
-            `/static/img/avatars/${avatar}`;
+        const fileName = btn.dataset.avatar;
 
-        opcionesAvatar.forEach((otraOpcion) => {
+        // Si los archivos están directamente dentro del bucket:
+        const avatarUrl = `${projectUrl}/${fileName}`;
 
-            otraOpcion.classList.remove("seleccionado");
+        console.log("Avatar seleccionado:", fileName);
+        console.log("URL que se enviará:", avatarUrl);
 
-        });
+        try {
 
-        opcion.classList.add("seleccionado");
+            const response = await fetch("/usuarios/update-avatar", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    avatar: avatarUrl
+                })
+            });
 
-        modalAvatar.classList.remove("activo");
+            console.log("Código de respuesta:", response.status);
+
+            const resultado = await response.json();
+
+            console.log("Respuesta del servidor:", resultado);
+
+            if (!response.ok) {
+                alert(
+                    "Error: " +
+                    (resultado.detail || "No se pudo actualizar el avatar")
+                );
+                return;
+            }
+
+            console.log("Avatar actualizado correctamente");
+
+
+if (response.ok) {
+    // Usa la URL que devuelve el backend si existe
+    const nuevaUrl = resultado.avatar || avatarUrl;
+
+    // Forzar recarga para evitar caché
+    avatarActual.src = `${nuevaUrl}?t=${Date.now()}`;
+
+    modalAvatar.classList.remove("activo");
+    alert("Avatar actualizado correctamente");
+}
+
+
+
+        } catch (error) {
+
+            console.error("Error en fetch:", error);
+
+            alert("Ocurrió un error al conectar con el servidor");
+
+        }
 
     });
 
 });
+

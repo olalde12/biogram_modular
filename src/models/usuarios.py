@@ -11,6 +11,7 @@ class Usuarios(Base):
     apellido = Column(String)
     correo = Column(String, unique=True, index=True)
     contraseña = Column(String)
+    avatar = Column(String)
     fecha_registro = Column(Date, server_default=func.current_date())
     estado = Column(Boolean, default=True)
 

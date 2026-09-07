@@ -3,7 +3,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import List
 from src.api.deps import get_db
-from src.models import Publicaciones
+from src.models import Publicaciones, Usuarios
 from src.crud import usuario as usuario_crud
 from src.crud import publicacion as publicacion_crud
 from src.schemas import publicacion as publicacion_schema
@@ -13,8 +13,20 @@ router = APIRouter()
 # Ruta para obtener todas las publicaciones
 @router.get('/', response_model=List[publicacion_schema.Publicacion])
 def read_publicaciones(db: Session = Depends(get_db)):
-    db_publicaciones = (db.query(Publicaciones).all())
-    return db_publicaciones
+    db_publicaciones = (db.query(Publicaciones, Usuarios.nombre, Usuarios.avatar).join(Usuarios, Publicaciones.id_usuario == Usuarios.id_usuario).all())
+    resultado = []
+    for publicacion, nombre, avatar in db_publicaciones:
+        resultado.append({
+            "id_publicacion": publicacion.id_publicacion,
+            "titulo": publicacion.titulo,
+            "contenido": publicacion.contenido,
+            "categoria": publicacion.categoria,
+            "fecha_creacion": publicacion.fecha_creacion,
+            "id_usuario": publicacion.id_usuario,
+            "autor": nombre,
+            "avatar": avatar
+        })
+    return resultado
 
 # Ruta para obtener todas las publicaciones de un usuario
 @router.get('/usuario/{id_usuario}', response_model=List[publicacion_schema.Publicacion])

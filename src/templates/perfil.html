@@ -18,7 +18,7 @@
 
         <button class="avatar" id="btnAvatar" type="button">
 
-            <img id="avatarActual" src="{{ url_for('static', path='img/avatars/avatar1.png') }}" alt="Avatar">
+            <img id="avatarActual" src="{{ usuario.avatar }}" alt="Avatar">
 
             <span class="avatar-editar">
                 <i class="fa-solid fa-pencil"></i>
@@ -157,7 +157,7 @@
         </a>
 
 
-        <a href="/logout" class="opcion-perfil cerrar-sesion">
+        <a href="/usuarios/logout" class="opcion-perfil cerrar-sesion">
             <i class="fa-solid fa-right-from-bracket"></i>
             <span>
                 <strong>Cerrar sesión</strong>

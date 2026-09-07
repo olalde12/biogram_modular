@@ -624,26 +624,34 @@
 
 
 .foro-avatar {
-
+    
     width: 38px;
 
     height: 38px;
 
-    display: flex;
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    display: inline-flex;
 
     align-items: center;
 
     justify-content: center;
 
-    border-radius: 50%;
-
     background-color: #b7e9f8;
 
-    color: #287c9d;
+}
 
-    font-size: 14px;
+.foro-avatar img {
 
-    font-weight: 600;
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
 
 }
 

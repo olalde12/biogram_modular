@@ -6,6 +6,9 @@ from typing import Optional
 class PublicacionBase(BaseModel):
     titulo: str
     contenido: str
+    categoria: str
+    autor: str
+    avatar: Optional[str] = None
 
 # Se agrega el identificador y la fecha a los campos
 class Publicacion(PublicacionBase):
