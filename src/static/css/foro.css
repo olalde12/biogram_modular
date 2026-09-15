@@ -822,6 +822,637 @@
 
 }
 
+/* ==========================================================
+   MODALES DEL FORO
+   ========================================================== */
+
+
+/* Fondo oscuro del modal */
+
+.modal-foro {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background-color: rgba(20, 25, 30, 0.45);
+
+    backdrop-filter: blur(4px);
+
+    z-index: 9999;
+
+}
+
+
+/* Modal visible */
+
+.modal-foro.activo {
+
+    display: flex;
+
+}
+
+
+/* ==========================================================
+   CONTENIDO DEL MODAL
+   ========================================================== */
+
+.modal-foro-contenido {
+
+    width: min(600px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    background-color: white;
+
+    border-radius: 22px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+    animation: aparecerModal 0.25s ease;
+
+}
+
+
+/* Animación */
+
+@keyframes aparecerModal {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(15px) scale(0.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+
+/* ==========================================================
+   ENCABEZADO
+   ========================================================== */
+
+.modal-foro-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 28px;
+
+}
+
+
+.modal-foro-etiqueta {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #39afe3;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+.modal-foro-header h2 {
+
+    margin: 7px 0 4px;
+
+    color: #202020;
+
+    font-size: 25px;
+
+    font-weight: 600;
+
+}
+
+
+.modal-foro-header p {
+
+    margin: 0;
+
+    color: #888;
+
+    font-size: 12px;
+
+}
+
+
+/* Botón cerrar */
+
+.modal-foro-cerrar {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background-color: #f5f5f5;
+
+    color: #666;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+
+.modal-foro-cerrar:hover {
+
+    background-color: #eaf8fd;
+
+    color: #39afe3;
+
+}
+
+
+/* ==========================================================
+   CAMPOS
+   ========================================================== */
+
+.campo-foro {
+
+    position: relative;
+
+    margin-bottom: 21px;
+
+}
+
+
+.campo-foro label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #333;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.campo-foro input,
+.campo-foro textarea,
+.campo-foro select {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #dedede;
+
+    border-radius: 12px;
+
+    background-color: #ffffff;
+
+    color: #333;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+
+}
+
+
+.campo-foro input,
+.campo-foro select {
+
+    height: 50px;
+
+    padding: 0 15px;
+
+}
+
+
+.campo-foro textarea {
+
+    min-height: 150px;
+
+    padding: 14px 15px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+
+}
+
+
+/* Focus */
+
+.campo-foro input:focus,
+.campo-foro textarea:focus,
+.campo-foro select:focus {
+
+    border-color: #39afe3;
+
+    box-shadow: 0 0 0 3px rgba(57, 175, 227, 0.10);
+
+}
+
+
+/* Placeholder */
+
+.campo-foro input::placeholder,
+.campo-foro textarea::placeholder {
+
+    color: #aaa;
+
+}
+
+
+/* Texto de ayuda */
+
+.campo-ayuda {
+
+    display: block;
+
+    margin-top: 6px;
+
+    color: #999;
+
+    font-size: 10px;
+
+}
+
+
+/* ==========================================================
+   SELECT
+   ========================================================== */
+
+.select-foro {
+
+    position: relative;
+
+}
+
+
+.select-foro::after {
+
+    content: '\f078';
+
+    position: absolute;
+
+    right: 16px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #888;
+
+    font-family: 'Font Awesome 6 Free';
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    pointer-events: none;
+
+}
+
+
+.select-foro select {
+
+    appearance: none;
+
+    cursor: pointer;
+
+}
+
+
+/* ==========================================================
+   CONTADOR DE CARACTERES
+   ========================================================== */
+
+.contador-caracteres {
+
+    position: absolute;
+
+    right: 12px;
+
+    bottom: 10px;
+
+    color: #999;
+
+    font-size: 10px;
+
+}
+
+
+/* ==========================================================
+   BOTONES DEL MODAL
+   ========================================================== */
+
+.modal-foro-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 28px;
+
+}
+
+
+.btn-modal-cancelar,
+.btn-modal-publicar,
+.btn-eliminar-confirmar {
+
+    height: 45px;
+
+    padding: 0 20px;
+
+    border-radius: 11px;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+
+.btn-modal-cancelar {
+
+    border: 1px solid #dedede;
+
+    background-color: white;
+
+    color: #666;
+
+}
+
+
+.btn-modal-cancelar:hover {
+
+    background-color: #f6f6f6;
+
+}
+
+
+.btn-modal-publicar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    border: none;
+
+    background-color: #3aaee2;
+
+    color: white;
+
+}
+
+
+.btn-modal-publicar:hover {
+
+    background-color: #299dce;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* ==========================================================
+   MODAL DE CONFIRMACIÓN
+   ========================================================== */
+
+.modal-confirmacion-contenido {
+
+    width: min(420px, 100%);
+
+    padding: 32px;
+
+    background-color: white;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+    animation: aparecerModal 0.25s ease;
+
+}
+
+
+.icono-confirmacion {
+
+    width: 55px;
+
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    background-color: #ffe8ef;
+
+    color: #d96d8e;
+
+    font-size: 20px;
+
+}
+
+
+.modal-confirmacion-contenido h2 {
+
+    margin: 0 0 9px;
+
+    color: #222;
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+}
+
+
+.modal-confirmacion-contenido p {
+
+    margin: 0 auto;
+
+    max-width: 330px;
+
+    color: #888;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+}
+
+
+.confirmacion-botones {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 25px;
+
+}
+
+
+.btn-eliminar-confirmar {
+
+    border: none;
+
+    background-color: #d96d8e;
+
+    color: white;
+
+}
+
+
+.btn-eliminar-confirmar:hover {
+
+    background-color: #c85d7d;
+
+}
+
+
+/* ==========================================================
+   TARJETAS CLICKEABLES
+   ========================================================== */
+
+.foro-card {
+
+    cursor: pointer;
+
+}
+
+
+.foro-card:focus {
+
+    outline: none;
+
+    border-color: #39afe3;
+
+    box-shadow: 0 0 0 3px rgba(57, 175, 227, 0.10);
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE DEL MODAL
+   ========================================================== */
+
+@media (max-width: 550px) {
+
+    .modal-foro {
+
+        padding: 12px;
+
+    }
+
+
+    .modal-foro-contenido {
+
+        padding: 22px;
+
+        border-radius: 18px;
+
+    }
+
+
+    .modal-foro-header h2 {
+
+        font-size: 21px;
+
+    }
+
+
+    .modal-foro-footer {
+
+        flex-direction: column-reverse;
+
+        align-items: stretch;
+
+    }
+
+
+    .btn-modal-cancelar,
+    .btn-modal-publicar {
+
+        width: 100%;
+
+        justify-content: center;
+
+    }
+
+}
 
 /* ==========================================================
    RESPONSIVE

@@ -1,14 +1,3 @@
-// Animación de carga
-window.onload = function () {
-    setTimeout(() => {
-        document.getElementById("pantallaCargaDiccionario").style.opacity = "0";
-        setTimeout(() => {
-            document.getElementById("pantallaCargaDiccionario").style.display = "none";
-            document.getElementById("contenidoDiccionario").style.display = "block";
-        }, 800);
-    }, 2000);
-}
-
 // Se hace un GET para traer información de la base de datos
 let diccionario = []; 
 async function cargarDiccionario(texto) {
