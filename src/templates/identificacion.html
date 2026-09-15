@@ -4,15 +4,14 @@
 <link rel="stylesheet" href="{{ url_for('static', path='css/identificacion.css') }}">
 {% endblock %}
 
-
 {% block contenido %}
 
 <!--Pantalla inicial-->
-<div id="pantallaCarga">
+<div id="pantallaCargaIdentificacion">
     <h1>Identificación bacteriana</h1>
 </div>
 <!--Todo el contenido de la pagina-->
-<main id="contenido">
+<main id="contenidoIdentificacion">
     <div class="identificacion-container">
         <!--Barra de progreso-->
         <section class="progress-container">
@@ -21,10 +20,9 @@
             </h3>
 
             <p class="progress-text">
-                Paso
-                <span id="pasoActual">1</span>
+                <span id="pasoActual"></span>
                 de
-                <span id="totalPasos">2</span>
+                <span id="totalPasos"></span>
             </p>
 
             <div class="progress-bar">
@@ -38,7 +36,7 @@
         <section class="card">
             <!-- Encabezado -->
             <div class="card-header">
-                <h2 id="tituloPrueba">Tinción de Gram</h2>
+                <h2 id="tituloPrueba"></h2>
 
                 <button class="dictionary-btn">
                     <i class="fa-solid fa-book-open"></i>
@@ -52,18 +50,14 @@
 
             <!-- Opciones -->
             <div class="options" id="contenedorOpciones">
-                <button class="option" data-value="positivo">
-                    Gram positivo
-                </button>
-                <button class="option" data-value="negativo">
-                    Gram negativo
-                </button>
+                <button class="option" data-value="positivo"></button>
+                <button class="option" data-value="negativo"></button>
             </div>
 
             <!-- Navegación -->
             <div class="card-footer">
 
-                <button class="back">
+                <button class="back" id="btnAtras">
                     <i class="fa-solid fa-caret-left"></i>
                     Atrás
                 </button>
@@ -74,7 +68,64 @@
                 </button>
             </div>
         </section>
+
+        <!-- Resultados -->
+        <section id="resultadoIdentificacion" class="resultado-identificacion">
+
+            <h2>Identificación completada</h2>
+
+            <div class="resultado-card">
+
+                <p class="resultado-label">
+                    Microorganismo con mayor coincidencias:
+                </p>
+                <h1 id="nombreBacteria"></h1>
+                <p>
+                    Coincidencia:
+                    <strong id="porcentajeCoincidencia"></strong>
+                </p>
+            </div>
+            <div class="detalle-resultado">
+
+                <h3>¿Por qué se obtuvo este resultado?</h3>
+                <p>Este microorganismo se obtuvo al comparar los resultados que proporcionaste,
+                    con las características conocidas de los microorganismos registrados
+                    en el sistema.<br> La identificación debe interpresarse como una
+                    aproximación y no como un resultado que pueda ser considerado definitivo. 
+                    Se recomienda realizar pruebas adicionales para confirmar la identificación del 
+                    microorganismo de ser necesario.
+                </p>
+                <div id="tablaCoincidencias"></div>
+            </div>
+            <div class="otros-resultados-containes">
+                <h3>Otras posibilidades</h3>
+                <div id="otrosResultados"></div>
+            </div>
+            <button id="btnNuevaIdentificacion">
+                Nueva Identificación
+            </button>
+        </section>
     </div>
+    <div id="diccionarioModal" class="diccionario-modal">
+        <div class="diccionario-contenido">
+            <button id="cerrarDiccionario" class="cerrar-diccionario">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h2 id="diccionarioTitulo"></h2>
+
+            <div class="diccionario-seccion">
+                <h3>Definición</h3>
+                <p id="diccionarioDefinicion"></p>
+            </div>
+
+            <div class="diccionario-seccion">
+                <h3>Interpretación</h3>
+                <p id="diccionarioInterpretacion"></p>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 {% block js %}

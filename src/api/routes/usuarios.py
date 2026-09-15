@@ -60,6 +60,18 @@ def update_usuario(id_usuario: int, usuario: usuarios_schema.UsuarioUpdate, db: 
         raise HTTPException(status_code=400, detail="El apellido solo debe contener letras")
     return usuario_crud.update_usuario(db=db, id_usuario=id_usuario, usuario=usuario)
 
+# Ruta para modificar el avatar de un usuario
+@router.put('/update-avatar', response_model=usuarios_schema.Usuario)
+def update_avatar(data: usuarios_schema.AvatarUpdate, request: Request, db: Session = Depends(get_db)):
+    id_usuario = request.session.get("id_usuario")
+    if not id_usuario:
+        raise HTTPException(status_code=401, detail="No autenticado")
+    usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
+    usuario.avatar = data.avatar
+    db.commit()
+    db.refresh(usuario)
+    return usuario
+
 # Ruta para eliminar un usuario
 @router.delete('/delete/{id_usuario}', response_model=usuarios_schema.Usuario)
 def delete_usuario(id_usuario: int, db: Session = Depends(get_db)):

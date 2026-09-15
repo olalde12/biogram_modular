@@ -37,6 +37,10 @@ class UsuarioUpdate(UsuarioBase):
         d["correo"] = d["correo"].lower()
         return d
 
+# Para modificar el avatar de un usuario
+class AvatarUpdate(BaseModel):
+    avatar: str
+
 # Se define la estructura minima para el inicio de sesion
 class login(BaseModel):
     correo: EmailStr

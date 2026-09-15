@@ -1,3 +1,4 @@
+from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 from src.models.pruebas_bioquimicas import Pruebas_bioquimicas
 from src.models.opcion_prueba import Opcion_prueba
@@ -70,3 +71,13 @@ def delete_prueba(db: Session, id_prueba: int):
     db.query(Opcion_prueba).filter(Opcion_prueba.id_prueba == id_prueba).delete()
     db.commit()
     return db_prueba
+
+# Funcion para la ruta del buscador
+def buscar_pruebas(resp_usuario: str, db: Session):
+    return db.query(Pruebas_bioquimicas).filter(
+        or_(
+            func.unaccent(Pruebas_bioquimicas.nombre).ilike(func.unaccent(f"%{resp_usuario}%")),
+            func.unaccent(Pruebas_bioquimicas.fundamento).ilike(func.unaccent(f"%{resp_usuario}%")),
+            func.unaccent(Pruebas_bioquimicas.descripcion).ilike(func.unaccent(f"%{resp_usuario}%"))
+        )
+    ).all()

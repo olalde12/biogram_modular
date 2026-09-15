@@ -9,6 +9,7 @@ class Publicaciones(Base):
     id_publicacion = Column(Integer, primary_key=True, index=True)
     titulo = Column(String, index=True)
     contenido = Column(String)
+    categoria = Column(String)
     fecha_creacion = Column(Date, server_default=func.current_date())
     id_usuario = Column(Integer, ForeignKey("usuarios.id_usuario"))
 

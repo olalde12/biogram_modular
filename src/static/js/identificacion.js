@@ -1,19 +1,4 @@
-// ===============================
-// ANIMACIONES
-// ===============================
-window.onload = function () {
-    setTimeout(() => {
-        document.getElementById("pantallaCarga").style.opacity = "0";
-        setTimeout(() => {
-            document.getElementById("pantallaCarga").style.display = "none";
-            document.getElementById("contenido").style.display = "block";
-        }, 800);
-    }, 2000);
-}
-
-// ===============================
-// NAVEGACIÓN
-// ===============================
+// Navegación
 document.querySelectorAll(".btn-principal").forEach(boton => {
     boton.addEventListener("click", () => {
         if (boton.dataset.url) {
@@ -22,9 +7,7 @@ document.querySelectorAll(".btn-principal").forEach(boton => {
     });
 });
 
-// ===============================
-// SIDEBAR
-// ===============================
+// Sidebar
 const menuToggle = document.getElementById("menuToggle");
 const sidebar = document.getElementById("sidebar");
 
@@ -34,75 +17,62 @@ if (menuToggle && sidebar) {
     });
 }
 
-// ===============================
-// PRUEBAS DEL MOTOR DE IDENTIFICACIÓN
-// ===============================
-const pruebas = [
-
-    {
-        id: "gram",
-        nombrePaso: "Gram", //nombre del paso que se mostrará en la barra de progreso
-        titulo: "Tinción de Gram", //titulo que se mostrará en la parte superior de la tarjeta
-        pregunta: "Selecciona el resultado obtenido.", //es la instrucción que se mostrará en la parte inferior del título
-        conceptoDiccionario: "gram", //es el concepto que se usará para abrir el diccionario, si no se quiere usar diccionario, se puede dejar en blanco
-        opciones: [
-            {
-                texto: "Gram positivo",
-                valor: "positivo"
+// Obtener pruebas y microorganismos desde la base de datos
+let pruebas = [];
+let microorganismos = []; 
+async function cargarMicroorganismos() {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/microorganismos/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
             },
+        });
+        
+        if (!response.ok) {
+            throw new Error("No se pudieron cargar las pruebas desde la API.");
+        }
 
-            {
-                texto: "Gram negativo",
-                valor: "negativo"
-            }
+        microorganismos = await response.json();
 
-        ]
-    },
-
-    {
-        id: "forma",
-        nombrePaso: "Forma",
-        titulo: "Forma bacteriana",
-        pregunta: "¿Qué morfología presenta la bacteria?",
-        conceptoDiccionario: "forma",
-        opciones: [
-
-            {
-                texto: "Cocos",
-                valor: "cocos"
-            },
-
-            {
-                texto: "Bacilos",
-                valor: "bacilos"
-            }
-
-        ]
-
+    } catch (error) {
+        console.error("Error al cargar pruebas:", error);
     }
+}
 
-];
+async function cargarPruebas() {
+    try {
 
-/*const estado = {
-    pasoActual: 0,
-    respuestaSeleccionada: null,
-    repuestas: []
-}; proximamente se usara estas variables para guardar las respuestas y el paso actual, pero por ahora se usara variables simples para simplificar el código.
-*/
+        const response = await fetch(
+            "http://127.0.0.1:8000/pruebas/"
+        );
 
+        if (!response.ok) {
+            throw new Error("No se pudieron cargar las pruebas.");
+        }
+
+        pruebas = await response.json();
+
+        console.log("Pruebas cargadas:", pruebas);
+
+    } catch (error) {
+        console.error("Error al cargar pruebas:", error);
+    }
+}
+
+// Definimos variables necesarias y obtenemos elementos del HTML
 let pasoActual = 0;
-let respuestaSeleccionada = null; //aquí se irá guardando la respuesta elegida
-let respuestas = []; // de primeras es una lista vacia pero conforme el 
-            // usuario elige opciones, aquí se guardarán todas las respuestas
-const btnContinuar = document.querySelector(".continue"); //obtiene el botón Continuar
+let respuestaSeleccionada = null; // Aquí se irá guardando la respuesta elegida
+let respuestas = []; // Aquí se guardarán todas las respuestas
 
-//const opciones = document.querySelectorAll(".option"); //busca todos los botones que tenga la clase option
+// Obtiene los botones necesarios (junto con el modal de diccionario)
+const btnContinuar = document.querySelector(".continue"); 
+const btnAtras = document.getElementById("btnAtras"); 
+const btnDiccionario = document.querySelector(".dictionary-btn"); 
+const diccionarioModal = document.getElementById("diccionarioModal"); 
+const cerrarDiccionario = document.getElementById("cerrarDiccionario"); 
 
-
-// ===============================
-// FUNCION PRINCIPAL
-// ===============================
-
+// Función principal
 function actualizarPantalla() {
     mostrarPrueba();
     actualizarProgreso();
@@ -110,106 +80,409 @@ function actualizarPantalla() {
     reiniciarSeleccion();
 }
 
-// ===============================
-// FUNCIONES SECUNDARIAS
-// ===============================
-
+// Función para crear cada pregunta con las pruebas
 function mostrarPrueba() {
     // Obtener la prueba actual
     const prueba = pruebas[pasoActual];
 
-    // Cambiar el título
-    document.getElementById("tituloPrueba").textContent = prueba.titulo;
-
-    // Cambiar la pregunta
-    document.getElementById("preguntaPrueba").textContent = prueba.pregunta;
-
-    // Obtener el contenedor de los botones
+    // Cambiar informacion para cada prueba
+    document.getElementById("tituloPrueba").textContent = prueba.nombre;
+    document.getElementById("preguntaPrueba").textContent = prueba.nombre;
     const contenedor = document.getElementById("contenedorOpciones");
 
     // Limpiar las opciones anteriores
     contenedor.innerHTML = "";
 
-    // Crear cada botón de la prueba
-    prueba.opciones.forEach(opcion => {
+    // Buscar si esta prueba ya había sido respondida
+    const respuestaAnterior = respuestas.find(
+        respuesta => respuesta.id_prueba === prueba.id_prueba
+    );
 
+    // Crear las opciones de la prueba actual
+    prueba.opc_prueba.forEach(opcion => {
         const boton = document.createElement("button");
-
         boton.className = "option";
+        boton.textContent = opcion.nombre_resultado;
+        boton.dataset.idOpcion = opcion.id_opcion;
 
-        boton.textContent = opcion.texto;
+        // Si ya había una respuesta guardada, marcarla
+        if (respuestaAnterior && respuestaAnterior.respuesta === opcion.nombre_resultado) {
+            boton.classList.add("selected");
+        }
 
-        boton.dataset.value = opcion.valor;
-
-        // Evento cuando el usuario selecciona una opción
+        // Evento para marcar la seleccion
         boton.addEventListener("click", () => {
-
-            // Quitar la selección anterior
+            // Quitar selección anterior 
             document.querySelectorAll(".option").forEach(btn => {
                 btn.classList.remove("selected");
             });
 
-            // Marcar la nueva selección
+            // Marcar opción seleccionada
             boton.classList.add("selected");
 
-            // Guardar la respuesta
-            respuestaSeleccionada = opcion.valor;
+            // Guardar respuesta temporal
+            respuestaSeleccionada = {
+                id_opcion: opcion.id_opcion_prueba,
+                nombre_resultado: opcion.nombre_resultado
+            };
 
-            // Activar el botón Continuar
+            // Activar boton Continuar
             btnContinuar.disabled = false;
-
         });
 
-        // Agregar el botón al contenedor
+        // Agregar botón al contenedor
         contenedor.appendChild(boton);
-
     });
 
+    // Si ya había una respuesta guardada, mantenerla como respuesta seleccionada
+    if (respuestaAnterior) {
+        respuestaSeleccionada = respuestaAnterior.respuesta;
+        btnContinuar.disabled = false;
+    } else {
+        respuestaSeleccionada = null;
+        btnContinuar.disabled = true;
+    }
 }
 
+// Función para actualizar el progreso segun lo que lleve el usuario
 function actualizarProgreso() {
     document.getElementById("pasoActual").textContent = pasoActual + 1;
-
     document.getElementById("totalPasos").textContent = pruebas.length;
-
     const porcentaje = ((pasoActual + 1) / pruebas.length) * 100;
-
     document.getElementById("progressFill").style.width = porcentaje + "%";
 }
 
+// Función para actualizar los botones para la siguiente prueba
 function actualizarBotones() {
-    // aqui controlaremos los botones Atras y Continuar
-    // dependiendo del paso actual.
+    if (pasoActual === 0) {
+        btnAtras.disabled = true;
+    } else {
+        btnAtras.disabled = false;
+    }
 }
 
 function reiniciarSeleccion() {
-    respuestaSeleccionada = null;
-    btnContinuar.disabled = true;
+    const respuestaAnterior = respuestas.find(
+        respuesta => respuesta.id_prueba === pruebas[pasoActual].id_prueba
+    );
+    if (respuestaAnterior) {
+        respuestaSeleccionada = respuestaAnterior.respuesta;
+        btnContinuar.disabled = false;
+        
+    } else {
+        respuestaSeleccionada = null;
+        btnContinuar.disabled = true;
+    }
 }
 
-function abrirDiccionario() {
-
-}
-
-// ===============================
-// EVENTOS
-// ===============================
-btnContinuar.addEventListener("click", () => {
+function obtenerSiguientePrueba() {
+    // Si no hay un camino especial, continuar con la siguiente prueba
     if (pasoActual < pruebas.length - 1) {
+        return pasoActual + 1;
+    }
+
+    // Si estamos en la última prueba, terminar la identificación
+    return null;
+}
+
+// Función para comparar y obtener un microorganismo
+function calcularCoincidencias(microorganismos) {
+    const resultados = [];
+
+    microorganismos.forEach(microorganismo => {
+
+        let coincidencias = 0;
+        let pruebasComparadas = 0;
+        const detalle = [];
+
+        respuestas.forEach(respuesta => {
+
+            let coincidencia = false;
+            let resultadoEsperado = null;
+            let opcionEsperada = null;
+
+            // =========================
+            // TINCIÓN DE GRAM
+            // =========================
+            if (respuesta.id_prueba === "gram") {
+
+                resultadoEsperado = microorganismo.gram;
+
+                coincidencia =
+                    respuesta.respuesta === resultadoEsperado;
+
+                opcionEsperada = {
+                    nombre_resultado: resultadoEsperado
+                };
+            }
+
+            // =========================
+            // RESTO DE LAS PRUEBAS
+            // =========================
+            else {
+
+                // Resultado esperado del microorganismo
+                resultadoEsperado =
+                    microorganismo.res_prueba_micro?.find(
+                        resultado =>
+                            resultado.id_prueba === respuesta.id_prueba
+                    );
+
+                // Buscar la prueba
+                const prueba = pruebas.find(
+                    prueba =>
+                        prueba.id_prueba === respuesta.id_prueba
+                );
+
+                // Buscar la opción esperada
+                opcionEsperada =
+                    prueba?.opc_prueba?.find(
+                        opcion =>
+                            opcion.id_opcion_prueba ===
+                            resultadoEsperado?.id_opcion
+                    );
+
+                // Comparar
+                coincidencia =
+                    resultadoEsperado?.id_opcion ===
+                    respuesta.id_opcion;
+            }
+
+            pruebasComparadas++;
+
+            if (coincidencia) {
+                coincidencias++;
+            }
+
+            // Guardar detalle
+            detalle.push({
+                prueba: respuesta.id_prueba,
+
+                resultadoAlumno:
+                    respuesta.respuesta || "Sin resultado",
+
+                resultadoEsperado:
+                    opcionEsperada?.nombre_resultado ||
+                    "Sin resultado",
+
+                coincide: !!coincidencia
+            });
+        });
+
+        const porcentaje =
+            pruebasComparadas > 0
+                ? (coincidencias / pruebasComparadas) * 100
+                : 0;
+
+        resultados.push({
+            id: microorganismo.id_microorganismo,
+            nombre: microorganismo.nombre,
+            coincidencias,
+            pruebasComparadas,
+            porcentaje,
+            detalle
+        });
+    });
+
+    resultados.sort((a, b) => {
+        return b.porcentaje - a.porcentaje;
+    });
+
+    return resultados;
+}
+
+// Función para mostrar los resultados obtenidos
+function mostrarResultados(resultados) {
+    // Obtiene el mejor resultado
+    const mejorResultado = resultados[0];
+
+    // Obtener los elementos de la pantalla de resultados
+    const nombreBacteria = document.getElementById("nombreBacteria");
+    const porcentajeCoincidencia = document.getElementById("porcentajeCoincidencia");
+
+    // Mostrar la información del microorganismo
+    nombreBacteria.textContent = mejorResultado.nombre;
+    porcentajeCoincidencia.textContent = mejorResultado.porcentaje.toFixed(0) + "%";
+    const contenedorDetalle = document.getElementById("tablaCoincidencias");
+    contenedorDetalle.innerHTML = "";
+
+    mejorResultado.detalle.forEach(detalle => {
+        const fila = document.createElement("div");
+        fila.className =
+            detalle.coincide
+                ? "coincidencia correcta"
+                : "coincidencia incorrecta";
+
+        const prueba = pruebas.find(
+            prueba => prueba.id_prueba === detalle.prueba
+        );
+
+        const nombrePrueba =
+            prueba ? prueba.nombre : detalle.prueba;
+
+        fila.innerHTML = `
+            <div class="detalle-prueba">
+                <strong>${nombrePrueba}</strong>
+            </div>
+
+            <div class="detalle-alumno">
+                Tu resultado:
+                <strong>${detalle.resultadoAlumno}</strong>
+            </div>
+
+            <div class="detalle-esperado">
+                Esperado:
+                <strong>${detalle.resultadoEsperado}</strong>
+            </div>
+
+            <div class="detalle-icono">
+                ${detalle.coincide ? "✓" : "✗"}
+            </div>
+        `;
+
+        contenedorDetalle.appendChild(fila);
+
+        const otrosResultados = document.getElementById("otrosResultados");
+        otrosResultados.innerHTML = "";
+
+        resultados.slice(1).forEach(resultado => {
+            const tarjeta = document.createElement("div");
+            tarjeta.className = "otro-resultado";
+            tarjeta.innerHTML = `
+                <div>
+                    <strong>${resultado.nombre}</strong>
+                    <span>
+                        ${resultado.porcentaje.toFixed(0)}%
+                    </span>
+                </div>
+
+                <div class="barra-coincidencia">
+                    <div
+                        class="barra-coincidencia-fill"
+                        style="width: ${resultado.porcentaje}%">
+                    </div>
+                </div>
+            `;
+
+            otrosResultados.appendChild(tarjeta);
+        });
+    });
+
+    // Ocultar la tarjeta de identificación y mostrar la de resultados
+    document.querySelector(".card").style.display = "none";
+    document.getElementById("resultadoIdentificacion").style.display = "block";
+}
+
+// Eventos para el boton continuar
+btnContinuar.addEventListener("click", () => {
+    // Verificar que haya respuesta
+    if (respuestaSeleccionada === null) {
+        return;
+    }
+
+    // Obtener la prueba actual
+    const pruebaActual = pruebas[pasoActual];
+
+    // Guardar la respuesta
+    const respuestaExistente = respuestas.find(
+        respuesta => respuesta.id_prueba === pruebaActual.id_prueba
+    );
+    if (respuestaExistente) {
+        respuestaExistente.id_opcion = respuestaSeleccionada.id_opcion;
+        respuestaExistente.respuesta = respuestaSeleccionada.nombre_resultado;
+    }
+    else {
         respuestas.push({
             paso: pasoActual,
-            prueba: pruebas[pasoActual].titulo, //agrega un elemento al final del arreglo
-            respuesta: respuestaSeleccionada
+            id_prueba: pruebaActual.id_prueba,
+            id_opcion: respuestaSeleccionada.id_opcion,
+            respuesta: respuestaSeleccionada.nombre_resultado
         });
-        console.log(respuestas);
-        pasoActual++;
+    }
+
+    // Obtener la siguiente prueba
+    const siguientePaso = obtenerSiguientePrueba();
+    // ¿Existe una siguiente prueba?
+    if (siguientePaso !== null) {
+        pasoActual = siguientePaso;
         actualizarPantalla();
     } else {
-        alert("Identificación finalizada.");
+        // Calcular coincidencias
+        const resultados = calcularCoincidencias(microorganismos);
+
+        // Mostrar el microorganismo con mayor coincidencia
+        if (resultados.length > 0) {
+            mostrarResultados(resultados);
+        }
     }
 });
 
-// ===============================
-// INICIALIZACIÓN
-// ===============================
-actualizarPantalla();
+// Retroceder a una prueba anterior
+btnAtras.addEventListener("click", () => {
+    if (pasoActual > 0) {
+        pasoActual--;
+        actualizarPantalla();
+    }
+});
+
+// Mostrar concepto de la prueba
+btnDiccionario.addEventListener("click", () => {
+    // Obtener la prueba actual
+    const prueba = pruebas[pasoActual];
+
+    // Mostrar información del concepto
+    diccionarioTitulo.textContent = prueba.nombre;
+    diccionarioDefinicion.textContent =
+        prueba.descripcion || "Información próximamente disponible.";
+    diccionarioInterpretacion.textContent =
+        prueba.fundamento || "Información próximamente disponible.";
+
+    // Abrir el modal
+    diccionarioModal.classList.add("abierto");
+});
+
+cerrarDiccionario.addEventListener("click", () => {
+    diccionarioModal.classList.remove("abierto");
+});
+
+document.getElementById("btnNuevaIdentificacion").addEventListener("click", () => {
+    pasoActual = 0;
+    respuestas = [];
+    respuestaSeleccionada = null;
+    document.getElementById("resultadoIdentificacion").style.display = "none";
+    document.querySelector(".card").style.display = "block";
+    actualizarPantalla();
+});
+
+// Iniciar la identificacion
+async function iniciarIdentificacion() {
+    // Llamar a funciones para obtener data
+    await cargarPruebas();
+    await cargarMicroorganismos();
+
+    // Crear prueba Gram (porque esta en otro campo)
+    const pruebaGram = {
+        id_prueba: "gram",
+        nombre: "Tinción de Gram",
+        opc_prueba: [
+            { id_opcion_prueba: "gram_pos", nombre_resultado: "Positivo" },
+            { id_opcion_prueba: "gram_neg", nombre_resultado: "Negativo" }
+        ],
+        conceptoDiccionario: "gram",
+        descripcion: "La tinción de Gram es una técnica de coloración utilizada para observar y diferenciar bacterias de acuerdo con las características de su pared celular. Es una de las primeras herramientas utilizadas en la identificación microbiológica.",
+        fundamento: "Las bacterias se clasifican principalmente como Gram positivas o Gram negativas según su reacción a la tinción. En el proceso de identificación bacteriana, esta característica permite orientar la selección de las pruebas posteriores."
+    };
+
+    // Insertar al inicio del cuestionario
+    pruebas.unshift(pruebaGram);
+    actualizarPantalla();
+
+    // Animación de carga (hasta que se obtenga la data)
+    document.getElementById("pantallaCargaIdentificacion").style.opacity = "0";
+        setTimeout(() => {
+            document.getElementById("pantallaCargaIdentificacion").style.display = "none";
+            document.getElementById("contenidoIdentificacion").style.display = "block";
+    }, 800);
+}
+
+iniciarIdentificacion();

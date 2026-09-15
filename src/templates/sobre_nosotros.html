@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Sobre nosotros | BIOGRAM{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/sobre_nosotros.css') }}">
+{% endblock %}
+
+{% block contenido %}
+
+<div class="sobre-pagina">
+
+    <a href="/perfil" class="btn-regresar">
+        Regresar al perfil
+    </a>
+
+    <section class="sobre-header">
+
+        <img
+            src="{{ url_for('static', path='img/logoPNG.png') }}"
+            alt="BIOGRAM"
+            class="sobre-logo"
+        >
+
+        <h1>Sobre nosotros</h1>
+
+        <p>
+            Conoce el proyecto y al equipo detrás de BIOGRAM.
+        </p>
+
+    </section>
+
+
+    <section class="sobre-contenido">
+
+        <div class="sobre-bloque">
+
+            <h2>¿Qué es BIOGRAM?</h2>
+
+            <p>
+                BIOGRAM es una plataforma web desarrollada como
+                proyecto académico para apoyar el aprendizaje y
+                la identificación de bacterias mediante información
+                microbiológica y pruebas bioquímicas.
+            </p>
+
+        </div>
+
+
+        <div class="sobre-bloque">
+
+            <h2>Nuestro objetivo</h2>
+
+            <p>
+                Nuestro objetivo es ofrecer una herramienta
+                interactiva, clara y accesible que facilite el
+                aprendizaje de conceptos relacionados con la
+                microbiología y la identificación bacteriana.
+            </p>
+
+        </div>
+
+
+        <div class="sobre-bloque">
+
+            <h2>Equipo BIOGRAM</h2>
+
+            <div class="equipo">
+
+                <div class="integrante">
+                    <div class="integrante-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <h3>Belén Olalde</h3>
+
+                    <p>Ingeniería en Computación</p>
+                </div>
+
+
+                <div class="integrante">
+                    <div class="integrante-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <h3>Moisés Linares</h3>
+
+                    <p>Ingeniería en Computación</p>
+                </div>
+
+
+                <div class="integrante">
+                    <div class="integrante-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <h3>Hannia Vallejo</h3>
+
+                    <p>Ingeniería en Computación</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

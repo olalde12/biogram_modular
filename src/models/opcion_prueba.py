@@ -12,3 +12,4 @@ class Opcion_prueba(Base):
     id_prueba = Column(Integer, ForeignKey("pruebas_bioquimicas.id_prueba"))
 
     prueba = relationship("Pruebas_bioquimicas", back_populates="opc_prueba")
+    res_opcion_pm = relationship("Resultado_prueba_micro", back_populates="opcion")

@@ -10,7 +10,8 @@ router = APIRouter()
 # Ruta para obtener todos los microorganismos
 @router.get('/', response_model=List[microorganismo_schema.Microorganismo])
 def read_microorganismos(db: Session = Depends(get_db)):
-    return microorganismo_crud.get_microorganismos(db)
+    db_microorganismos = microorganismo_crud.get_microorganismos(db)
+    return db_microorganismos
 
 # Ruta para obtener un microorganismo por id
 @router.get('/{id_microorganismo}', response_model=microorganismo_schema.Microorganismo)

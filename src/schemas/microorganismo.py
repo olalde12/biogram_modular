@@ -1,6 +1,22 @@
 from pydantic import BaseModel
+from typing import List
 
 # Se define la estructura minima de un microorganismo
+class ResultadoBase(BaseModel):
+    id_prueba: int
+    id_micro: int
+    id_opcion: int
+
+class Resultado(ResultadoBase):
+    id_resultado: int
+
+    class Config:
+        from_attributes = True
+
+class ResultadoCreate(ResultadoBase):
+    pass
+
+# Se agrega el identificador a los campos
 class MicroorganismoBase(BaseModel):
     nombre: str
     gram: str
@@ -8,14 +24,14 @@ class MicroorganismoBase(BaseModel):
     descripcion: str
     imagen: str
     tipo: str
-
-# Se agrega el identificador a los campos
+    
 class Microorganismo(MicroorganismoBase):
     id_microorganismo: int
+    res_prueba_micro: List[Resultado] 
 
     class Config:
         from_attributes: True
 
 # No se necesita ningun campo adicional 
 class MicroorganismoCreate(MicroorganismoBase):
-    pass
+    res_prueba_micro: List[ResultadoCreate] 

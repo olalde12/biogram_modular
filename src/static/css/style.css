@@ -97,7 +97,7 @@ body{
     min-height: 500px;
 }
 .text-intro{
-    width: 100%;
+    width: 80vw;
     display: flex;
     justify-content: flex-end;
     margin-bottom: 145px; /*separa los botones del text intro*/

@@ -1,0 +1,165 @@
+.sobre-pagina {
+    min-height: calc(100vh - 95px);
+
+    background: #f7f3f8;
+
+    padding: 28px 75px 60px;
+}
+
+
+/* REGRESAR */
+
+.btn-regresar {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .55rem 1rem;
+    border-radius: 30px;
+    background: white;
+    border: 2px solid #9288e3;
+    color: #9288e3;
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 600;
+    transition: all .25s ease;
+    /*display: inline-block;
+
+    padding: 11px 30px;
+
+    background: #9a86df;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 0;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.2s;*/
+}
+
+.btn-regresar:hover {
+    /*background: #8872d1;*/
+    background: #9288e3;
+    color: white;
+    transform: translateX(-3px);
+    box-shadow: 0 8px 20px rgba(146, 136, 227, .30);
+}
+
+
+/* ENCABEZADO */
+
+.sobre-header {
+    text-align: center;
+
+    max-width: 700px;
+
+    margin: 35px auto 45px;
+}
+
+.sobre-logo {
+    width: 100px;
+
+    border-radius: 50%;
+
+    margin-bottom: 15px;
+}
+
+.sobre-header h1 {
+    margin: 0 0 8px;
+
+    font-size: 30px;
+
+    font-weight: 600;
+}
+
+.sobre-header p {
+    color: #666;
+
+    margin: 0;
+}
+
+
+/* CONTENIDO */
+
+.sobre-contenido {
+    width: min(850px, 90%);
+
+    margin: auto;
+}
+
+.sobre-bloque {
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 25px 30px;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.sobre-bloque h2 {
+    margin-top: 0;
+
+    font-size: 20px;
+
+    color: #6653a8;
+}
+
+.sobre-bloque p {
+    color: #555;
+
+    line-height: 1.7;
+}
+
+
+/* EQUIPO */
+
+.equipo {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+
+    margin-top: 25px;
+}
+
+.integrante {
+    text-align: center;
+}
+
+.integrante-avatar {
+    width: 85px;
+    height: 85px;
+
+    border-radius: 50%;
+
+    margin: auto;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #3eb4e8;
+
+    font-size: 28px;
+}
+
+.integrante h3 {
+    font-size: 15px;
+
+    margin: 12px 0 4px;
+}
+
+.integrante p {
+    font-size: 13px;
+
+    margin: 0;
+}

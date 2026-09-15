@@ -1,0 +1,453 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ===============================
+   PANTALLA DE CARGA
+================================ */
+
+#pantallaCargaBacteria {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: white;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity .8s;
+}
+
+
+#pantallaCargaBacteria h1 {
+    font-size: 60px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+/* ===============================
+   CONTENIDO
+================================ */
+
+#contenidoBacterias {
+    display: block;
+}
+
+
+.bacterias-container {
+
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+}
+
+
+/* ===============================
+   ENCABEZADO
+================================ */
+
+.bacterias-header {
+    text-align: center;
+    margin-top: 45px;
+    margin-bottom: 35px;
+}
+
+.bacterias-header p {
+    color: #666;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+
+/* ===============================
+   BUSCADOR
+================================ */
+
+.buscador-bacterias {
+
+    margin-bottom: 20px;
+}
+
+
+.buscador-contenedor {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 18px;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 15px;
+
+    transition: .25s;
+}
+
+
+.buscador-contenedor:focus-within {
+
+    border-color: #45c9c8;
+
+    box-shadow: 0 0 0 3px rgba(69, 201, 200, .12);
+}
+
+
+.buscador-contenedor i {
+
+    color: #888;
+
+    font-size: 18px;
+}
+
+
+.buscador-contenedor input {
+
+    width: 100%;
+
+    padding: 15px 5px;
+
+    border: none;
+
+    outline: none;
+
+    font-size: 16px;
+}
+
+
+/* ===============================
+   RESULTADOS
+================================ */
+
+.resultados-bacterias {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.resultado-bacteria {
+
+    display: block;
+
+    width: 100%;
+
+    padding: 15px 18px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #f5f0f6;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    font-family: Poppins, sans-serif;
+
+    font-size: 16px;
+
+    transition: .25s;
+}
+
+
+.resultado-bacteria:hover {
+
+    background: #e8e2ea;
+
+    transform: translateY(-1px);
+}
+
+
+/* ===============================
+   FICHA
+================================ */
+
+.ficha-bacteria {
+
+    display: none;
+
+    position: relative;
+
+    margin-top: 25px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 35px;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .08);
+}
+
+
+.ficha-bacteria.visible {
+
+    display: block;
+}
+
+
+.cerrar-ficha-bacteria {
+
+    position: absolute;
+
+    top: 15px;
+    right: 20px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 26px;
+
+    cursor: pointer;
+
+    color: #666;
+
+    transition: .2s;
+}
+
+
+.cerrar-ficha-bacteria:hover {
+
+    color: #333;
+
+    transform: scale(1.1);
+}
+
+
+#fichaNombreBacteria {
+
+    margin-bottom: 30px;
+
+    font-size: 32px;
+
+    color: #3A4B6A;
+}
+
+
+/* ===============================
+   SECCIONES
+================================ */
+
+.ficha-seccion {
+
+    margin-bottom: 30px;
+}
+
+
+.ficha-seccion h3 {
+
+    margin-bottom: 15px;
+
+    font-size: 21px;
+
+    color: #3A4B6A;
+}
+
+
+/* ===============================
+   CONTENIDO GENERADO
+================================ */
+
+.caracteristica-bacteria,
+.prueba-bacteria {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 12px 15px;
+
+    margin-bottom: 8px;
+
+    border-radius: 10px;
+
+    background: #f5f0f6;
+}
+
+
+.nombre-caracteristica,
+.nombre-prueba {
+
+    font-weight: 600;
+}
+
+
+.resultado-positivo {
+
+    color: #45c9c8;
+
+    font-weight: 600;
+}
+
+
+.resultado-negativo {
+
+    color: #d9534f;
+
+    font-weight: 600;
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+
+    .bacterias-container {
+
+        width: 90%;
+    }
+
+    .ficha-bacteria {
+
+        padding: 25px 20px;
+    }
+
+    #fichaNombreBacteria {
+
+        font-size: 27px;
+    }
+
+}
+
+/* ===============================
+   FICHA DE BACTERIA
+   =============================== */
+
+.ficha-bacteria {
+    display: none;
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    margin: 30px auto;
+    background: #f5f0f6;
+    border-radius: 20px;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.ficha-bacteria.visible {
+    display: block;
+}
+
+
+/* Botón cerrar */
+
+.cerrar-ficha-bacteria {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 24px;
+    color: #777;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.cerrar-ficha-bacteria:hover {
+    color: #45c9c8;
+    transform: scale(1.1);
+}
+
+
+/* Encabezado */
+
+.ficha-encabezado {
+    padding-right: 35px;
+    margin-bottom: 30px;
+}
+
+.ficha-encabezado h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.ficha-encabezado p {
+    color: #666;
+    line-height: 1.6;
+}
+
+
+/* Secciones */
+
+.ficha-seccion {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    margin-top: 20px;
+}
+
+.ficha-seccion h3 {
+    margin-bottom: 18px;
+    font-size: 21px;
+}
+
+
+/* Datos */
+
+.datos-bacteria {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dato-bacteria {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 15px;
+
+    background: #f5f5f5;
+    border-radius: 10px;
+}
+
+.dato-bacteria strong {
+    color: #444;
+}
+
+.dato-valor {
+    font-weight: 600;
+}
+
+
+/* Observaciones */
+
+#observacionesBacteria {
+    margin: 0;
+    padding-left: 20px;
+}
+
+#observacionesBacteria li {
+    margin-bottom: 8px;
+    color: #555;
+    line-height: 1.5;
+}

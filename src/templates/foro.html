@@ -1,0 +1,376 @@
+{% extends "base.html" %}
+
+{% block title %}Foro | BIOGRAM{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/foro.css') }}">
+{% endblock %}
+
+{% block contenido %}
+
+<div class="foro-pagina">
+
+    <!-- ENCABEZADO DEL FORO -->
+
+    <section class="foro-hero">
+
+        <div class="foro-hero-texto">
+
+            <span class="foro-etiqueta">
+                <i class="fa-solid fa-users"></i>
+                Comunidad BIOGRAM
+            </span>
+
+            <h1>Pregunta, comparte y aprende.</h1>
+
+            <p>
+                Un espacio para compartir conocimientos,
+                resolver dudas y aprender sobre el mundo microscópico.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- BARRA DE BÚSQUEDA -->
+
+    <section class="foro-herramientas">
+
+        <div class="foro-buscador">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                placeholder="Buscar una pregunta..."
+                aria-label="Buscar una pregunta"
+            >
+
+        </div>
+
+
+        <button class="foro-btn-nueva" id="btnNuevaPregunta" type="button">
+
+            <i class="fa-solid fa-plus"></i>
+
+            Nueva pregunta
+
+        </button>
+
+    </section>
+
+
+    <!-- CATEGORÍAS -->
+
+    <section class="foro-categorias">
+
+        <h2>Categorías</h2>
+
+        <div class="foro-categorias-lista">
+
+            <button class="categoria-btn categoria-activa">
+                Todas
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-bacterium"></i>
+                Bacteriología
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-flask"></i>
+                Laboratorio
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-dna"></i>
+                Microbiología
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-vial"></i>
+                Pruebas bioquímicas
+            </button>
+
+            <button class="categoria-btn">
+                <i class="fa-solid fa-book-open"></i>
+                Estudio
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ENCABEZADO DE PUBLICACIONES -->
+
+    <section class="foro-publicaciones">
+
+        <div class="foro-publicaciones-header">
+
+            <div>
+
+                <h2>Preguntas recientes</h2>
+
+                <p>
+                    Descubre lo que está preguntando la comunidad.
+                </p>
+
+            </div>
+
+            <button class="foro-ordenar">
+                Más recientes
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+        </div>
+
+        <section id="foro">
+
+        </section>
+
+    </section>
+
+
+    <!-- MENSAJE INFERIOR -->
+
+    <div class="foro-final">
+
+        <i class="fa-solid fa-microscope"></i>
+
+        <p>
+            Comparte tus conocimientos y ayuda a otros
+            miembros de la comunidad BIOGRAM.
+        </p>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     MODAL NUEVA PREGUNTA
+====================================================== -->
+
+<div class="modal-foro" id="modalNuevaPregunta">
+
+    <div class="modal-foro-contenido">
+
+        <!-- ENCABEZADO DEL MODAL -->
+
+        <div class="modal-foro-header">
+
+            <div>
+
+                <span class="modal-foro-etiqueta">
+                    <i class="fa-solid fa-pen"></i>
+                    Comunidad BIOGRAM
+                </span>
+
+                <h2>Nueva pregunta</h2>
+
+                <p>
+                    Comparte tu duda con la comunidad.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="modal-foro-cerrar"
+                id="cerrarNuevaPregunta"
+                aria-label="Cerrar"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <!-- FORMULARIO -->
+
+        <form id="formNuevaPregunta">
+
+            <!-- TÍTULO -->
+
+            <div class="campo-foro">
+
+                <label for="tituloPregunta">
+                    Título de la pregunta
+                </label>
+
+                <input
+                    type="text"
+                    id="tituloPregunta"
+                    name="titulo"
+                    placeholder="Ej. ¿Cómo identificar una bacteria Gram negativa?"
+                    maxlength="150"
+                    required
+                >
+
+                <span class="campo-ayuda">
+                    Escribe de forma clara y específica lo que quieres preguntar.
+                </span>
+
+            </div>
+
+
+            <!-- CATEGORÍA -->
+
+            <div class="campo-foro">
+
+                <label for="categoriaPregunta">
+                    Categoría
+                </label>
+
+                <div class="select-foro">
+
+                    <select
+                        id="categoriaPregunta"
+                        name="categoria"
+                        required
+                    >
+
+                        <option value="" disabled selected>
+                            Selecciona una categoría
+                        </option>
+
+                        <option value="Bacteriología">
+                             Bacteriología
+                        </option>
+
+                        <option value="Laboratorio">
+                             Laboratorio
+                        </option>
+
+                        <option value="Microbiología">
+                             Microbiología
+                        </option>
+
+                        <option value="Pruebas bioquímicas">
+                             Pruebas bioquímicas
+                        </option>
+
+                        <option value="Estudio">
+                             Estudio
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- DESCRIPCIÓN -->
+
+            <div class="campo-foro">
+
+                <label for="descripcionPregunta">
+                    Describe tu pregunta
+                </label>
+
+                <textarea
+                    id="descripcionPregunta"
+                    name="descripcion"
+                    placeholder="Explica tu duda con todos los detalles que puedan ayudar a la comunidad..."
+                    maxlength="2000"
+                    required
+                ></textarea>
+
+                <div class="contador-caracteres">
+
+                    <span id="contadorPregunta">
+                        0
+                    </span>
+
+                    / 2000
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTONES -->
+
+            <div class="modal-foro-footer">
+
+                <button
+                    type="button"
+                    class="btn-modal-cancelar"
+                    id="cancelarNuevaPregunta"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn-modal-publicar"
+                >
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Publicar pregunta
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     MODAL CONFIRMAR ELIMINACIÓN
+====================================================== -->
+
+<div class="modal-foro modal-confirmacion" id="modalEliminar">
+
+    <div class="modal-confirmacion-contenido">
+
+        <div class="icono-confirmacion">
+
+            <i class="fa-solid fa-trash"></i>
+
+        </div>
+
+        <h2>¿Eliminar pregunta?</h2>
+
+        <p>
+            Esta acción eliminará la pregunta y su contenido.
+            Esta acción no se puede deshacer.
+        </p>
+
+        <div class="confirmacion-botones">
+
+            <button
+                type="button"
+                class="btn-modal-cancelar"
+                id="cancelarEliminar"
+            >
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="btn-eliminar-confirmar"
+                id="confirmarEliminar"
+            >
+                Eliminar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% block js %}
+
+<script src="{{ url_for('static', path='js/foro.js') }}"></script>
+
+{% endblock %}
+
+{% endblock %}
