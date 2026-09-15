@@ -150,7 +150,7 @@ async def foro(request: Request, db: Session = Depends(get_db)):
 app.add_middleware(
     SessionMiddleware,
     secret_key = os.getenv("SECRET_KEY"),
-    max_age = 60 * 60 * 24 * 30 
+    max_age = 60 * 60 * 24 * 30
 )
 
 # Rutas del Swagger del FastAPI para hacer peticiones a la base de datos

@@ -22,7 +22,7 @@ let pruebas = [];
 let microorganismos = []; 
 async function cargarMicroorganismos() {
     try {
-        const response = await fetch(`http://127.0.0.1:8000/microorganismos`, {
+        const response = await fetch(`http://127.0.0.1:8000/microorganismos/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -44,7 +44,7 @@ async function cargarPruebas() {
     try {
 
         const response = await fetch(
-            "http://127.0.0.1:8000/pruebas"
+            "http://127.0.0.1:8000/pruebas/"
         );
 
         if (!response.ok) {
@@ -95,7 +95,7 @@ function mostrarPrueba() {
 
     // Buscar si esta prueba ya había sido respondida
     const respuestaAnterior = respuestas.find(
-        respuesta => respuesta.prueba === prueba.id_prueba
+        respuesta => respuesta.id_prueba === prueba.id_prueba
     );
 
     // Crear las opciones de la prueba actual
@@ -163,11 +163,12 @@ function actualizarBotones() {
 
 function reiniciarSeleccion() {
     const respuestaAnterior = respuestas.find(
-        respuesta => respuesta.prueba === pruebas[pasoActual].id_prueba
+        respuesta => respuesta.id_prueba === pruebas[pasoActual].id_prueba
     );
     if (respuestaAnterior) {
         respuestaSeleccionada = respuestaAnterior.respuesta;
         btnContinuar.disabled = false;
+        
     } else {
         respuestaSeleccionada = null;
         btnContinuar.disabled = true;
@@ -189,68 +190,100 @@ function calcularCoincidencias(microorganismos) {
     const resultados = [];
 
     microorganismos.forEach(microorganismo => {
+
         let coincidencias = 0;
         let pruebasComparadas = 0;
         const detalle = [];
 
         respuestas.forEach(respuesta => {
+
             let coincidencia = false;
             let resultadoEsperado = null;
             let opcionEsperada = null;
+
+            // =========================
+            // TINCIÓN DE GRAM
+            // =========================
             if (respuesta.id_prueba === "gram") {
+
                 resultadoEsperado = microorganismo.gram;
-                coincidencia = (respuesta.respuesta === resultadoEsperado);
-                opcionEsperada = { nombre_resultado: resultadoEsperado };
-            } else {
-                const resultadoEsperado = microorganismo.res_prueba_micro.find(
-                    resultado =>
-                        resultado.id_prueba === respuesta.id_prueba
-                );
+
+                coincidencia =
+                    respuesta.respuesta === resultadoEsperado;
+
+                opcionEsperada = {
+                    nombre_resultado: resultadoEsperado
+                };
+            }
+
+            // =========================
+            // RESTO DE LAS PRUEBAS
+            // =========================
+            else {
+
+                // Resultado esperado del microorganismo
+                resultadoEsperado =
+                    microorganismo.res_prueba_micro?.find(
+                        resultado =>
+                            resultado.id_prueba === respuesta.id_prueba
+                    );
 
                 // Buscar la prueba
                 const prueba = pruebas.find(
-                    prueba => prueba.id_prueba === respuesta.id_prueba
+                    prueba =>
+                        prueba.id_prueba === respuesta.id_prueba
                 );
 
-                // Buscar el nombre de la opción esperada
-                opcionEsperada = prueba?.opc_prueba.find(
-                    opcion =>
-                        opcion.id_opcion_prueba === resultadoEsperado?.id_opcion
-                );
+                // Buscar la opción esperada
+                opcionEsperada =
+                    prueba?.opc_prueba?.find(
+                        opcion =>
+                            opcion.id_opcion_prueba ===
+                            resultadoEsperado?.id_opcion
+                    );
 
+                // Comparar
                 coincidencia =
-                        resultadoEsperado &&
-                        resultadoEsperado.id_opcion === respuesta.id_opcion
+                    resultadoEsperado?.id_opcion ===
+                    respuesta.id_opcion;
             }
 
             pruebasComparadas++;
+
             if (coincidencia) {
                 coincidencias++;
             }
-        
+
+            // Guardar detalle
             detalle.push({
                 prueba: respuesta.id_prueba,
-                resultadoAlumno: respuesta.respuesta,
-                resultadoEsperado: resultadoEsperado || "Sin resultado",
+
+                resultadoAlumno:
+                    respuesta.respuesta || "Sin resultado",
+
+                resultadoEsperado:
+                    opcionEsperada?.nombre_resultado ||
+                    "Sin resultado",
+
                 coincide: !!coincidencia
             });
         });
 
-        const porcentaje = pruebasComparadas > 0
-            ? (coincidencias / pruebasComparadas) * 100 : 0;
+        const porcentaje =
+            pruebasComparadas > 0
+                ? (coincidencias / pruebasComparadas) * 100
+                : 0;
 
         resultados.push({
             id: microorganismo.id_microorganismo,
             nombre: microorganismo.nombre,
             coincidencias,
             pruebasComparadas,
-            porcentaje, 
+            porcentaje,
             detalle
         });
-
     });
 
-    // Ordenar de mayor a menor porcentaje
     resultados.sort((a, b) => {
         return b.porcentaje - a.porcentaje;
     });
@@ -308,6 +341,31 @@ function mostrarResultados(resultados) {
         `;
 
         contenedorDetalle.appendChild(fila);
+
+        const otrosResultados = document.getElementById("otrosResultados");
+        otrosResultados.innerHTML = "";
+
+        resultados.slice(1).forEach(resultado => {
+            const tarjeta = document.createElement("div");
+            tarjeta.className = "otro-resultado";
+            tarjeta.innerHTML = `
+                <div>
+                    <strong>${resultado.nombre}</strong>
+                    <span>
+                        ${resultado.porcentaje.toFixed(0)}%
+                    </span>
+                </div>
+
+                <div class="barra-coincidencia">
+                    <div
+                        class="barra-coincidencia-fill"
+                        style="width: ${resultado.porcentaje}%">
+                    </div>
+                </div>
+            `;
+
+            otrosResultados.appendChild(tarjeta);
+        });
     });
 
     // Ocultar la tarjeta de identificación y mostrar la de resultados
