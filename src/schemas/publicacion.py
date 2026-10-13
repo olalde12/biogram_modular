@@ -7,14 +7,14 @@ class PublicacionBase(BaseModel):
     titulo: str
     contenido: str
     categoria: str
-    autor: str
-    avatar: Optional[str] = None
 
 # Se agrega el identificador y la fecha a los campos
 class Publicacion(PublicacionBase):
     id_publicacion: int
     fecha_creacion: date
     id_usuario: int
+    autor: str
+    avatar: Optional[str] = None
 
     class Config:
         from_attributes: True
@@ -27,3 +27,4 @@ class PublicacionCreate(PublicacionBase):
 class PublicacionUpdate(PublicacionBase):
     titulo: Optional[str] = None
     contenido: Optional[str] = None
+    categoria: Optional[str] = None

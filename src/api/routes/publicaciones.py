@@ -57,6 +57,26 @@ def read_publicacion_by_title(titulo: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail='Publicacion no encontrada')
     return db_publicacion
 
+# Ruta para obtener una publicacion por categoria
+@router.get('/categoria/{categoria}', response_model=List[publicacion_schema.Publicacion])
+def read_publicacion_by_title(categoria: str, db: Session = Depends(get_db)):
+    db_publicaciones = (db.query(Publicaciones, Usuarios.nombre, Usuarios.avatar).join(Usuarios, Publicaciones.id_usuario == Usuarios.id_usuario).filter(
+        func.lower(Publicaciones.categoria) == categoria.lower()
+    ).all())
+    resultado = []
+    for publicacion, nombre, avatar in db_publicaciones:
+        resultado.append({
+            "id_publicacion": publicacion.id_publicacion,
+            "titulo": publicacion.titulo,
+            "contenido": publicacion.contenido,
+            "categoria": publicacion.categoria,
+            "fecha_creacion": publicacion.fecha_creacion,
+            "id_usuario": publicacion.id_usuario,
+            "autor": nombre,
+            "avatar": avatar
+        })
+    return resultado
+
 # Ruta para crear una publicacion
 @router.post('/create', response_model=publicacion_schema.Publicacion)
 def create_publicacion(publicacion: publicacion_schema.PublicacionCreate, db: Session = Depends(get_db)):
@@ -70,7 +90,17 @@ def create_publicacion(publicacion: publicacion_schema.PublicacionCreate, db: Se
     ).first())
     if db_publicacion:
         raise HTTPException(status_code=400, detail='Esa publicacion ya existe')
-    return publicacion_crud.create_publicacion(db=db, publicacion=publicacion)
+    nueva = publicacion_crud.create_publicacion(db=db, publicacion=publicacion)
+    return {
+        "id_publicacion": nueva.id_publicacion,
+        "titulo": nueva.titulo,
+        "contenido": nueva.contenido,
+        "categoria": nueva.categoria,
+        "fecha_creacion": nueva.fecha_creacion,
+        "id_usuario": nueva.id_usuario,
+        "autor": db_usuario.nombre,   
+        "avatar": db_usuario.avatar   
+    }
 
 # Ruta para modificar una publicacion
 @router.put("/update/{id_publicacion}", response_model=publicacion_schema.Publicacion)

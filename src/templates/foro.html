@@ -8,7 +8,7 @@
 
 {% block contenido %}
 
-<div class="foro-pagina">
+<div class="foro-pagina" data-usuario="{{ usuario.id_usuario }}">
 
     <!-- ENCABEZADO DEL FORO -->
 
@@ -69,31 +69,31 @@
 
         <div class="foro-categorias-lista">
 
-            <button class="categoria-btn categoria-activa">
+            <button class="categoria-btn categoria-activa" data-categoria="todas">
                 Todas
             </button>
 
-            <button class="categoria-btn">
+            <button class="categoria-btn" data-categoria="bacteriología">
                 <i class="fa-solid fa-bacterium"></i>
                 Bacteriología
             </button>
 
-            <button class="categoria-btn">
+            <button class="categoria-btn" data-categoria="laboratorio">
                 <i class="fa-solid fa-flask"></i>
                 Laboratorio
             </button>
 
-            <button class="categoria-btn">
+            <button class="categoria-btn" data-categoria="microbiología">
                 <i class="fa-solid fa-dna"></i>
                 Microbiología
             </button>
 
-            <button class="categoria-btn">
+            <button class="categoria-btn" data-categoria="pruebas bioquímicas">
                 <i class="fa-solid fa-vial"></i>
                 Pruebas bioquímicas
             </button>
 
-            <button class="categoria-btn">
+            <button class="categoria-btn" data-categoria="estudio">
                 <i class="fa-solid fa-book-open"></i>
                 Estudio
             </button>
@@ -152,7 +152,7 @@
      MODAL NUEVA PREGUNTA
 ====================================================== -->
 
-<div class="modal-foro" id="modalNuevaPregunta">
+<div class="modal-foro" id="modalNuevaPregunta"">
 
     <div class="modal-foro-contenido">
 
