@@ -367,10 +367,123 @@
 
 </div>
 
-{% block js %}
+<!-- =====================================================
+     MODAL VER PUBLICACIÓN Y COMENTARIOS
+====================================================== -->
 
-<script src="{{ url_for('static', path='js/foro.js') }}"></script>
+<div class="modal-foro modal-publicacion" id="modalPublicacion" aria-hidden="true">
+
+    <div class="modal-foro-contenido modal-publicacion-contenido"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="publicacionTitulo">
+
+        <div class="modal-foro-header">
+
+            <div>
+                <span class="modal-foro-etiqueta">
+                    <i class="fa-solid fa-comments"></i>
+                    Comunidad BIOGRAM
+                </span>
+
+                <h2 id="publicacionTitulo">Título de la publicación</h2>
+
+                <p id="publicacionAutor">Publicado por un usuario</p>
+            </div>
+
+            <button type="button"
+                    class="modal-foro-cerrar"
+                    id="cerrarPublicacion"
+                    aria-label="Cerrar publicación">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+        <div class="publicacion-detalle">
+
+            <span id="publicacionCategoria" class="categoria-btn">
+                Categoría
+            </span>
+
+            <p id="publicacionDescripcion"></p>
+
+            <div class="publicacion-acciones">
+
+                <button type="button"
+                        class="foro-accion-btn"
+                        id="btnMeGusta">
+                    <i class="fa-regular fa-heart"></i>
+                    <span id="textoMeGusta">Me gusta</span>
+                    <span id="cantidadMeGusta">0</span>
+                </button>
+
+                <div id="accionesPublicacionPropia" hidden>
+
+                    <button type="button"
+                            class="foro-accion-btn"
+                            id="btnEditarPublicacion">
+                        <i class="fa-solid fa-pen"></i>
+                        Editar
+                    </button>
+
+                    <button type="button"
+                            class="foro-accion-btn foro-accion-eliminar"
+                            id="btnEliminarPublicacion">
+                        <i class="fa-solid fa-trash"></i>
+                        Eliminar
+                    </button>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <section class="publicacion-comentarios">
+
+                <h3>
+                    Comentarios
+                    (<span id="cantidadComentarios">0</span>)
+                </h3>
+
+                <div id="listaComentarios">
+                    <p class="foro-sin-comentarios">
+                        Todavía no hay comentarios.
+                        ¡Participa en la conversación!
+                    </p>
+                </div>
+
+                <form id="formComentario">
+
+                    <label for="textoComentario">
+                        Escribe tu comentario
+                    </label>
+
+                    <textarea id="textoComentario"
+                              name="comentario"
+                              rows="3"
+                              maxlength="1000"
+                              placeholder="Comparte tus conocimientos..."
+                              required></textarea>
+
+                    <button type="submit" class="btn-modal-publicar">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Publicar comentario
+                    </button>
+
+                </form>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}
 
+{% block js %}
+<script src="{{ url_for('static', path='js/foro.js') }}"></script>
 {% endblock %}

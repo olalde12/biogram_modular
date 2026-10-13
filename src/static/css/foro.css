@@ -655,88 +655,51 @@
 
 }
 
-
 .foro-avatar-morado {
-
     background-color: #e6ddff;
-
     color: #7760c4;
-
 }
-
 
 .foro-avatar-rosa {
-
     background-color: #ffdce9;
-
     color: #b85b7d;
-
 }
-
 
 .foro-avatar-azul {
-
     background-color: #dceeff;
-
     color: #3679b0;
-
 }
-
 
 .foro-autor div:last-child {
-
     display: flex;
-
     flex-direction: column;
-
     gap: 2px;
-
 }
-
 
 .foro-autor strong {
-
     color: #333;
-
     font-size: 12px;
-
     font-weight: 600;
-
 }
-
 
 .foro-autor span {
-
     color: #999;
-
     font-size: 11px;
-
 }
-
 
 /* Respuestas */
 
 .foro-respuestas {
-
     display: flex;
-
     align-items: center;
-
     gap: 7px;
-
     color: #888;
-
     font-size: 12px;
-
 }
 
-
 .foro-respuestas i {
-
     color: #3aaee2;
-
     font-size: 14px;
-
 }
 
 
@@ -744,31 +707,22 @@
    COLORES DE CATEGORÍAS
    ========================================================== */
 
-
 /* Laboratorio */
 
 .categoria-laboratorio {
-
     color: #8c78dc;
-
 }
-
 
 /* Microbiología */
 
 .categoria-micro {
-
     color: #4cae8c;
-
 }
-
 
 /* Pruebas bioquímicas */
 
 .categoria-pruebas {
-
     color: #d98a65;
-
 }
 
 
@@ -777,92 +731,61 @@
    ========================================================== */
 
 .foro-final {
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 12px;
-
     max-width: 650px;
-
     margin: 45px auto 0;
-
     padding: 20px 25px;
-
     border-radius: 15px;
-
     background-color: #f7fbfd;
-
     color: #777;
-
     text-align: center;
-
 }
-
 
 .foro-final i {
-
     color: #3aaee2;
-
     font-size: 20px;
-
 }
 
-
 .foro-final p {
-
     margin: 0;
-
     font-size: 12px;
-
     line-height: 1.6;
-
 }
 
 /* ==========================================================
    MODALES DEL FORO
    ========================================================== */
 
-
 /* Fondo oscuro del modal */
-
 .modal-foro {
-
     position: fixed;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100%;
-
     display: none;
-
     align-items: center;
     justify-content: center;
-
     padding: 20px;
-
     background-color: rgba(20, 25, 30, 0.45);
-
     backdrop-filter: blur(4px);
-
     z-index: 9999;
-
 }
-
 
 /* Modal visible */
 
 .modal-foro.activo {
-
     display: flex;
-
 }
-
+#modalNuevaPregunta {
+    display: none;
+}
+#modalNuevaPregunta.activo {
+    display: flex;
+}
 
 /* ==========================================================
    CONTENIDO DEL MODAL
@@ -1251,28 +1174,17 @@
 
 
 .btn-modal-publicar {
-
     display: flex;
-
     align-items: center;
-
     gap: 8px;
-
     border: none;
-
     background-color: #3aaee2;
-
     color: white;
-
 }
 
-
 .btn-modal-publicar:hover {
-
     background-color: #299dce;
-
     transform: translateY(-1px);
-
 }
 
 
@@ -1281,105 +1193,58 @@
    ========================================================== */
 
 .modal-confirmacion-contenido {
-
     width: min(420px, 100%);
-
     padding: 32px;
-
     background-color: white;
-
     border-radius: 20px;
-
     text-align: center;
-
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-
     animation: aparecerModal 0.25s ease;
-
 }
-
 
 .icono-confirmacion {
-
     width: 55px;
-
     height: 55px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     margin: 0 auto 18px;
-
     border-radius: 50%;
-
     background-color: #ffe8ef;
-
     color: #d96d8e;
-
     font-size: 20px;
-
 }
-
 
 .modal-confirmacion-contenido h2 {
-
     margin: 0 0 9px;
-
     color: #222;
-
     font-size: 21px;
-
     font-weight: 600;
-
 }
-
 
 .modal-confirmacion-contenido p {
-
     margin: 0 auto;
-
     max-width: 330px;
-
     color: #888;
-
     font-size: 12px;
-
     line-height: 1.7;
-
 }
-
 
 .confirmacion-botones {
-
     display: flex;
-
     justify-content: center;
-
     gap: 10px;
-
     margin-top: 25px;
-
 }
-
 
 .btn-eliminar-confirmar {
-
     border: none;
-
     background-color: #d96d8e;
-
     color: white;
-
 }
 
-
 .btn-eliminar-confirmar:hover {
-
     background-color: #c85d7d;
-
 }
 
 
@@ -1388,20 +1253,13 @@
    ========================================================== */
 
 .foro-card {
-
     cursor: pointer;
-
 }
 
-
 .foro-card:focus {
-
     outline: none;
-
     border-color: #39afe3;
-
     box-shadow: 0 0 0 3px rgba(57, 175, 227, 0.10);
-
 }
 
 
@@ -1412,44 +1270,27 @@
 @media (max-width: 550px) {
 
     .modal-foro {
-
         padding: 12px;
-
     }
-
 
     .modal-foro-contenido {
-
         padding: 22px;
-
         border-radius: 18px;
-
     }
-
 
     .modal-foro-header h2 {
-
         font-size: 21px;
-
     }
-
 
     .modal-foro-footer {
-
         flex-direction: column-reverse;
-
         align-items: stretch;
-
     }
-
 
     .btn-modal-cancelar,
     .btn-modal-publicar {
-
         width: 100%;
-
         justify-content: center;
-
     }
 
 }
@@ -1464,43 +1305,26 @@
 @media (max-width: 800px) {
 
     .foro-pagina {
-
         width: 88%;
-
         padding-top: 40px;
-
     }
-
 
     .foro-herramientas {
-
         flex-direction: column;
-
         align-items: stretch;
-
     }
-
 
     .foro-btn-nueva {
-
         width: 100%;
-
     }
-
 
     .foro-publicaciones-header {
-
         align-items: flex-start;
-
         flex-direction: column;
-
     }
 
-
     .foro-ordenar {
-
         padding: 0;
-
     }
 
 }
@@ -1511,57 +1335,313 @@
 @media (max-width: 550px) {
 
     .foro-pagina {
-
         width: 92%;
-
         padding: 30px 0 50px;
-
     }
 
 
     .foro-hero h1 {
-
         font-size: 32px;
-
     }
 
 
     .foro-hero p {
-
         font-size: 14px;
-
     }
 
 
     .foro-card {
-
         padding: 20px;
-
     }
 
 
     .foro-card h3 {
-
         font-size: 16px;
-
     }
 
 
     .foro-card-footer {
-
         align-items: flex-start;
-
         flex-direction: column;
-
         gap: 15px;
-
     }
 
 
     .foro-final {
-
         padding: 17px;
-
     }
 
+}
+
+/* Modal de detalles de una publicación */
+
+.modal-publicacion {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(30, 48, 66, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+.modal-publicacion.activo {
+    display: flex;
+}
+
+.modal-publicacion-contenido {
+    width: min(720px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(35, 70, 95, 0.25);
+}
+
+.publicacion-detalle {
+    padding: 24px 28px 30px;
+}
+
+.publicacion-detalle > p {
+    margin: 20px 0;
+    color: #596d7e;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.publicacion-acciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+#accionesPublicacionPropia {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#accionesPublicacionPropia[hidden] {
+    display: none !important;
+}
+
+.foro-accion-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 13px;
+    border: 1px solid #dcecf4;
+    border-radius: 12px;
+    background: #f5fbfe;
+    color: #4386a8;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.foro-accion-btn:hover {
+    background: #e8f7fd;
+}
+
+.foro-accion-btn.foro-me-gusta-activo {
+    background: #fff0f6;
+    border-color: #f4b8d0;
+    color: #dc6496;
+}
+
+.foro-accion-eliminar {
+    background: #fff6f6;
+    border-color: #f1d3d3;
+    color: #cf5b65;
+}
+
+.publicacion-detalle hr {
+    border: 0;
+    border-top: 1px solid #eaf2f7;
+    margin: 24px 0;
+}
+
+.publicacion-comentarios h3 {
+    color: #30495c;
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+
+#listaComentarios {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.foro-comentario {
+    padding: 14px;
+    border: 1px solid #eaf2f7;
+    border-radius: 14px;
+    background: #fbfdff;
+}
+
+.foro-comentario strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #3d566a;
+    font-size: 13px;
+}
+
+.foro-comentario p {
+    margin: 0;
+    color: #5d7180;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.foro-sin-comentarios {
+    padding: 18px;
+    border-radius: 12px;
+    background: #f5fbfe;
+    color: #8195a5;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.7;
+}
+
+#formComentario {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+#formComentario label {
+    color: #40586b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#textoComentario {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 100px;
+    resize: vertical;
+    padding: 13px;
+    border: 1px solid #dceaf2;
+    border-radius: 12px;
+    background: #fbfdff;
+    color: #34495e;
+    font: inherit;
+    font-size: 13px;
+}
+
+#textoComentario:focus {
+    outline: 2px solid #bceafa;
+    border-color: #68c4e7;
+}
+
+#formComentario .btn-modal-publicar {
+    align-self: flex-end;
+    cursor: pointer;
+}
+
+body.publicacion-modal-abierta {
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+    .modal-publicacion {
+        padding: 8px;
+    }
+
+    .modal-publicacion-contenido {
+        max-height: 94vh;
+        border-radius: 17px;
+    }
+
+    .publicacion-detalle {
+        padding: 20px 18px 24px;
+    }
+
+    .publicacion-acciones {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #formComentario .btn-modal-publicar {
+        align-self: stretch;
+        justify-content: center;
+    }
+}
+
+/* ==========================================================
+   AJUSTES DE LOS BOTONES Y MODALES
+   ========================================================== */
+
+/* Botón X circular */
+button.modal-foro-cerrar {
+    box-sizing: border-box;
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    padding: 0;
+    flex: 0 0 38px;
+    border: none;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f2f7fa;
+    color: #607583;
+    cursor: pointer;
+    line-height: 1;
+}
+
+button.modal-foro-cerrar i {
+    font-size: 16px;
+}
+
+button.modal-foro-cerrar:hover {
+    background-color: #e2f5fc;
+    color: #299dce;
+}
+
+/* La publicación se muestra debajo de la confirmación */
+#modalPublicacion {
+    z-index: 2100;
+}
+
+#modalEliminar {
+    z-index: 9999;
+}
+
+/* Estadísticas de las tarjetas */
+.foro-card-estadisticas {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.foro-me-gusta-tarjeta,
+.foro-respuestas {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #858b91;
+    font-size: 12px;
+}
+
+.foro-me-gusta-tarjeta i {
+    color: #df6b91;
+    font-size: 15px;
+}
+
+.foro-me-gusta-tarjeta.tiene-me-gusta i {
+    color: #dc477b;
 }
