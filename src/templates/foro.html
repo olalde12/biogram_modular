@@ -41,11 +41,7 @@
 
             <i class="fa-solid fa-magnifying-glass"></i>
 
-            <input
-                type="text"
-                placeholder="Buscar una pregunta..."
-                aria-label="Buscar una pregunta"
-            >
+            <input type="text" placeholder="Buscar una pregunta..." aria-label="Buscar una pregunta">
 
         </div>
 
@@ -175,12 +171,7 @@
 
             </div>
 
-            <button
-                type="button"
-                class="modal-foro-cerrar"
-                id="cerrarNuevaPregunta"
-                aria-label="Cerrar"
-            >
+            <button type="button" class="modal-foro-cerrar" id="cerrarNuevaPregunta" aria-label="Cerrar">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
@@ -189,7 +180,7 @@
 
         <!-- FORMULARIO -->
 
-        <form id="formNuevaPregunta">
+        <form id="formNuevaPregunta" novalidate>
 
             <!-- TÍTULO -->
 
@@ -199,14 +190,8 @@
                     Título de la pregunta
                 </label>
 
-                <input
-                    type="text"
-                    id="tituloPregunta"
-                    name="titulo"
-                    placeholder="Ej. ¿Cómo identificar una bacteria Gram negativa?"
-                    maxlength="150"
-                    required
-                >
+                <input type="text" id="tituloPregunta" name="titulo"
+                    placeholder="Ej. ¿Cómo identificar una bacteria Gram negativa?" maxlength="150" required>
 
                 <span class="campo-ayuda">
                     Escribe de forma clara y específica lo que quieres preguntar.
@@ -225,34 +210,30 @@
 
                 <div class="select-foro">
 
-                    <select
-                        id="categoriaPregunta"
-                        name="categoria"
-                        required
-                    >
+                    <select id="categoriaPregunta" name="categoria" required>
 
                         <option value="" disabled selected>
                             Selecciona una categoría
                         </option>
 
                         <option value="Bacteriología">
-                             Bacteriología
+                            Bacteriología
                         </option>
 
                         <option value="Laboratorio">
-                             Laboratorio
+                            Laboratorio
                         </option>
 
                         <option value="Microbiología">
-                             Microbiología
+                            Microbiología
                         </option>
 
                         <option value="Pruebas bioquímicas">
-                             Pruebas bioquímicas
+                            Pruebas bioquímicas
                         </option>
 
                         <option value="Estudio">
-                             Estudio
+                            Estudio
                         </option>
 
                     </select>
@@ -270,13 +251,9 @@
                     Describe tu pregunta
                 </label>
 
-                <textarea
-                    id="descripcionPregunta"
-                    name="descripcion"
+                <textarea id="descripcionPregunta" name="descripcion"
                     placeholder="Explica tu duda con todos los detalles que puedan ayudar a la comunidad..."
-                    maxlength="2000"
-                    required
-                ></textarea>
+                    maxlength="2000" required></textarea>
 
                 <div class="contador-caracteres">
 
@@ -295,18 +272,11 @@
 
             <div class="modal-foro-footer">
 
-                <button
-                    type="button"
-                    class="btn-modal-cancelar"
-                    id="cancelarNuevaPregunta"
-                >
+                <button type="button" class="btn-modal-cancelar" id="cancelarNuevaPregunta">
                     Cancelar
                 </button>
 
-                <button
-                    type="submit"
-                    class="btn-modal-publicar"
-                >
+                <button type="submit" class="btn-modal-publicar">
 
                     <i class="fa-solid fa-paper-plane"></i>
 
@@ -345,19 +315,11 @@
 
         <div class="confirmacion-botones">
 
-            <button
-                type="button"
-                class="btn-modal-cancelar"
-                id="cancelarEliminar"
-            >
+            <button type="button" class="btn-modal-cancelar" id="cancelarEliminar">
                 Cancelar
             </button>
 
-            <button
-                type="button"
-                class="btn-eliminar-confirmar"
-                id="confirmarEliminar"
-            >
+            <button type="button" class="btn-eliminar-confirmar" id="confirmarEliminar">
                 Eliminar
             </button>
 
@@ -367,16 +329,98 @@
 
 </div>
 
+<!-- ======================================================
+     MODAL PARA EDITAR UNA PUBLICACIÓN
+     ====================================================== -->
+
+<div class="modal-foro modal-editar-publicacion" id="modalEditarPublicacion" aria-hidden="true">
+    <div class="modal-foro-contenido" role="dialog" aria-modal="true" aria-labelledby="tituloModalEditar">
+        <div class="modal-foro-header">
+            <div>
+                <span class="modal-foro-etiqueta">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    EDITAR PUBLICACIÓN
+                </span>
+
+                <h2 id="tituloModalEditar">Editar pregunta</h2>
+
+                <p>Actualiza los detalles de tu publicación.</p>
+            </div>
+
+            <button type="button" class="modal-foro-cerrar" id="cerrarModalEditar" aria-label="Cerrar edición">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form id="formEditarPublicacion">
+            <div class="campo-foro">
+                <label for="editarTitulo">Título de la pregunta</label>
+
+                <input type="text" id="editarTitulo" maxlength="120" placeholder="Escribe el título de tu pregunta"
+                    required />
+            </div>
+
+            <div class="campo-foro">
+
+                <label for="editarCategoria">
+                    Categoría
+                </label>
+
+                <div class="select-foro">
+
+                    <select id="editarCategoria" required>
+                        <option value="" disabled>
+                            Selecciona una categoría
+                        </option>
+
+                        <option value="Bacteriología">Bacteriología</option>
+                        <option value="Laboratorio">Laboratorio</option>
+                        <option value="Microbiología">Microbiología</option>
+                        <option value="Pruebas bioquímicas">Pruebas bioquímicas</option>
+                        <option value="Estudio">Estudio</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="campo-foro">
+                <label for="editarDescripcion">Descripción</label>
+
+                <textarea id="editarDescripcion" maxlength="2000" placeholder="Explica tu pregunta con más detalle..."
+                    required></textarea>
+
+                <span class="campo-ayuda">
+                    Explica tu duda de forma clara para que la comunidad
+                    pueda ayudarte.
+                </span>
+            </div>
+
+            <div class="modal-foro-footer">
+                <button type="button" class="btn-modal-cancelar" id="cancelarModalEditar">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="btn-modal-publicar">
+                    <i class="fa-solid fa-check"></i>
+                    Guardar cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Contenedor de notificaciones personalizadas -->
+<div id="foroNotificaciones" class="foro-notificaciones" aria-live="polite" aria-atomic="true"></div>
+
 <!-- =====================================================
      MODAL VER PUBLICACIÓN Y COMENTARIOS
 ====================================================== -->
 
 <div class="modal-foro modal-publicacion" id="modalPublicacion" aria-hidden="true">
 
-    <div class="modal-foro-contenido modal-publicacion-contenido"
-         role="dialog"
-         aria-modal="true"
-         aria-labelledby="publicacionTitulo">
+    <div class="modal-foro-contenido modal-publicacion-contenido" role="dialog" aria-modal="true"
+        aria-labelledby="publicacionTitulo">
 
         <div class="modal-foro-header">
 
@@ -391,10 +435,7 @@
                 <p id="publicacionAutor">Publicado por un usuario</p>
             </div>
 
-            <button type="button"
-                    class="modal-foro-cerrar"
-                    id="cerrarPublicacion"
-                    aria-label="Cerrar publicación">
+            <button type="button" class="modal-foro-cerrar" id="cerrarPublicacion" aria-label="Cerrar publicación">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
@@ -410,9 +451,7 @@
 
             <div class="publicacion-acciones">
 
-                <button type="button"
-                        class="foro-accion-btn"
-                        id="btnMeGusta">
+                <button type="button" class="foro-accion-btn" id="btnMeGusta">
                     <i class="fa-regular fa-heart"></i>
                     <span id="textoMeGusta">Me gusta</span>
                     <span id="cantidadMeGusta">0</span>
@@ -420,16 +459,12 @@
 
                 <div id="accionesPublicacionPropia" hidden>
 
-                    <button type="button"
-                            class="foro-accion-btn"
-                            id="btnEditarPublicacion">
+                    <button type="button" class="foro-accion-btn" id="btnEditarPublicacion">
                         <i class="fa-solid fa-pen"></i>
                         Editar
                     </button>
 
-                    <button type="button"
-                            class="foro-accion-btn foro-accion-eliminar"
-                            id="btnEliminarPublicacion">
+                    <button type="button" class="foro-accion-btn foro-accion-eliminar" id="btnEliminarPublicacion">
                         <i class="fa-solid fa-trash"></i>
                         Eliminar
                     </button>
@@ -460,12 +495,8 @@
                         Escribe tu comentario
                     </label>
 
-                    <textarea id="textoComentario"
-                              name="comentario"
-                              rows="3"
-                              maxlength="1000"
-                              placeholder="Comparte tus conocimientos..."
-                              required></textarea>
+                    <textarea id="textoComentario" name="comentario" rows="3" maxlength="1000"
+                        placeholder="Comparte tus conocimientos..." required></textarea>
 
                     <button type="submit" class="btn-modal-publicar">
                         <i class="fa-solid fa-paper-plane"></i>

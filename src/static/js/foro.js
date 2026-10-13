@@ -53,6 +53,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const cancelarEliminar = document.getElementById("cancelarEliminar");
     const confirmarEliminar = document.getElementById("confirmarEliminar");
 
+    // Modal para editar una publicación.
+    const modalEditarPublicacion =
+        document.getElementById("modalEditarPublicacion");
+
+    const formEditarPublicacion =
+        document.getElementById("formEditarPublicacion");
+
+    const editarTitulo =
+        document.getElementById("editarTitulo");
+
+    const editarCategoria =
+        document.getElementById("editarCategoria");
+
+    const editarDescripcion =
+        document.getElementById("editarDescripcion");
+
+    const cerrarModalEditar =
+        document.getElementById("cerrarModalEditar");
+
+    const cancelarModalEditar =
+        document.getElementById("cancelarModalEditar");
+
+    // Contenedor de los avisos personalizados.
+    const foroNotificaciones =
+        document.getElementById("foroNotificaciones");
 
     // ======================================================
     // 2. ESTADO TEMPORAL DEL FRONTEND
@@ -123,6 +148,80 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // ======================================================
+    // NOTIFICACIONES PERSONALIZADAS
+    // ======================================================
+
+    function mostrarNotificacion(mensaje, tipo = "exito", titulo = "") {
+
+        // Si el contenedor no existe, no hacemos nada.
+        if (!foroNotificaciones) return;
+
+        const notificacion = document.createElement("div");
+        notificacion.className = `foro-notificacion ${tipo}`;
+
+        // Icono según el tipo de mensaje.
+        const icono = document.createElement("div");
+        icono.className = "foro-notificacion-icono";
+
+        const elementoIcono = document.createElement("i");
+
+        if (tipo === "error") {
+            elementoIcono.className = "fa-solid fa-circle-exclamation";
+        } else if (tipo === "info") {
+            elementoIcono.className = "fa-solid fa-circle-info";
+        } else {
+            elementoIcono.className = "fa-solid fa-check";
+        }
+
+        icono.appendChild(elementoIcono);
+
+        // Título y descripción del aviso.
+        const contenido = document.createElement("div");
+        contenido.className = "foro-notificacion-contenido";
+
+        const encabezado = document.createElement("strong");
+        encabezado.textContent = titulo || (
+            tipo === "error"
+                ? "Revisa los datos"
+                : tipo === "info"
+                    ? "Información"
+                    : "¡Listo!"
+        );
+
+        const texto = document.createElement("p");
+        texto.textContent = mensaje;
+
+        contenido.append(encabezado, texto);
+
+        // Botón para cerrar el aviso manualmente.
+        const botonCerrar = document.createElement("button");
+        botonCerrar.type = "button";
+        botonCerrar.className = "foro-notificacion-cerrar";
+        botonCerrar.setAttribute("aria-label", "Cerrar notificación");
+        botonCerrar.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+        botonCerrar.addEventListener("click", () => {
+            notificacion.remove();
+        });
+
+        notificacion.append(icono, contenido, botonCerrar);
+        foroNotificaciones.appendChild(notificacion);
+
+        // El aviso desaparece automáticamente después de 4 segundos.
+        setTimeout(() => {
+
+            if (!notificacion.isConnected) return;
+
+            notificacion.style.animation =
+                "desaparecerNotificacion 0.25s ease forwards";
+
+            setTimeout(() => {
+                notificacion.remove();
+            }, 250);
+
+        }, 4000);
+    }
 
     // ======================================================
     // 4. MODAL NUEVA PREGUNTA
@@ -193,6 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const categoria = document.createElement("div");
         categoria.className = "foro-card-categoria";
+        categoria.dataset.categoria = datos.categoria || "General";
 
         const iconoCategoria = document.createElement("i");
         iconoCategoria.className = "fa-solid fa-bacterium";
@@ -677,7 +777,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // 10. EDITAR UNA PUBLICACIÓN
     // ======================================================
 
+    // Abrir el formulario de edición.
     if (btnEditarPublicacion) {
+
         btnEditarPublicacion.addEventListener("click", () => {
 
             if (!tarjetaActual || !esPropia(tarjetaActual)) return;
@@ -690,44 +792,156 @@ document.addEventListener("DOMContentLoaded", () => {
                 ".foro-card-descripcion"
             );
 
-            const nuevoTitulo = prompt(
-                "Escribe el nuevo título:",
-                tituloTarjeta.textContent
+            // Cargar el título y la descripción actuales.
+            editarTitulo.value = tituloTarjeta.textContent.trim();
+            editarDescripcion.value = descripcionTarjeta.textContent.trim();
+
+            /*
+             * Cargar la categoría actual.
+             * Para esto necesitamos que la tarjeta tenga
+             * un elemento identificable para su categoría.
+             */
+            const categoriaTarjeta = tarjetaActual.querySelector(
+                "[data-categoria]"
             );
 
-            if (nuevoTitulo === null) return;
+            /*if (categoriaTarjeta) {
+                editarCategoria.value =
+                    categoriaTarjeta.dataset.categoria ||
+                    categoriaTarjeta.textContent.trim();
+            }  PENDIENTEEEE */
 
-            if (!nuevoTitulo.trim()) {
-                alert("El título no puede quedar vacío.");
-                return;
-            }
+            if (categoriaTarjeta) {
+                editarCategoria.value = categoriaTarjeta.dataset.categoria;
+            }    
 
-            const nuevaDescripcion = prompt(
-                "Escribe la nueva descripción:",
-                descripcionTarjeta.textContent
-            );
+            // Cerrar el detalle y abrir el modal de edición.
+            cerrarModal(modalPublicacion);
+            abrirModal(modalEditarPublicacion);
 
-            if (nuevaDescripcion === null) return;
-
-            if (!nuevaDescripcion.trim()) {
-                alert("La descripción no puede quedar vacía.");
-                return;
-            }
-
-            tituloTarjeta.textContent = nuevoTitulo.trim();
-            descripcionTarjeta.textContent = nuevaDescripcion.trim();
-
-            publicacionTitulo.textContent = nuevoTitulo.trim();
-            publicacionDescripcion.textContent = nuevaDescripcion.trim();
-
-            alert("La publicación se actualizó en esta vista.");
+            editarTitulo.focus();
         });
     }
 
+    // Cerrar la edición y regresar al detalle.
+    function cancelarEdicion() {
+
+        cerrarModal(modalEditarPublicacion);
+
+        if (tarjetaActual && tarjetaActual.isConnected) {
+            abrirModal(modalPublicacion);
+        }
+    }
+
+    if (cerrarModalEditar) {
+        cerrarModalEditar.addEventListener("click", cancelarEdicion);
+    }
+
+    if (cancelarModalEditar) {
+        cancelarModalEditar.addEventListener("click", cancelarEdicion);
+    }
+
+    // Cerrar al hacer clic fuera del modal.
+    if (modalEditarPublicacion) {
+
+        modalEditarPublicacion.addEventListener("click", (evento) => {
+
+            if (evento.target === modalEditarPublicacion) {
+                cancelarEdicion();
+            }
+        });
+    }
+
+    // Guardar los cambios.
+    if (formEditarPublicacion) {
+
+        formEditarPublicacion.addEventListener("submit", (evento) => {
+
+            evento.preventDefault();
+
+            if (!tarjetaActual || !tarjetaActual.isConnected) {
+
+                mostrarNotificacion(
+                    "No se encontró la publicación que quieres editar.",
+                    "error"
+                );
+
+                return;
+            }
+
+            const nuevoTitulo = editarTitulo.value.trim();
+            const nuevaCategoria = editarCategoria.value;
+            const nuevaDescripcion = editarDescripcion.value.trim();
+
+            // Validar los tres campos.
+            if (!nuevoTitulo || !nuevaCategoria || !nuevaDescripcion) {
+
+                mostrarNotificacion(
+                    "Completa el título, la categoría y la descripción.",
+                    "error",
+                    "Faltan algunos datos"
+                );
+
+                return;
+            }
+
+            // Localizar el título y la descripción de la tarjeta.
+            const tituloTarjeta = tarjetaActual.querySelector(
+                ".foro-card-contenido h3"
+            );
+
+            const descripcionTarjeta = tarjetaActual.querySelector(
+                ".foro-card-descripcion"
+            );
+
+            // Actualizar el título y la descripción.
+            tituloTarjeta.textContent = nuevoTitulo;
+            descripcionTarjeta.textContent = nuevaDescripcion;
+
+            // Guardar la categoría en la tarjeta, si existe el elemento.
+            const categoriaTarjeta = tarjetaActual.querySelector(
+                "[data-categoria]"
+            );
+
+            if (categoriaTarjeta) {
+
+                // Guardar la nueva categoría.
+                categoriaTarjeta.dataset.categoria = nuevaCategoria;
+
+                // Conservar el icono y actualizar solamente el texto.
+                const iconoCategoria = categoriaTarjeta.querySelector("i");
+
+                categoriaTarjeta.textContent = "";
+
+                if (iconoCategoria) {
+                    categoriaTarjeta.appendChild(iconoCategoria);
+                    categoriaTarjeta.appendChild(
+                        document.createTextNode(" " + nuevaCategoria)
+                    );
+                } else {
+                    categoriaTarjeta.textContent = nuevaCategoria;
+                }
+            }
+
+            // Actualizar el detalle de la publicación.
+            publicacionTitulo.textContent = nuevoTitulo;
+            publicacionDescripcion.textContent = nuevaDescripcion;
+
+            // Cerrar la edición y volver al detalle.
+            cerrarModal(modalEditarPublicacion);
+            abrirModal(modalPublicacion);
+
+            mostrarNotificacion(
+                "Los cambios se actualizaron correctamente en esta vista.",
+                "exito",
+                "¡Publicación actualizada!"
+            );
+        });
+    }
 
     // ======================================================
     // 11. ELIMINAR UNA PUBLICACIÓN
-    //     Reutilizamos el modal que ya existe en foro.html.
+    //     Reutilizamos el modal que ya existe en foro.html
     // ======================================================
 
     if (btnEliminarPublicacion) {
@@ -797,6 +1011,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        if (modalEditarPublicacion?.classList.contains("activo")) {
+            cancelarEdicion();
+            return;
+        }
+
         if (modalPublicacion?.classList.contains("activo")) {
             cerrarModal(modalPublicacion);
             tarjetaActual = null;
@@ -818,12 +1037,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
             evento.preventDefault();
 
-            const titulo = tituloPregunta.value.trim();
-            const categoria = categoriaPregunta.value;
-            const contenido = descripcionPregunta.value.trim();
+            //const titulo = tituloPregunta.value.trim();
+            //const categoria = categoriaPregunta.value;
+            //const contenido = descripcionPregunta.value.trim();
 
+            // Obtener los valores del formulario
+            const titulo = document.getElementById("tituloPregunta").value.trim();
+            const categoria = document.getElementById("categoriaPregunta").value;
+            const contenido = document.getElementById("descripcionPregunta").value.trim();
+
+            // Comprobar que ninguno de los campos esté vacío
             if (!titulo || !categoria || !contenido) {
-                alert("Completa todos los campos antes de publicar.");
+                mostrarNotificacion(
+                    "Completa todos los campos antes de publicar.",
+                    "error",
+                    "Faltan algunos datos"
+                );
                 return;
             }
 
@@ -851,7 +1080,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             cerrarModal(modalNuevaPregunta);
 
-            alert("La pregunta se agregó a la vista del foro.");
+            mostrarNotificacion(
+                "Tu pregunta se publicó correctamente en el foro.",
+                "exito",
+                "¡Publicación creada!"
+            );
         });
     }
 
