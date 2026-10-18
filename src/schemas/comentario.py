@@ -11,6 +11,7 @@ class Comentario(ComentarioBase):
     fecha_creacion: date
     id_publicacion: int
     id_usuario: int
+    autor: str
 
     class Config:
         from_attributes: True

@@ -15,6 +15,7 @@ class Publicacion(PublicacionBase):
     id_usuario: int
     autor: str
     avatar: Optional[str] = None
+    respuestas: int
 
     class Config:
         from_attributes: True

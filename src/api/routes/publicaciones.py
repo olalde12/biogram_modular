@@ -24,7 +24,8 @@ def read_publicaciones(db: Session = Depends(get_db)):
             "fecha_creacion": publicacion.fecha_creacion,
             "id_usuario": publicacion.id_usuario,
             "autor": nombre,
-            "avatar": avatar
+            "avatar": avatar,
+            "respuestas": len(publicacion.comentarios)
         })
     return resultado
 
@@ -73,7 +74,8 @@ def read_publicacion_by_title(categoria: str, db: Session = Depends(get_db)):
             "fecha_creacion": publicacion.fecha_creacion,
             "id_usuario": publicacion.id_usuario,
             "autor": nombre,
-            "avatar": avatar
+            "avatar": avatar,
+            "respuestas": len(publicacion.comentarios)
         })
     return resultado
 
@@ -135,4 +137,15 @@ def delete_publicacion(id_publicacion: int, id_usuario: int, db: Session = Depen
     ).first())
     if db_publicacion is None:
         raise HTTPException(status_code=404, detail='Publicacion no encontrada')
-    return publicacion_crud.delete_publicacion(db=db, id_publicacion=id_publicacion)
+    datos_publicacion = {
+        "id_publicacion": db_publicacion.id_publicacion,
+        "titulo": db_publicacion.titulo,
+        "contenido": db_publicacion.contenido,
+        "categoria": db_publicacion.categoria,
+        "fecha_creacion": db_publicacion.fecha_creacion,
+        "id_usuario": db_publicacion.id_usuario,
+        "autor": db_usuario.nombre,
+        "avatar": getattr(db_usuario, "avatar", None)
+    }
+    publicacion_crud.delete_publicacion(db=db, id_publicacion=id_publicacion)
+    return datos_publicacion
