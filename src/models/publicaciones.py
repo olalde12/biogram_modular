@@ -15,6 +15,7 @@ class Publicaciones(Base):
 
     usuario_publicacion = relationship('Usuarios', back_populates='publicaciones')
     comentarios = relationship('Comentarios', back_populates='publicacion')
+    likes = relationship("Likes", back_populates='publicacion')
 
     @property
     def respuestas(self):

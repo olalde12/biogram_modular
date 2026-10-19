@@ -3,7 +3,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import List
 from src.api.deps import get_db
-from src.models import Publicaciones, Usuarios
+from src.models import Publicaciones, Usuarios, Likes
 from src.crud import usuario as usuario_crud
 from src.crud import publicacion as publicacion_crud
 from src.schemas import publicacion as publicacion_schema
@@ -16,6 +16,9 @@ def read_publicaciones(db: Session = Depends(get_db)):
     db_publicaciones = (db.query(Publicaciones, Usuarios.nombre, Usuarios.avatar).join(Usuarios, Publicaciones.id_usuario == Usuarios.id_usuario).all())
     resultado = []
     for publicacion, nombre, avatar in db_publicaciones:
+        total_likes = db.query(func.count(Likes.id_likes)).filter(
+                    Likes.id_publicacion == publicacion.id_publicacion
+                ).scalar() or 0
         resultado.append({
             "id_publicacion": publicacion.id_publicacion,
             "titulo": publicacion.titulo,
@@ -25,6 +28,7 @@ def read_publicaciones(db: Session = Depends(get_db)):
             "id_usuario": publicacion.id_usuario,
             "autor": nombre,
             "avatar": avatar,
+            "likes": total_likes,
             "respuestas": len(publicacion.comentarios)
         })
     return resultado
@@ -66,6 +70,9 @@ def read_publicacion_by_title(categoria: str, db: Session = Depends(get_db)):
     ).all())
     resultado = []
     for publicacion, nombre, avatar in db_publicaciones:
+        total_likes = db.query(func.count(Likes.id_likes)).filter(
+            Likes.id_publicacion == publicacion.id_publicacion
+        ).scalar() or 0
         resultado.append({
             "id_publicacion": publicacion.id_publicacion,
             "titulo": publicacion.titulo,
@@ -75,6 +82,7 @@ def read_publicacion_by_title(categoria: str, db: Session = Depends(get_db)):
             "id_usuario": publicacion.id_usuario,
             "autor": nombre,
             "avatar": avatar,
+            "likes": total_likes,
             "respuestas": len(publicacion.comentarios)
         })
     return resultado
@@ -149,3 +157,90 @@ def delete_publicacion(id_publicacion: int, id_usuario: int, db: Session = Depen
     }
     publicacion_crud.delete_publicacion(db=db, id_publicacion=id_publicacion)
     return datos_publicacion
+
+
+# Consultar el total y saber si un usuario ya dio Me gusta
+@router.get("/{id_publicacion}/likes")
+def consultar_me_gusta(
+    id_publicacion: int,
+    id_usuario: int,
+    db: Session = Depends(get_db)
+):
+    publicacion = db.query(Publicaciones).filter(
+        Publicaciones.id_publicacion == id_publicacion
+    ).first()
+
+    if not publicacion:
+        raise HTTPException(
+            status_code=404,
+            detail="Publicación no encontrada"
+        )
+
+    total = db.query(func.count(Likes.id_likes)).filter(
+        Likes.id_publicacion == id_publicacion
+    ).scalar() or 0
+
+    reaccion = db.query(Likes).filter(
+        Likes.id_publicacion == id_publicacion,
+        Likes.id_usuario == id_usuario
+    ).first()
+
+    return {
+        "likes": total,
+        "liked": reaccion is not None
+    }
+
+
+# Dar o quitar Me gusta
+@router.post("/{id_publicacion}/likes")
+def alternar_me_gusta(
+    id_publicacion: int,
+    id_usuario: int,
+    db: Session = Depends(get_db)
+):
+    publicacion = db.query(Publicaciones).filter(
+        Publicaciones.id_publicacion == id_publicacion
+    ).first()
+
+    if not publicacion:
+        raise HTTPException(
+            status_code=404,
+            detail="Publicación no encontrada"
+        )
+
+    usuario = db.query(Usuarios).filter(
+        Usuarios.id_usuario == id_usuario
+    ).first()
+
+    if not usuario or usuario.estado is False:
+        raise HTTPException(
+            status_code=404,
+            detail="Usuario no encontrado"
+        )
+
+    reaccion = db.query(Likes).filter(
+        Likes.id_publicacion == id_publicacion,
+        Likes.id_usuario == id_usuario
+    ).first()
+
+    if reaccion:
+        db.delete(reaccion)
+        liked = False
+    else:
+        nueva_reaccion = Likes(
+            id_publicacion=id_publicacion,
+            id_usuario=id_usuario
+        )
+        db.add(nueva_reaccion)
+        liked = True
+
+    db.commit()
+
+    total = db.query(func.count(Likes.id_likes)).filter(
+        Likes.id_publicacion == id_publicacion
+    ).scalar() or 0
+
+    return {
+        "likes": total,
+        "liked": liked
+    }

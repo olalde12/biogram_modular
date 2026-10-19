@@ -587,6 +587,7 @@ function esPropia(tarjeta) {
         accionesPublicacionPropia.hidden = !esPropia(tarjeta);
 
         actualizarMeGusta();
+        cargarEstadoMeGusta(tarjeta);
         cargarComentarios(obtenerId(tarjetaActual));
         mostrarComentarios();
 
@@ -641,6 +642,40 @@ function esPropia(tarjeta) {
     // 8. ME GUSTA
     // ======================================================
 
+    async function cargarEstadoMeGusta(tarjeta) {
+    const idPublicacion = obtenerId(tarjeta);
+
+    const idUsuario = Number(
+        document.querySelector(".foro-pagina")?.dataset.usuario
+    );
+
+    if (!idPublicacion || !Number.isInteger(idUsuario) || idUsuario <= 0) {
+        return;
+    }
+
+    try {
+        const respuesta = await fetch(
+            `http://127.0.0.1:8000/publicaciones/${idPublicacion}/me-gusta?id_usuario=${idUsuario}`
+        );
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudo consultar el estado de Me gusta");
+        }
+
+        const datos = await respuesta.json();
+
+        // Evita actualizar otra publicación si el usuario cambió de modal.
+        if (tarjetaActual !== tarjeta) return;
+
+        tarjeta.dataset.likes = String(datos.likes);
+        tarjeta.dataset.liked = String(datos.liked);
+
+        actualizarMeGusta();
+    } catch (error) {
+        console.error("Error al consultar Me gusta:", error);
+    }
+}
+
     function actualizarMeGusta() {
 
         // Comprobamos que haya una publicación abierta.
@@ -648,14 +683,9 @@ function esPropia(tarjeta) {
 
         const id = obtenerId(tarjetaActual);
 
-        // Si todavía no existe una reacción, comienza desactivada.
-        if (!reacciones.has(id)) {
-            reacciones.set(id, false);
-        }
-
         // Obtenemos la cantidad de Me gusta y el estado del usuario.
         const total = Number(tarjetaActual.dataset.likes) || 0;
-        const activo = reacciones.get(id);
+        const activo = tarjetaActual.dataset.liked === "true";
 
         // Actualizamos el contador y el texto dentro del modal.
         if (cantidadMeGusta) {
@@ -716,36 +746,60 @@ function esPropia(tarjeta) {
 
     // Evento del botón Me gusta dentro del modal.
     if (btnMeGusta) {
+    btnMeGusta.addEventListener("click", async () => {
+        if (!tarjetaActual) return;
 
-        btnMeGusta.addEventListener("click", () => {
+        const tarjeta = tarjetaActual;
+        const idPublicacion = obtenerId(tarjeta);
 
-            if (!tarjetaActual) return;
+        const idUsuario = Number(
+            document.querySelector(".foro-pagina")?.dataset.usuario
+        );
 
-            const id = obtenerId(tarjetaActual);
-            const activo = reacciones.get(id) || false;
+        if (!idPublicacion || !Number.isInteger(idUsuario) || idUsuario <= 0) {
+            mostrarNotificacion(
+                "No se pudo identificar al usuario o la publicación.",
+                "error"
+            );
+            return;
+        }
 
-            let total = Number(tarjetaActual.dataset.likes) || 0;
+        // Evita solicitudes repetidas mientras se procesa la anterior.
+        if (btnMeGusta.disabled) return;
 
-            // Si ya había dado Me gusta, lo quitamos.
-            if (activo) {
+        btnMeGusta.disabled = true;
 
-                total = Math.max(0, total - 1);
-                reacciones.set(id, false);
+        try {
+            const respuesta = await fetch(
+                `http://127.0.0.1:8000/publicaciones/${idPublicacion}/likes?id_usuario=${idUsuario}`,
+                { method: "POST" }
+            );
 
-            } else {
-
-                // Si no había dado Me gusta, lo agregamos.
-                total++;
-                reacciones.set(id, true);
+            if (!respuesta.ok) {
+                const error = await respuesta.json().catch(() => ({}));
+                throw new Error(
+                    error.detail || "No se pudo actualizar el Me gusta."
+                );
             }
 
-            // Guardamos la nueva cantidad en la tarjeta.
-            tarjetaActual.dataset.likes = String(total);
+            const datos = await respuesta.json();
 
-            // Actualizamos el modal y la tarjeta exterior.
+            tarjeta.dataset.likes = String(datos.likes);
+            tarjeta.dataset.liked = String(datos.liked);
+
             actualizarMeGusta();
-        });
-    }
+        } catch (error) {
+            console.error("Error al actualizar Me gusta:", error);
+
+            mostrarNotificacion(
+                error.message || "No se pudo guardar el Me gusta.",
+                "error"
+            );
+        } finally {
+            btnMeGusta.disabled = false;
+        }
+    });
+}
 
     // ======================================================
     // 9. COMENTARIOS
@@ -832,42 +886,74 @@ function esPropia(tarjeta) {
         });
     }
 
-    if (formComentario) {
-        formComentario.addEventListener("submit", (evento) => {
+if (formComentario) {
+    formComentario.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
 
-            evento.preventDefault();
+        const texto = textoComentario.value.trim();
 
-            if (!tarjetaActual) return;
+        if (!texto) {
+            console.log("hola")
+            mostrarNotificacion(
+                "Comentario vacío.",
+                "error",
+                "Faltan algunos datos"
+            );
+            return;
+        }
 
-            const texto = textoComentario.value.trim();
+        if (!tarjetaActual) return;
 
-            if (!texto) {
-                textoComentario.focus();
-                return;
+        const idPublicacion = obtenerId(tarjetaActual);
+
+        try {
+            const respuesta = await fetch(
+                "http://127.0.0.1:8000/comentarios/create/",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id_publicacion: Number(idPublicacion),
+                        id_usuario: Number(document.querySelector(".foro-pagina")?.dataset.usuario),
+                        contenido: texto
+                    })
+                }
+            );
+
+            if (!respuesta.ok) {
+                const error = await respuesta.text();
+                throw new Error(error);
             }
 
-            obtenerComentariosActuales().push({
-                autor: usuarioActual,
-                texto: texto
-            });
+            // Limpiar el campo y cargar los comentarios guardados
+            textoComentario.value = "";
 
-            mostrarComentarios();
+            await cargarComentarios(idPublicacion);
 
-            // Actualizamos también el contador de respuestas de la tarjeta.
+            // Actualizar el contador de respuestas de la tarjeta
             const contadorTarjeta =
                 tarjetaActual.querySelector(".foro-respuestas span");
 
             if (contadorTarjeta) {
                 const total = obtenerComentariosActuales().length;
-                contadorTarjeta.textContent =
-                    `${total} respuestas`;
+                contadorTarjeta.textContent = `${total} respuestas`;
             }
 
-            textoComentario.value = "";
             textoComentario.focus();
-        });
-    }
 
+            mostrarNotificacion(
+                "Comentario añadido con éxito.",
+                "info",
+                "Comentario publicado"
+            );
+
+        } catch (error) {
+            console.error("Error al publicar comentario:", error);
+        }
+    });
+} 
 
     // ======================================================
     // 10. EDITAR UNA PUBLICACIÓN

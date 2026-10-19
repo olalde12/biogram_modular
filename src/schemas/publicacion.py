@@ -16,6 +16,7 @@ class Publicacion(PublicacionBase):
     autor: str
     avatar: Optional[str] = None
     respuestas: int
+    likes: int = 0
 
     class Config:
         from_attributes: True
