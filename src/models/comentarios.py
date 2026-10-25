@@ -15,6 +15,7 @@ class Comentarios(Base):
     publicacion = relationship('Publicaciones', back_populates='comentarios')
     usuario_comentario = relationship('Usuarios', back_populates='comentarios_usuario')
 
+    # Se utiliza la relacion para obtener el nombre
     @property
     def autor(self):
         return self.usuario_comentario.nombre

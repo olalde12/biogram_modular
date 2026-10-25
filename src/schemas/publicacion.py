@@ -8,7 +8,7 @@ class PublicacionBase(BaseModel):
     contenido: str
     categoria: str
 
-# Se agrega el identificador y la fecha a los campos
+# Se agrega los campos necesarios para mostrar una publicacion
 class Publicacion(PublicacionBase):
     id_publicacion: int
     fecha_creacion: date

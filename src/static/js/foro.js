@@ -923,8 +923,18 @@ if (formComentario) {
             );
 
             if (!respuesta.ok) {
-                const error = await respuesta.text();
-                throw new Error(error);
+                const errorData = await respuesta.json();
+                if (respuesta.status === 400) {
+                    // Contenido grosero o inapropiado
+                    mostrarNotificacion(
+                        "El contenido no cumple las normas de la comunidad.",
+                        "error",
+                        "Contenido inapropiado"
+                    );
+                } else {
+                    console.error("Error en la respuesta:", errorData);
+                }
+                return;
             }
 
             // Limpiar el campo y cargar los comentarios guardados
@@ -984,18 +994,27 @@ if (formComentario) {
              * un elemento identificable para su categoría.
              */
             const categoriaTarjeta = tarjetaActual.querySelector(
-                "[data-categoria]"
-            );
+    ".foro-card-categoria"
+);
 
-            /*if (categoriaTarjeta) {
-                editarCategoria.value =
-                    categoriaTarjeta.dataset.categoria ||
-                    categoriaTarjeta.textContent.trim();
-            }  PENDIENTEEEE */
+const categoriaActual = categoriaTarjeta
+    ? categoriaTarjeta.dataset.categoria.trim()
+    : "";
 
-            if (categoriaTarjeta) {
-                editarCategoria.value = categoriaTarjeta.dataset.categoria;
-            }    
+const opcionCategoria = [...editarCategoria.options].find(
+    opcion =>
+        opcion.value.trim().toLowerCase() ===
+        categoriaActual.toLowerCase()
+);
+
+if (opcionCategoria) {
+    editarCategoria.value = opcionCategoria.value;
+} else {
+    console.warn(
+        "No se encontró una opción para la categoría:",
+        categoriaActual
+    );
+} 
 
             // Cerrar el detalle y abrir el modal de edición.
             cerrarModal(modalPublicacion);
@@ -1092,12 +1111,34 @@ if (formEditarPublicacion) {
             );
 
             if (!respuesta.ok) {
-                const error = await respuesta.json().catch(() => ({}));
+    const errorData = await respuesta.json();
 
-                throw new Error(
-                    error.detail || `Error HTTP: ${respuesta.status}`
-                );
-            }
+    console.error("Error al editar la publicación:", errorData);
+
+    if (respuesta.status === 400) {
+        mostrarNotificacion(
+            errorData.detail ||
+                "La publicación contiene contenido inapropiado.",
+            "error",
+            "Contenido inapropiado"
+        );
+    } else if (respuesta.status === 409) {
+        mostrarNotificacion(
+            errorData.detail ||
+                "Ya existe una publicación con ese contenido.",
+            "error",
+            "Publicación duplicada"
+        );
+    } else {
+        mostrarNotificacion(
+            errorData.detail || "No se pudo editar la publicación.",
+            "error",
+            "Error"
+        );
+    }
+
+    return;
+}
 
             
             // Actualizar los datos de la tarjeta.
@@ -1369,7 +1410,23 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error("Error en la respuesta:", errorData);
+                if (response.status === 409) {
+                    // Publicación duplicada
+                    mostrarNotificacion(
+                        "Esta publicación ya existe.",
+                        "error",
+                        "Publicación duplicada"
+                    );
+                } else if (response.status === 400) {
+                    // Contenido grosero o inapropiado
+                    mostrarNotificacion(
+                        "El contenido no cumple las normas de la comunidad.",
+                        "error",
+                        "Contenido inapropiado"
+                    );
+                } else {
+                    console.error("Error en la respuesta:", errorData);
+                }
                 return;
             } else {
                 console.log("Hecho");

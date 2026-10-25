@@ -115,7 +115,6 @@
     box-shadow: 0 0 0 3px rgba(57, 175, 227, 0.10);
 }
 
-
 .foro-sin-resultados {
     display: flex;
     flex-direction: column;
@@ -142,7 +141,6 @@
     margin: 0;
     font-size: 14px;
 }
-
 
 /* Botón nueva pregunta */
 

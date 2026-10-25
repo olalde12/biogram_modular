@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from src.db.base_class import Base
 
+# Definicion del modelo likes
 class Likes(Base):
     __tablename__ = "likes"
     id_likes = Column(Integer, primary_key=True, index=True)
