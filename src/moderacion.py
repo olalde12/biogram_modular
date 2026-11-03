@@ -9,8 +9,7 @@ from src.core.config import settings
 cliente = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 # Palbras que no pueden usarse porque son consideradas insultos
-PALABRAS_PROHIBIDAS = {"pendejo", "pendeja", "puto", "puta", "mierda", "verga", "cabron", "cabrona", "imbecil",}
-
+PALABRAS_PROHIBIDAS = {"pendejo", "pendeja", "puto", "puta", "mierda", "verga", "cabron", "cabrona", "imbecil","estupido","estupida","htpm","putisima","idiota","zorra","tarado","tarada","hdp","pito","pucha","puchaina","coño", "alv","putazo","putaso"}
 
 def normalizar(texto: str) -> str:
     # Hacer que el texto sea en minusculas

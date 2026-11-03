@@ -54,27 +54,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // Contenedor de los avisos personalizados
     const foroNotificaciones = document.getElementById("foroNotificaciones");
 
-    // ======================================================
-    // 2. ESTADO TEMPORAL DEL FRONTEND
-    // ======================================================
-
-    // Tarjeta que está abierta actualmente.
+    // Tarjeta que esta abierta actualmente
     let tarjetaActual = null;
 
-    // Tarjeta que se eliminará si se confirma la acción.
+    // Tarjeta que se eliminara si se confirma la accion
     let tarjetaPendienteEliminar = null;
 
-    // Comentarios organizados por identificador de publicación.
+    // Comentarios organizados por identificador de publicacion
     const comentarios = new Map();
 
-    // Datos temporales de reacciones.
+    // Datos temporales de reacciones
     const reacciones = new Map();
 
-    // Nombre de ejemplo mientras no conectemos la sesión real.
-    const usuarioActual = "Hannia";
-
-    // Convierte un texto a una versión segura para usar como texto.
-    // Para mostrar texto usamos textContent, no HTML del usuario.
+    // Convierte un texto a una version segura para usar como texto
     function obtenerTexto(elemento, selector) {
         const encontrado = elemento.querySelector(selector);
         return encontrado ? encontrado.textContent.trim() : "";
@@ -85,51 +77,42 @@ document.addEventListener("DOMContentLoaded", () => {
         return tarjeta?.dataset.preguntaId || null;
     }
 
-    // Comprueba si una publicación está marcada como propia.
+    // Comprueba si una publicacion esta marcada como propia
     function esPropia(tarjeta) {
         return tarjeta.dataset.propio === "true";
     }
 
-    // Abre un modal usando la clase que ya utiliza tu proyecto.
+    // Abre un modal usando la clase que ya utiliza tu proyecto
     function abrirModal(modal) {
         if (!modal) return;
-
         modal.classList.add("activo");
         modal.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
     }
 
-    // Cierra un modal y libera el desplazamiento si no queda otro abierto.
+    // Cierra un modal y libera el desplazamiento si no queda otro abierto
     function cerrarModal(modal) {
         if (!modal) return;
-
         modal.classList.remove("activo");
         modal.setAttribute("aria-hidden", "true");
-
         const quedaModalAbierto = document.querySelector(
             ".modal-foro.activo"
         );
-
         if (!quedaModalAbierto) {
             document.body.style.overflow = "";
         }
     }
 
-    // ======================================================
-    // NOTIFICACIONES PERSONALIZADAS
-    // ======================================================
-
+    // Notificaciones personalizadas
     function mostrarNotificacion(mensaje, tipo = "exito", titulo = "") {
-        // Si el contenedor no existe, no hacemos nada
         if (!foroNotificaciones) return;
         const notificacion = document.createElement("div");
         notificacion.className = `foro-notificacion ${tipo}`;
 
-        // Icono según el tipo de mensaje
+        // Icono segun el tipo de mensaje
         const icono = document.createElement("div");
         icono.className = "foro-notificacion-icono";
         const elementoIcono = document.createElement("i");
-
         if (tipo === "error") {
             elementoIcono.className = "fa-solid fa-circle-exclamation";
         } else if (tipo === "info") {
@@ -137,13 +120,11 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             elementoIcono.className = "fa-solid fa-check";
         }
-
         icono.appendChild(elementoIcono);
 
         // Título y descripción del aviso.
         const contenido = document.createElement("div");
         contenido.className = "foro-notificacion-contenido";
-
         const encabezado = document.createElement("strong");
         encabezado.textContent = titulo || (
             tipo === "error"
@@ -152,10 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     ? "Información"
                     : "¡Listo!"
         );
-
         const texto = document.createElement("p");
         texto.textContent = mensaje;
-
         contenido.append(encabezado, texto);
 
         // Boton para cerrar el aviso manualmenten
@@ -164,11 +143,9 @@ document.addEventListener("DOMContentLoaded", () => {
         botonCerrar.className = "foro-notificacion-cerrar";
         botonCerrar.setAttribute("aria-label", "Cerrar notificación");
         botonCerrar.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-
         botonCerrar.addEventListener("click", () => {
             notificacion.remove();
         });
-
         notificacion.append(icono, contenido, botonCerrar);
         foroNotificaciones.appendChild(notificacion);
 
@@ -221,26 +198,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ======================================================
-    // 5. CREAR UNA TARJETA DE PUBLICACIÓN
-    // ======================================================
-
-    
-function crearTarjeta(datos) {
-    const tarjeta = document.createElement("article");
-    tarjeta.className = "foro-card";
-
-    // ID real del autor de la publicación.
-    tarjeta.dataset.usuarioId = String(datos.id_usuario);
-
-    tarjeta.tabIndex = 0;
-
-    // Identificador de la publicación.
-    tarjeta.dataset.preguntaId = String(datos.id_publicacion);
-
-    tarjeta.dataset.likes = String(Number(datos.likes) || 0);
-    tarjeta.dataset.liked = "false";
-
+    // Crear tarjeta para publicacion
+    function crearTarjeta(datos) {
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "foro-card";
+        tarjeta.dataset.usuarioId = String(datos.id_usuario);
+        tarjeta.tabIndex = 0;
+        tarjeta.dataset.preguntaId = String(datos.id_publicacion);
+        tarjeta.dataset.likes = String(Number(datos.likes) || 0);
+        tarjeta.dataset.liked = "false";
 
         // Contenido principal.
         const contenido = document.createElement("div");
@@ -270,7 +236,7 @@ function crearTarjeta(datos) {
 
         contenido.append(categoria, titulo, descripcion, etiquetas);
 
-        // Pie de tarjeta: autor, avatar y fecha.
+        // Pie de tarjeta: autor, avatar y fecha
         const footer = document.createElement("div");
         footer.className = "foro-card-footer";
 
@@ -282,7 +248,7 @@ function crearTarjeta(datos) {
 
         const nombreAutor = datos.autor || "Usuario";
 
-        // Detectar la imagen de perfil del usuario.
+        // Detectar la imagen de perfil del usuario
         const urlAvatar =
             datos.avatar ||
             datos.foto_perfil ||
@@ -293,19 +259,16 @@ function crearTarjeta(datos) {
 
         if (urlAvatar) {
             const imagen = document.createElement("img");
-
             imagen.src = urlAvatar;
             imagen.alt = `Avatar de ${nombreAutor}`;
             imagen.className = "foro-avatar-imagen";
-
             imagen.onerror = () => {
                 imagen.remove();
                 avatar.textContent = nombreAutor.charAt(0).toUpperCase();
             };
-
             avatar.appendChild(imagen);
         } else {
-            // Si no tiene foto, mostrar la inicial.
+            // Si no tiene foto, mostrar la inicial
             avatar.textContent = nombreAutor.charAt(0).toUpperCase();
         }
 
@@ -320,59 +283,45 @@ function crearTarjeta(datos) {
         datosAutor.append(nombre, fecha);
         autorContenedor.append(avatar, datosAutor);
 
-        // Contenedor de las estadísticas de la publicación.
+        // Contenedor de las estadisticas de la publicacion
         const estadisticas = document.createElement("div");
         estadisticas.className = "foro-card-estadisticas";
-
-        // Corazón y cantidad de Me gusta.
         const meGustaTarjeta = document.createElement("div");
         meGustaTarjeta.className = "foro-me-gusta-tarjeta";
-
         const iconoCorazon = document.createElement("i");
         iconoCorazon.className = "fa-regular fa-heart";
-
         const cantidadLikesTarjeta = document.createElement("span");
         cantidadLikesTarjeta.className = "cantidad-likes-tarjeta";
         cantidadLikesTarjeta.textContent = String(Number(datos.likes) || 0);
-
         meGustaTarjeta.append(iconoCorazon, cantidadLikesTarjeta);
 
-        // Contador de comentarios o respuestas.
+        // Contador de comentarios o respuestas
         const respuestas = document.createElement("div");
         respuestas.className = "foro-respuestas";
-
         const iconoComentario = document.createElement("i");
         iconoComentario.className = "fa-regular fa-comment";
-
         const textoRespuestas = document.createElement("span");
         textoRespuestas.textContent =
             `${Number(datos.respuestas) || 0} respuestas`;
-
         respuestas.append(iconoComentario, textoRespuestas);
 
-        // Juntamos las estadísticas y las colocamos en el pie.
+        // Juntamos las estadísticas y las colocamos en el pie
         estadisticas.append(meGustaTarjeta, respuestas);
         footer.append(autorContenedor, estadisticas);
-
         tarjeta.append(contenido, footer);
-
         return tarjeta;
     }
 
     // Cargar publicaciones
-    // Estructura de la publicacion
     async function cargarPublicaciones(publicaciones, orden = "recientes") {
         const contenedor = document.getElementById("foro"); 
         contenedor.innerHTML = "";
         const ordenadas = [...publicaciones];
         switch (orden) {
-        case "recientes":
-            ordenadas.sort((a, b) =>
-                new Date(b.fecha_creacion) - new Date(a.fecha_creacion)
-            );
-            break;
-
-        case "antiguas":
+            case "recientes":
+                ordenadas.sort((a, b) => new Date(b.fecha_creacion) - new Date(a.fecha_creacion));
+                break;
+            case "antiguas":
             ordenadas.sort((a, b) =>
                 new Date(a.fecha_creacion) - new Date(b.fecha_creacion)
             );

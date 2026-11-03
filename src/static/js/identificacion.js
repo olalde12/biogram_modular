@@ -783,10 +783,39 @@ async function iniciarIdentificacion() {
 
         // Agregar Gram al principio porque se obtiene
         // del campo microorganismo.gram.
-        pruebas = [
-            crearPruebaGram(),
-            ...pruebas
-        ];
+        // Orden personalizado de las pruebas
+const ordenPruebas = [
+    "KIA (Kliger Iron Agar)",
+    "Glucosa",
+    "Sacarosa",
+    "Lactosa",
+    "Dc-Lisina (Descarboxilación de Lisina)",
+    "Da-Lisina (Desanimación de Lisina)",
+    "Ureasa",
+    "Citrato",
+    "Movilidad",
+    "Indol",
+    "Oxidasa",
+    "H₂S (sulfuro de hidrógeno)",
+    "Gas",
+    "DC-ornitina (descarboxilación de ornitina)",
+    "Catalasa"
+];
+
+// Agregar Gram y ordenar las pruebas
+const pruebaGram = crearPruebaGram();
+
+pruebas = [
+    pruebaGram,
+    ...ordenPruebas
+        .map(nombre =>
+            pruebas.find(prueba =>
+                normalizarTexto(prueba.nombre) ===
+                normalizarTexto(nombre)
+            )
+        )
+        .filter(Boolean)
+];
 
         if (!pruebas.length) {
             throw new Error(
