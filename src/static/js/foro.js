@@ -66,6 +66,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // Datos temporales de reacciones
     const reacciones = new Map();
 
+    // Loader del foro
+    function mostrarLoader() {
+        const loader = document.getElementById("loader-wrapper");
+        if (loader) {
+            loader.style.display = "flex";
+        }
+    }
+
+    function ocultarLoader() {
+        const loader = document.getElementById("loader-wrapper");
+        if (loader) {
+            loader.style.display = "none";
+        }
+    }
+
     // Convierte un texto a una version segura para usar como texto
     function obtenerTexto(elemento, selector) {
         const encontrado = elemento.querySelector(selector);
@@ -492,21 +507,21 @@ document.addEventListener("click", (event) => {
     // 7. ABRIR UNA PUBLICACIÓN
     // ======================================================
 
-function esPropia(tarjeta) {
-    const idActual = Number(
-        document.querySelector(".foro-pagina")?.dataset.usuario
-    );
+    function esPropia(tarjeta) {
+        const idActual = Number(
+            document.querySelector(".foro-pagina")?.dataset.usuario
+        );
 
-    const idAutor = Number(tarjeta.dataset.usuarioId);
+        const idAutor = Number(tarjeta.dataset.usuarioId);
 
-    return (
-        Number.isInteger(idActual) &&
-        idActual > 0 &&
-        Number.isInteger(idAutor) &&
-        idAutor > 0 &&
-        idActual === idAutor
-    );
-}
+        return (
+            Number.isInteger(idActual) &&
+            idActual > 0 &&
+            Number.isInteger(idAutor) &&
+            idAutor > 0 &&
+            idActual === idAutor
+        );
+    }
 
     function abrirPublicacion(tarjeta) {
 
@@ -842,7 +857,6 @@ if (formComentario) {
         const texto = textoComentario.value.trim();
 
         if (!texto) {
-            console.log("hola")
             mostrarNotificacion(
                 "Comentario vacío.",
                 "error",
@@ -856,6 +870,7 @@ if (formComentario) {
         const idPublicacion = obtenerId(tarjetaActual);
 
         try {
+            mostrarLoader();
             const respuesta = await fetch(
                 "http://127.0.0.1:8000/comentarios/create/",
                 {
@@ -870,7 +885,7 @@ if (formComentario) {
                     })
                 }
             );
-
+            ocultarLoader();
             if (!respuesta.ok) {
                 const errorData = await respuesta.json();
                 if (respuesta.status === 400) {
@@ -1043,6 +1058,8 @@ if (formEditarPublicacion) {
             return;
         }
 
+        mostrarLoader();
+
         try {
             const respuesta = await fetch(
                 `http://127.0.0.1:8000/publicaciones/update/${idPublicacion}?id_usuario=${idUsuario}`,
@@ -1058,7 +1075,7 @@ if (formEditarPublicacion) {
                     })
                 }
             );
-
+        ocultarLoader();
             if (!respuesta.ok) {
     const errorData = await respuesta.json();
 
@@ -1234,6 +1251,7 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
 }
 
         confirmarEliminar.disabled = true;
+        mostrarLoader();
 
         try {
             const url = new URL(
@@ -1287,6 +1305,7 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
             console.error("Error al eliminar la publicación:", error);
         } finally {
             confirmarEliminar.disabled = false;
+            ocultarLoader();
         }
     });
 }
@@ -1340,7 +1359,6 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
             nuevaPublicacion(tituloPregunta.value, categoriaPregunta.value, descripcionPregunta.value);
         });
     }
-
     // Hacer POST a la base de datos
     async function nuevaPublicacion(titulo, categoria, descripcion) {
         try {
@@ -1350,6 +1368,7 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
                 categoria: categoria,
                 id_usuario: parseInt(document.querySelector(".foro-pagina").dataset.usuario)
             };
+            mostrarLoader();
             const response = await fetch("http://127.0.0.1:8000/publicaciones/create", {
                 method: "POST", 
                 headers: {
@@ -1357,6 +1376,7 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
                 },
                 body: JSON.stringify(data),
             });
+            ocultarLoader();
             if (!response.ok) {
                 const errorData = await response.json();
                 if (response.status === 409) {
