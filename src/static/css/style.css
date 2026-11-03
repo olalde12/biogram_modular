@@ -1,33 +1,20 @@
-/* ============================= */
-/* VARIABLES */
-/* ============================= */
-
 :root{
-
     --color-principal:#39B7F3;
     --color-principal-hover:#2A9AD7;
-
     --color-secundario:#9288e3;
     --color-secundario-hover:#8E73DC;
     --color-secundario-light:#e0d6f7;
-
     --color-fondo:#FFFFFF;
     --color-tarjetas: #f5f0f6;
     --color-header:#F3F3F3;
-
     --texto:#222222;
-
     --radio:8px;
 }
-
-/* ============================= */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
-/* ============================= */
-
 body{
     font-family:Poppins,sans-serif;
     color:var(--texto);
@@ -36,7 +23,6 @@ body{
 /* ============================= */
 /* HEADER */
 /* ============================= */
-
 .navbar{
     height:95px;
     background:var(--color-header);
@@ -49,17 +35,14 @@ body{
     -webkit-font-smoothing: antialiased;
     font-weight: 400;
 }
-
 .logo img{
     width:250px;
 }
-
 .menu{
     display:flex;
     gap:40px;
     list-style:none;
 }
-
 .menu a{
     text-decoration:none;
     color:#000;
@@ -71,7 +54,6 @@ body{
 /* ============================= */
 /* INICIO */
 /* ============================= */
-
 .home{
     display: flex;
     justify-content: space-between;
@@ -123,12 +105,10 @@ body{
     font-size: 20px;
     font-weight: 700;
 }
-
 h1{
     font-size:58px;
     font-weight:700;
 }
-
 h2{
     font-size:36px;
     font-weight:400;
@@ -137,7 +117,6 @@ h2{
 /* ============================= */
 /* BOTONES */
 /* ============================= */
-
 .btn{
     width:340px;
     height:60px;
@@ -153,7 +132,6 @@ h2{
     background: var(--color-principal);
     color:white;
 }
-
 .btn-principal:hover{
     background: var(--color-principal-hover);
     transform: translateY(-3px);
@@ -174,9 +152,44 @@ h2{
     transform:translateY(-2px);
     box-shadow:0px 8px 20px rgba(166,138,239,.35);
 }
-
 .app-layout{ 
     display: flex;
     min-height: calc(100vh - 95px);
     width: 100%;
+}
+
+/* ============================= */
+/* PANTALLA DE CARGA */
+/* ============================= */
+#loader-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*background: #fff;*/
+    background: rgba(255, 255, 255, 0.8); /* Fondo blanco con opacidad */
+    z-index: 9999; /* Asegura que la pantalla de carga esté por encima de todo el contenido */
+    display: none; /* Oculto por defecto */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+/*Animacion del circulo girando*/
+.loader{
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin{
+    0%{ transform: rotate(0deg); }
+    100%{ transform: rotate(360deg); }
+}
+.loader-hidden{
+    opacity: 0;
+    visibility: hidden;
 }

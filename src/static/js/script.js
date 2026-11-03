@@ -11,3 +11,13 @@ signUp.addEventListener('click',()=>{
     form.classList.add('toggle')
     banner.classList.add('toggle')
 })
+
+window.addEventListener("load", () => {
+    const loader = document.getElementById("loader-wrapper");
+    function mostrarLoader() {
+        loader.style.display = "flex"; // Muestra el loader
+    }
+    function ocultarLoader() {
+        loader.style.display = "none"; // Oculta el loader
+    }
+});
