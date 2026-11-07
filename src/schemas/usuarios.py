@@ -1,5 +1,5 @@
 from datetime import date
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict, field_validator
 from typing import Optional
 
 # Se define la estructura minima de un usuario
@@ -9,21 +9,26 @@ class UsuarioBase(BaseModel):
     correo: EmailStr
     contraseña: str
 
+    @field_validator("correo", mode="before")
+    @classmethod
+    def normalizar_correo(cls, value):
+        return str(value).strip().lower()
+
 # Se agrega el identificador y la fecha a los campos
-class Usuario(UsuarioBase):
+class Usuario(BaseModel):
     id_usuario: int
+    nombre: str
+    apellido: str
+    correo: EmailStr
+    avatar: Optional[str] = None
     fecha_registro: date
     estado: bool
 
-    class Config:
-        from_attributes: True
+    model_config = ConfigDict(from_attributes=True)
 
 # Para crear usuario se guardara el correo en minusculas siempre
 class UsuarioCreate(UsuarioBase):
-    def dict(self, *args, **kwargs):
-        d = super().dict(*args, **kwargs)
-        d["correo"] = d["correo"].lower()
-        return d
+    pass
     
 # Para modificar usuario y todos los campos sean opcionales
 class UsuarioUpdate(UsuarioBase):
@@ -32,10 +37,12 @@ class UsuarioUpdate(UsuarioBase):
     correo: Optional[EmailStr] = None
     contraseña: Optional[str] = None
 
-    def dict(self, *args, **kwargs):
-        d = super().dict(*args, **kwargs)
-        d["correo"] = d["correo"].lower()
-        return d
+    @field_validator("correo", mode="before")
+    @classmethod
+    def normalizar_correo(cls, value):
+        if value is None:
+            return None
+        return str(value).strip().lower()
 
 # Para modificar el avatar de un usuario
 class AvatarUpdate(BaseModel):
@@ -46,3 +53,8 @@ class login(BaseModel):
     correo: EmailStr
     contraseña: str
     recordar: bool = False
+
+    @field_validator("correo", mode="before")
+    @classmethod
+    def normalizar_correo(cls, value):
+        return str(value).strip().lower()

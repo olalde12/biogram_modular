@@ -1,4 +1,4 @@
-import os
+import os, time
 from fastapi import FastAPI
 from src.core.config import settings
 from src.api.routes import microorganismos, usuarios, publicaciones, comentarios, cuestionarios, resultado_cuest, pruebas, resultados, medios, buscador
@@ -14,6 +14,15 @@ from starlette.middleware.sessions import SessionMiddleware
 
 # Crea la instancia principal de la app 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
+@app.middleware("http")
+async def verificar_sesion(request: Request, call_next):
+    expira_en = request.session.get("expira_en")
+    if expira_en is not None and time.time() >= expira_en:
+        request.session.clear()
+    elif request.session and expira_en is None:
+        request.session.clear()
+    response = await call_next(request)
+    return response
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 templates = Jinja2Templates(directory="src/templates")
 
@@ -150,7 +159,9 @@ async def foro(request: Request, db: Session = Depends(get_db)):
 app.add_middleware(
     SessionMiddleware,
     secret_key = os.getenv("SECRET_KEY"),
-    max_age = 60 * 60 * 24 * 30
+    session_cookie="biogram_session",
+    max_age = 60 * 60 * 24 * 30,
+    same_site="lax"
 )
 
 # Rutas del Swagger del FastAPI para hacer peticiones a la base de datos
