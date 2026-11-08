@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     SECRET_KEY: str
     OPENAI_API_KEY: str
+    EMAIL_ENCRYPTION_KEY: str
+    EMAIL_HMAC_KEY: str
 
     class Config:
         env_file = '.env'
