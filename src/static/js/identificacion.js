@@ -164,7 +164,14 @@ function mostrarPrueba() {
 
         boton.type = "button";
         boton.className = "option";
-        boton.textContent = opcion.nombre_resultado ?? "Opción";
+        let nombreResultado = opcion.nombre_resultado ?? "Opción";
+
+        // Mostrar únicamente las abreviaturas de los resultados de KIA
+        if (normalizarTexto(prueba.nombre) === normalizarTexto("KIA (Kliger Iron Agar)")) {
+            nombreResultado = String(nombreResultado).replace(/\s*\([^)]*\)/g, "").trim();
+        }
+
+        boton.textContent = nombreResultado;
         boton.dataset.idOpcion = String(idOpcion);
 
         // Marcar la respuesta anterior
@@ -515,6 +522,20 @@ function mostrarResultados(resultados) {
             const fila = document.createElement("div");
             fila.className = "coincidencia correcta";
 
+            // Mostrar únicamente las abreviaturas para KIA.
+            let resultadoAlumno = detalle.resultadoAlumno;
+            let resultadoEsperado = detalle.resultadoEsperado;
+
+            if (normalizarTexto(detalle.prueba) === normalizarTexto("KIA (Kliger Iron Agar)")) {
+                resultadoAlumno = String(resultadoAlumno ?? "")
+                    .replace(/\s*\([^)]*\)/g, "")
+                    .trim();
+
+                resultadoEsperado = String(resultadoEsperado ?? "")
+                    .replace(/\s*\([^)]*\)/g, "")
+                    .trim();
+            }
+
             fila.innerHTML = `
                 <div class="detalle-prueba">
                     <strong>${detalle.prueba}</strong>
@@ -522,12 +543,12 @@ function mostrarResultados(resultados) {
 
                 <div class="detalle-alumno">
                     Tu resultado:
-                    <strong>${detalle.resultadoAlumno}</strong>
+                    <strong>${resultadoAlumno}</strong>
                 </div>
 
                 <div class="detalle-esperado">
                     Resultado esperado:
-                    <strong>${detalle.resultadoEsperado}</strong>
+                    <strong>${resultadoEsperado}</strong>
                 </div>
 
                 <div class="detalle-icono">✓</div>
@@ -541,26 +562,35 @@ function mostrarResultados(resultados) {
     if (otrosResultados) {
         otrosResultados.innerHTML = "";
 
-        coincidenciasExactas.slice(1).forEach(resultado => {
-            const tarjeta = document.createElement("div");
-            tarjeta.className = "otro-resultado";
+        const resultadosAdicionales = coincidenciasExactas.slice(1);
 
-            tarjeta.innerHTML = `
-                <div>
-                    <strong>${resultado.nombre}</strong>
-                    <span>${resultado.porcentaje}%</span>
-                </div>
+        if (resultadosAdicionales.length > 0) {
+            otrosResultados.style.display = "block";
+            document.getElementById("otros_texto").style.display = "block";
+            resultadosAdicionales.forEach(resultado => {
+                const tarjeta = document.createElement("div");
+                tarjeta.className = "otro-resultado";
 
-                <div class="barra-coincidencia">
-                    <div
-                        class="barra-coincidencia-fill"
-                        style="width: ${resultado.porcentaje}%">
+                tarjeta.innerHTML = `
+                    <div>
+                        <strong>${resultado.nombre}</strong>
+                        <span>${resultado.porcentaje}%</span>
                     </div>
-                </div>
-            `;
 
-            otrosResultados.appendChild(tarjeta);
-        });
+                    <div class="barra-coincidencia">
+                        <div
+                            class="barra-coincidencia-fill"
+                            style="width: ${resultado.porcentaje}%">
+                        </div>
+                    </div>
+                `;
+
+                otrosResultados.appendChild(tarjeta);
+            });
+        } else {
+            document.getElementById("otros_texto").style.display = "none";
+            otrosResultados.style.display = "none";
+        }
     }
 
     if (tarjetaCuestionario) {
@@ -784,38 +814,34 @@ async function iniciarIdentificacion() {
         // Agregar Gram al principio porque se obtiene
         // del campo microorganismo.gram.
         // Orden personalizado de las pruebas
-const ordenPruebas = [
-    "KIA (Kliger Iron Agar)",
-    "Glucosa",
-    "Sacarosa",
-    "Lactosa",
-    "Dc-Lisina (Descarboxilación de Lisina)",
-    "Da-Lisina (Desanimación de Lisina)",
-    "Ureasa",
-    "Citrato",
-    "Movilidad",
-    "Indol",
-    "Oxidasa",
-    "H₂S (sulfuro de hidrógeno)",
-    "Gas",
-    "DC-ornitina (descarboxilación de ornitina)",
-    "Catalasa"
-];
+    const ordenPruebas = [
+        "KIA (Kliger Iron Agar)",
+        "Glucosa",
+        "Sacarosa",
+        "Lactosa",
+        "Dc-Lisina (Descarboxilación de Lisina)",
+        "Da-Lisina (Desanimación de Lisina)",
+        "Ureasa",
+        "Citrato",
+        "Movilidad",
+        "Indol",
+        "Oxidasa",
+        "H₂S (sulfuro de hidrógeno)",
+        "Gas",
+        "DC-ornitina (descarboxilación de ornitina)",
+        "Catalasa"
+    ];
 
-// Agregar Gram y ordenar las pruebas
-const pruebaGram = crearPruebaGram();
+    // Agregar Gram y ordenar las pruebas
+    const pruebaGram = crearPruebaGram();
 
-pruebas = [
-    pruebaGram,
-    ...ordenPruebas
-        .map(nombre =>
-            pruebas.find(prueba =>
-                normalizarTexto(prueba.nombre) ===
-                normalizarTexto(nombre)
-            )
-        )
-        .filter(Boolean)
-];
+    pruebas = [
+        pruebaGram,
+        ...ordenPruebas
+            .map(nombre =>
+                pruebas.find(prueba => normalizarTexto(prueba.nombre) === normalizarTexto(nombre))
+            ).filter(Boolean)
+    ];
 
         if (!pruebas.length) {
             throw new Error(

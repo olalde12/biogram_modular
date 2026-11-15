@@ -357,6 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ordenadas.forEach(pub => {
             const article = crearTarjeta(pub);
             contenedor.appendChild(article);
+            cargarEstadoMeGusta(article);
         });
     }
 
@@ -619,7 +620,7 @@ document.addEventListener("click", (event) => {
 
     try {
         const respuesta = await fetch(
-            `http://127.0.0.1:8000/publicaciones/${idPublicacion}/me-gusta?id_usuario=${idUsuario}`
+            `http://127.0.0.1:8000/publicaciones/${idPublicacion}/likes?id_usuario=${idUsuario}`
         );
 
         if (!respuesta.ok) {
@@ -628,13 +629,15 @@ document.addEventListener("click", (event) => {
 
         const datos = await respuesta.json();
 
-        // Evita actualizar otra publicación si el usuario cambió de modal.
-        if (tarjetaActual !== tarjeta) return;
-
         tarjeta.dataset.likes = String(datos.likes);
         tarjeta.dataset.liked = String(datos.liked);
 
-        actualizarMeGusta();
+        // Actualizamos la tarjeta correspondiente.
+        if (tarjetaActual === tarjeta) {
+            actualizarMeGusta();
+        } else {
+            actualizarMeGustaTarjeta(tarjeta);
+        }
     } catch (error) {
         console.error("Error al consultar Me gusta:", error);
     }
@@ -696,7 +699,7 @@ document.addEventListener("click", (event) => {
             }
 
             if (iconoTarjeta) {
-                iconoTarjeta.className = total > 0
+                iconoTarjeta.className = activo
                     ? "fa-solid fa-heart"
                     : "fa-regular fa-heart";
             }
@@ -706,6 +709,37 @@ document.addEventListener("click", (event) => {
                 total > 0
             );
         }
+    }
+
+    function actualizarMeGustaTarjeta(tarjeta) {
+        const total = Number(tarjeta.dataset.likes) || 0;
+        const activo = tarjeta.dataset.liked === "true";
+        const corazon = tarjeta.querySelector(
+            ".foro-me-gusta-tarjeta"
+        );
+
+        if (!corazon) return;
+
+        const icono = corazon.querySelector("i");
+
+        const cantidad = corazon.querySelector(
+            ".cantidad-likes-tarjeta"
+        );
+
+        if (cantidad) {
+            cantidad.textContent = total;
+        }
+
+        if (icono) {
+            icono.className = activo
+                ? "fa-solid fa-heart"
+                : "fa-regular fa-heart";
+        }
+
+        corazon.classList.toggle(
+            "tiene-me-gusta",
+            activo
+        );
     }
 
     // Evento del botón Me gusta dentro del modal.
@@ -1413,12 +1447,4 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
             console.error("Error creando la publicación:", error);
         }
     }
-
-
-    // ======================================================
-    // 14. INICIAR EL FORO
-    // ======================================================
-
-    cargarPublicaciones();
-
 });

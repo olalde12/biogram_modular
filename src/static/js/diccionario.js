@@ -49,65 +49,101 @@ buscador.addEventListener("input", async () => {
         // Llamamos a la función que tiene el endpoint y enviamos el texto del usuario
         await cargarDiccionario(texto);
         resultados.innerHTML = "";
-        const coincidencias = diccionario.pruebas.length + diccionario.microorganismos.length + diccionario.medios.length;
+        const todosResultados = [
+            ...diccionario.pruebas.map(item => ({
+                ...item,
+                tipo: "prueba"
+            })),
 
-        // Se buscan resultados en la tabla de pruebas
-        diccionario.pruebas.forEach(prueba => {
-            // Se crean los botones para seleccionar un resultado
+            ...diccionario.microorganismos.map(item => ({
+                ...item,
+                tipo: "microorganismo"
+            })),
+
+            ...diccionario.medios.map(item => ({
+                ...item,
+                tipo: "medio"
+            }))
+        ];
+
+        //Coincidencias exactas
+        const busqueda = texto.toLowerCase().trim();
+
+        const principales = todosResultados.filter(item =>
+            item.nombre.toLowerCase().trim().startsWith(busqueda)
+        );
+
+        // Resultados relacionados
+        const relacionados = todosResultados.filter(item =>
+            !principales.includes(item)
+        );
+
+        // Crear botones de resultados
+        function crearResultado(item) {
+
             const resultado = document.createElement("button");
             resultado.className = "resultado-busqueda";
-            resultado.textContent = prueba.nombre;
+            resultado.textContent = item.nombre;
 
-            // Se llama a la funcion que muestra la ficha
             resultado.addEventListener("click", () => {
-                resultado.classList.add("seleccionado");
-                mostrarFichaPrueba(prueba.id_prueba);
+
+                if (item.tipo === "prueba") {
+                    mostrarFichaPrueba(item.id_prueba);
+
+                } else if (item.tipo === "microorganismo") {
+                    mostrarFichaMicro(item.id_microorganismo);
+
+                } else if (item.tipo === "medio") {
+                    mostrarFichaMedio(item.id_medio);
+                }
+
             });
-            resultados.appendChild(resultado);
-        });
 
-        // Se buscan resultados en la tabla de microorganismos
-        diccionario.microorganismos.forEach(microorganismo => {
-            // Se crean los botones para seleccionar un resultado
-            const resultado = document.createElement("button");
-            resultado.className = "resultado-busqueda";
-            resultado.textContent = microorganismo.nombre;
+            return resultado;
+        }
 
-            // Se llama a la funcion que muestra la ficha
-            resultado.addEventListener("click", () => {
-                resultado.classList.add("seleccionado");
-                mostrarFichaMicro(microorganismo.id_microorganismo);
+        // Mostrar coincidencia principal
+        if (principales.length > 0) {
+
+            const tituloPrincipal = document.createElement("h4");
+            tituloPrincipal.textContent = "Coincidencia principal";
+
+            resultados.appendChild(tituloPrincipal);
+
+            principales.forEach(item => {
+                resultados.appendChild(crearResultado(item));
             });
-            resultados.appendChild(resultado);
-        });
+        }
 
-        // Se buscan resultados en la tabla de medios
-        diccionario.medios.forEach(medio => {
-            // Se crean los botones para seleccionar un resultado
-            const resultado = document.createElement("button");
-            resultado.className = "resultado-busqueda";
-            resultado.textContent = medio.nombre;
+        // Mostrar relacionados
+        if (relacionados.length > 0) {
 
-            // Se llama a la funcion que muestra la ficha
-            resultado.addEventListener("click", () => {
-                resultado.classList.add("seleccionado");
-                mostrarFichaMedio(medio.id_medio);
+            const tituloRelacionados = document.createElement("h4");
+            tituloRelacionados.textContent = "Conceptos relacionados";
+
+            resultados.appendChild(tituloRelacionados);
+
+            relacionados.forEach(item => {
+                resultados.appendChild(crearResultado(item));
             });
-            resultados.appendChild(resultado);
-        });
+        }
 
-        // Cuando no se encuentren coincidencias se le hace saber al usuario por medio de un texto
-        if (coincidencias === 0) {
+        // Cuando no hay resultados
+        if (todosResultados.length === 0) {
+
             const mensaje = document.createElement("div");
             mensaje.className = "sin-resultados";
+
             mensaje.innerHTML = `
                 <i class="fa-solid fa-circle-question"></i>
                 <p>No encontramos ningún concepto relacionado con:</p>
                 <strong>"${texto}"</strong>
                 <span>Intenta buscar con otro término.</span>
             `;
+
             resultados.appendChild(mensaje);
         }
+
     }, 400);
 });
 

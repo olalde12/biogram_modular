@@ -223,7 +223,12 @@ if (bacteria.res_prueba_micro && Array.isArray(bacteria.res_prueba_micro)) {
         const opcion = prueba.opc_prueba?.find(opcion => opcion.id_opcion_prueba === resultadoMicro.id_opcion);
 
         if (opcion) {
-            pruebasAgrupadas[idPrueba].push(opcion.nombre_resultado);
+            let nombreResultado = opcion.nombre_resultado;
+            // En KIA, eliminar la descripción entre paréntesis
+            if (prueba.nombre.trim() === "KIA (Kliger Iron Agar)") {
+                nombreResultado = nombreResultado.replace(/\s*\([^)]*\)/g, "").trim();
+            }
+            pruebasAgrupadas[idPrueba].push(nombreResultado);
         }
     });
 
