@@ -169,7 +169,7 @@ h2{
     height: 100%;
     /*background: #fff;*/
     background: rgba(255, 255, 255, 0.8); /* Fondo blanco con opacidad */
-    z-index: 9999; /* Asegura que la pantalla de carga esté por encima de todo el contenido */
+    z-index: 999999; /* Asegura que la pantalla de carga esté por encima de todo el contenido */
     display: none; /* Oculto por defecto */
     flex-direction: column;
     justify-content: center;
@@ -192,4 +192,97 @@ h2{
 .loader-hidden{
     opacity: 0;
     visibility: hidden;
+}
+
+#notificacionesGenerales {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 99999;
+    width: 350px;
+    max-width: calc(100% - 30px);
+}
+
+
+.foro-notificaciones {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 12000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(360px, calc(100vw - 32px));
+    pointer-events: none;
+}
+
+.foro-notificacion {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 18px;
+    border: 1px solid #d9edf6;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 12px 35px rgba(42, 93, 117, 0.16);
+    font-family: 'Poppins', sans-serif;
+    pointer-events: auto;
+    animation: aparecerNotificacion 0.3s ease both;
+}
+
+.foro-notificacion-icono {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e4f8f5;
+    color: #35aa98;
+    font-size: 16px;
+}
+
+.foro-notificacion-contenido {
+    flex: 1;
+    min-width: 0;
+}
+
+.foro-notificacion-contenido strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #30495c;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.foro-notificacion-contenido p {
+    margin: 0;
+    color: #758897;
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.foro-notificacion-cerrar {
+    padding: 2px;
+    border: none;
+    background: transparent;
+    color: #91a1ac;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.foro-notificacion-cerrar:hover {
+    color: #299dce;
+}
+
+.foro-notificacion.error .foro-notificacion-icono {
+    background: #fff0f2;
+    color: #d96d8e;
+}
+
+.foro-notificacion.info .foro-notificacion-icono {
+    background: #eaf7ff;
+    color: #299dce;
 }

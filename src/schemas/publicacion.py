@@ -23,7 +23,7 @@ class Publicacion(PublicacionBase):
 
 # Se necesita el campo de usuario (FK)
 class PublicacionCreate(PublicacionBase):
-    id_usuario: int
+    pass
 
 # Base para actualizar una publicacion
 class PublicacionUpdate(PublicacionBase):

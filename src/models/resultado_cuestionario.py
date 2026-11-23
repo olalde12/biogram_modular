@@ -7,8 +7,9 @@ class Resultado_cuestionario(Base):
     __tablename__="resultados_cuestionario"
     id_resultado_cues = Column(Integer, primary_key=True, index=True)
     resultado = Column(String)
-    id_cuesti = Column(Integer, ForeignKey("cuestionarios.id_cuestionario"))
-    id_prueba = Column(Integer, ForeignKey("pruebas_bioquimicas.id_prueba"))
+    tipo = Column(String, nullable=True)
+    id_cuesti = Column(Integer, ForeignKey("cuestionarios.id_cuestionario", ondelete="CASCADE"))
+    id_prueba = Column(Integer, ForeignKey("pruebas_bioquimicas.id_prueba"), nullable=True)
 
     cuestionario = relationship("Cuestionario", back_populates="res_cuestionario")
     prueba = relationship("Pruebas_bioquimicas", back_populates="res_prueba")

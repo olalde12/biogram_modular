@@ -610,17 +610,16 @@ document.addEventListener("click", (event) => {
     async function cargarEstadoMeGusta(tarjeta) {
     const idPublicacion = obtenerId(tarjeta);
 
-    const idUsuario = Number(
-        document.querySelector(".foro-pagina")?.dataset.usuario
-    );
-
-    if (!idPublicacion || !Number.isInteger(idUsuario) || idUsuario <= 0) {
+    if (!idPublicacion) {
         return;
     }
 
     try {
         const respuesta = await fetch(
-            `http://127.0.0.1:8000/publicaciones/${idPublicacion}/likes?id_usuario=${idUsuario}`
+            `http://127.0.0.1:8000/publicaciones/${idPublicacion}/likes`,
+            {
+                credentials: "include"
+            }
         );
 
         if (!respuesta.ok) {
@@ -750,17 +749,7 @@ document.addEventListener("click", (event) => {
         const tarjeta = tarjetaActual;
         const idPublicacion = obtenerId(tarjeta);
 
-        const idUsuario = Number(
-            document.querySelector(".foro-pagina")?.dataset.usuario
-        );
-
-        if (!idPublicacion || !Number.isInteger(idUsuario) || idUsuario <= 0) {
-            mostrarNotificacion(
-                "No se pudo identificar al usuario o la publicación.",
-                "error"
-            );
-            return;
-        }
+        if (!idPublicacion) return;
 
         // Evita solicitudes repetidas mientras se procesa la anterior.
         if (btnMeGusta.disabled) return;
@@ -769,9 +758,18 @@ document.addEventListener("click", (event) => {
 
         try {
             const respuesta = await fetch(
-                `http://127.0.0.1:8000/publicaciones/${idPublicacion}/likes?id_usuario=${idUsuario}`,
-                { method: "POST" }
+                `http://127.0.0.1:8000/publicaciones/${idPublicacion}/likes`,
+                { method: "POST", credentials: "include" }
             );
+
+            if (respuesta.status === 401) {
+                mostrarNotificacion(
+                    "Para dar Me gusta necesitas iniciar sesión o crear una cuenta en BIOGRAM.",
+                    "info",
+                    "¡Inicia sesión!"
+                );
+                return;
+            }
 
             if (!respuesta.ok) {
                 const error = await respuesta.json().catch(() => ({}));
@@ -912,6 +910,7 @@ if (formComentario) {
                     headers: {
                         "Content-Type": "application/json"
                     },
+                    credentials: "include",
                     body: JSON.stringify({
                         id_publicacion: Number(idPublicacion),
                         id_usuario: Number(document.querySelector(".foro-pagina")?.dataset.usuario),
@@ -919,7 +918,14 @@ if (formComentario) {
                     })
                 }
             );
-            ocultarLoader();
+            if (respuesta.status === 401) {
+                mostrarNotificacion(
+                    "Para comentar necesitas iniciar sesión o crear una cuenta en BIOGRAM.",
+                    "info",
+                    "¡Inicia sesión!"
+                );
+                return;
+            }
             if (!respuesta.ok) {
                 const errorData = await respuesta.json();
                 if (respuesta.status === 400) {
@@ -959,6 +965,8 @@ if (formComentario) {
 
         } catch (error) {
             console.error("Error al publicar comentario:", error);
+        } finally {
+            ocultarLoader();
         }
     });
 } 
@@ -1399,8 +1407,7 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
             const data = {
                 titulo: titulo,
                 contenido: descripcion,
-                categoria: categoria,
-                id_usuario: parseInt(document.querySelector(".foro-pagina").dataset.usuario)
+                categoria: categoria
             };
             mostrarLoader();
             const response = await fetch("http://127.0.0.1:8000/publicaciones/create", {
@@ -1408,9 +1415,17 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify(data),
             });
-            ocultarLoader();
+            if (response.status === 401) {
+                mostrarNotificacion(
+                    "Para publicar en el foro necesitas iniciar sesión o crear una cuenta en BIOGRAM.",
+                    "info",
+                    "¡Inicia sesión!"
+                );
+                return;
+            }
             if (!response.ok) {
                 const errorData = await response.json();
                 if (response.status === 409) {
@@ -1445,6 +1460,8 @@ if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
             }
         } catch (error) {
             console.error("Error creando la publicación:", error);
+        } finally {
+            ocultarLoader();
         }
     }
 });

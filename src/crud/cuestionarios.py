@@ -1,7 +1,6 @@
 from datetime import date
 from sqlalchemy.orm import Session
 from src.models.cuestionario import Cuestionario
-from src.models.resultado_cuestionario import Resultado_cuestionario
 from src.schemas.cuestionario import CuestionarioCreate, CuestionarioUpdate
 
 # Metodo GET: obtiene un cuestionario por id
@@ -32,10 +31,16 @@ def update_cuestionario(db: Session, id_cuestionario: int, cuestionario: Cuestio
 
 # Metodo DELETE: elimina a un cuestionario
 def delete_cuestionario(db: Session, id_cuestionario: int):
-    db_cuestionario = db.query(Cuestionario).filter(Cuestionario.id_cuestionario == id_cuestionario).first()
+    db_cuestionario = (db.query(Cuestionario).filter(Cuestionario.id_cuestionario == id_cuestionario).first())
+
     if not db_cuestionario:
         return None
-    db.query(Resultado_cuestionario).filter(Resultado_cuestionario.id_cuesti == id_cuestionario).delete()
-    db.delete(db_cuestionario)
-    db.commit()
-    return db_cuestionario
+
+    try:
+        db.delete(db_cuestionario)
+        db.commit()
+        return db_cuestionario
+
+    except Exception:
+        db.rollback()
+        raise

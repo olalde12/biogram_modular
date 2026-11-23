@@ -1,0 +1,135 @@
+
+{% extends "base.html" %}
+
+{% block title %}Historial | BIOGRAM{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/historial.css') }}">
+{% endblock %}
+
+{% block contenido %}
+
+<div class="historial-container">
+
+    <div class="historial-header">
+        <div>
+            <span class="historial-etiqueta">BIOGRAM</span>
+            <h1>Historial de identificaciones</h1>
+            <p>Consulta las bacterias que has identificado anteriormente.</p>
+        </div>
+
+        <a href="/identificacion" class="btn-nueva">
+            <i class="fa-solid fa-plus"></i>
+            Nueva identificación
+        </a>
+    </div>
+
+    <div class="historial-filtros">
+
+        <div class="buscador-historial">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+                type="text"
+                id="buscarHistorial"
+                placeholder="Buscar bacteria..."
+            >
+        </div>
+
+        <div class="filtro-fecha">
+            <label for="filtroFecha">Filtrar por fecha</label>
+            <input type="date" id="filtroFecha">
+        </div>
+
+        <button id="limpiarFiltros" class="btn-limpiar">
+            Limpiar filtros
+        </button>
+
+    </div>
+
+    <div class="historial-resumen">
+        <div class="resumen-card">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <div>
+                <span>Total de identificaciones</span>
+                <strong id="totalIdentificaciones">0</strong>
+            </div>
+        </div>
+
+        <div class="resumen-card">
+            <i class="fa-solid fa-bacteria"></i>
+            <div>
+                <span>Bacterias identificadas</span>
+                <strong id="totalBacterias">0</strong>
+            </div>
+        </div>
+
+        <div class="resumen-card">
+            <i class="fa-solid fa-calendar-days"></i>
+            <div>
+                <span>Última identificación</span>
+                <strong id="ultimaIdentificacion">--</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="historial-lista-header">
+        <h2>Mis identificaciones</h2>
+        <span id="contadorResultados">0 registros</span>
+    </div>
+
+    <div id="listaHistorial" class="historial-grid">
+
+        <div class="historial-cargando">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <p>Cargando historial...</p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MODAL DETALLE -->
+
+<div id="modalDetalle" class="modal-detalle">
+
+    <div class="modal-contenido">
+
+        <button class="cerrar-modal" id="cerrarModal">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="modal-header">
+            <span>DETALLE DE IDENTIFICACIÓN</span>
+            <h2 id="detalleNombre">Bacteria</h2>
+            <p id="detalleFecha"></p>
+        </div>
+
+        <div class="detalle-coincidencia">
+            <span>Porcentaje de coincidencia</span>
+            <strong id="detallePorcentaje"></strong>
+        </div>
+
+        <h3>Resultados de las pruebas</h3>
+
+        <div id="detalleRespuestas" class="detalle-respuestas"></div>
+
+        <div class="acciones-detalle">
+    <button type="button" id="btnModificarIdentificacion" class="btn-modificar">
+        <i class="fa-solid fa-pen-to-square"></i>
+        Modificar identificación
+    </button>
+
+    <button type="button" id="btnEliminarIdentificacion" class="btn-eliminar">
+        <i class="fa-solid fa-trash"></i>
+        Eliminar identificación
+    </button>
+</div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', path='js/historial.js') }}"></script>
+{% endblock %}

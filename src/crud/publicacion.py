@@ -9,11 +9,12 @@ def get_publicacion_by_id(db: Session, id_publicacion: int):
     return db.query(Publicaciones).filter(Publicaciones.id_publicacion == id_publicacion).first()
 
 # Metodo POST: crea una publicacion
-def create_publicacion(db: Session, publicacion: PublicacionCreate):
+def create_publicacion(db: Session, publicacion: PublicacionCreate, id_usuario: int):
     datos = publicacion.model_dump()
     db_publicacion = Publicaciones(
         **datos,
-        fecha_creacion=date.today(),
+        id_usuario=id_usuario,
+        fecha_creacion=date.today()
         )
     db.add(db_publicacion)
     db.commit()

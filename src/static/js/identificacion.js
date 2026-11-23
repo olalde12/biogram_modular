@@ -31,6 +31,10 @@ let microorganismos = [];
 let pasoActual = 0;
 let respuestaSeleccionada = null;
 let respuestas = [];
+let guardandoIdentificacion = false;
+let identificacionIntentada = false;
+let modoEdicion = false;
+let idCuestionarioEditar = null;
 
 // Elementos del HTML
 const btnContinuar = document.querySelector(".continue");
@@ -102,6 +106,90 @@ function crearPruebaGram() {
         fundamento:
             "Las bacterias se clasifican principalmente como Gram positivas o Gram negativas según su reacción a la tinción. Esta característica ayuda a orientar la identificación."
     };
+}
+
+async function cargarIdentificacionEditar() {
+    const parametros = new URLSearchParams(window.location.search);
+    const idEditar = parametros.get("editar");
+    if (!idEditar) return;
+    modoEdicion = true;
+    idCuestionarioEditar = Number(idEditar);
+
+    try {
+        const response = await fetch(
+            `${API_URL}/cuestionarios/historial/${idCuestionarioEditar}/detalle`,
+            { credentials: "include" }
+        );
+
+        const datos = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                datos.detail || "No se pudo recuperar la identificación"
+            );
+        }
+
+        // Recuperar las respuestas anteriores
+        respuestas = [];
+
+        for (const item of datos.respuestas) {
+            let prueba;
+            if (item.tipo === "gram") {
+                prueba = pruebas.find(
+                    p => String(p.id_prueba) === "gram"
+                );
+            } else {
+                prueba = pruebas.find(
+                    p => String(p.id_prueba) === String(item.id_prueba)
+                );
+            }
+
+            if (!prueba) {
+                console.warn(
+                    "No se encontró la prueba:",
+                    item.nombre_prueba
+                );
+                continue;
+            }
+
+            // Buscar la opción correspondiente al resultado guardado
+            const opcion = prueba.opc_prueba.find(op =>
+                normalizarTexto(op.nombre_resultado) ===
+                normalizarTexto(item.resultado)
+            );
+
+            if (!opcion) {
+                console.warn("No se encontró la opción:", item.resultado, "en", item.nombre_prueba);
+                continue;
+            }
+
+            respuestas.push({
+                id_prueba: prueba.id_prueba,
+                id_opcion: obtenerIdOpcion(opcion),
+                respuesta: item.resultado,
+                tipo: item.tipo
+            });
+        }
+
+        console.log("Identificación recuperada:", datos);
+        console.log("Respuestas recuperadas:", respuestas);
+
+        // Reiniciar el cuestionario desde la primera prueba
+        pasoActual = 0;
+        respuestaSeleccionada = null;
+
+        // Mostrar que estamos modificando
+        const titulo = document.querySelector(".card h2");
+
+        if (titulo) {
+            titulo.textContent = "Modificar identificación";
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+        window.location.href = "/historial";
+    }
 }
 
 // ================================
@@ -649,6 +737,185 @@ function mostrarSinCoincidencias() {
     }
 }
 
+// ======================================
+// MOSTRAR ESTADO DEL GUARDADO
+// ======================================
+function mostrarEstadoGuardado(mensaje, tipo = "info") {
+    const pantallaResultados = document.getElementById("resultadoIdentificacion");
+
+    if (!pantallaResultados) return;
+
+    let estado = document.getElementById("estadoGuardadoIdentificacion");
+
+    if (!estado) {
+        estado = document.createElement("p");
+        estado.id = "estadoGuardadoIdentificacion";
+        estado.className = "estado-guardado";
+        estado.setAttribute("aria-live", "polite");
+
+        const porcentaje = document.getElementById(
+            "porcentajeCoincidencia"
+        );
+
+        if (porcentaje) {
+            porcentaje.insertAdjacentElement("afterend", estado);
+        } else {
+            pantallaResultados.appendChild(estado);
+        }
+    }
+
+    estado.textContent = mensaje;
+
+    estado.classList.remove("exito", "error", "info");
+    estado.classList.add(tipo);
+}
+
+// ======================================
+// MODAL PARA USUARIOS SIN SESIÓN
+// ======================================
+const modalSesion = document.getElementById("modalSesion");
+const cerrarModalSesion = document.getElementById("cerrarModalSesion");
+function mostrarModalSesion() {
+    if (modalSesion) {
+        modalSesion.classList.add("activo");
+    }
+}
+
+function ocultarModalSesion() {
+    if (modalSesion) {
+        modalSesion.classList.remove("activo");
+    }
+}
+
+if (cerrarModalSesion) {
+    cerrarModalSesion.addEventListener("click", ocultarModalSesion);
+}
+
+if (modalSesion) {
+    modalSesion.addEventListener("click", (event) => {
+        if (event.target === modalSesion) {
+            ocultarModalSesion();
+        }
+    });
+}
+
+// ======================================
+// GUARDAR IDENTIFICACIÓN EN EL HISTORIAL
+// ======================================
+async function guardarIdentificacion(resultados) {
+    // Evitar envíos duplicados
+    if (guardandoIdentificacion || identificacionIntentada) {
+        return;
+    }
+
+    if (!respuestas.length) {
+        mostrarEstadoGuardado("No hay respuestas para guardar.", "error");
+        return;
+    }
+
+    identificacionIntentada = true;
+    guardandoIdentificacion = true;
+
+    mostrarEstadoGuardado("Guardando identificación en tu historial...", "info");
+
+    try {
+        // Recuperar la mejor coincidencia
+        const mejorCoincidencia = resultados.length > 0
+            ? resultados[0]
+            : null;
+
+        const nombreBacteria = mejorCoincidencia?.exacto
+            ? mejorCoincidencia.nombre
+            : "Sin identificación";
+
+        const porcentaje = mejorCoincidencia
+            ? Number(mejorCoincidencia.porcentaje.toFixed(2))
+            : null;
+
+        // Preparar las respuestas para el backend
+        const respuestasGuardar = respuestas.map(respuesta => {
+            const esGram =
+                String(respuesta.id_prueba).toLowerCase() === "gram";
+            return {
+                id_prueba: esGram
+                    ? null
+                    : Number(respuesta.id_prueba),
+                tipo: esGram
+                    ? "gram"
+                    : "bioquimica",
+
+                resultado: String(respuesta.respuesta ?? "")
+            };
+        });
+
+        // Datos que recibirá FastAPI
+        const payload = {
+            nombre: nombreBacteria,
+            porcentaje_coincidencia: porcentaje,
+            respuestas: respuestasGuardar
+        };
+
+        console.log("Datos que se enviarán al historial:", payload);
+
+        // Enviar al backend
+        const url = modoEdicion
+            ? `${API_URL}/cuestionarios/historial/${idCuestionarioEditar}/modificar`
+            : `${API_URL}/cuestionarios/guardar`;
+
+        const metodo = modoEdicion ? "PUT" : "POST";
+
+        const response = await fetch(url, {
+            method: metodo,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify(payload)
+        });
+
+        const datos = await response.json();
+
+        if (response.status === 401) {
+            identificacionIntentada = false;
+            mostrarEstadoGuardado("Inicia sesión o crea una cuenta para guardar esta identificación.", "info");
+            mostrarModalSesion();
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(datos.detail || "No se pudo guardar la identificación");
+        }
+
+        console.log(
+            modoEdicion
+                ? "Identificación modificada:"
+                : "Identificación guardada:",
+            datos
+        );
+
+        mostrarEstadoGuardado(
+            modoEdicion
+                ? "✓ Identificación modificada correctamente."
+                : "✓ Identificación guardada correctamente en tu historial.",
+            "exito"
+        );
+
+        // Ya se guardó correctamente
+        identificacionIntentada = true;
+
+    } catch (error) {
+
+        console.error("Error al guardar la identificación:", error);
+
+        mostrarEstadoGuardado("No se pudo guardar la identificación. " + error.message, "error");
+
+        identificacionIntentada = false;
+
+    } finally {
+        guardandoIdentificacion = false;
+    }
+}
+
 // ================================
 // BOTÓN CONTINUAR
 // ================================
@@ -705,6 +972,8 @@ if (btnContinuar) {
             );
 
             mostrarResultados(resultados);
+
+            guardarIdentificacion(resultados);
         }
     });
 }
@@ -770,9 +1039,18 @@ const btnNuevaIdentificacion = document.getElementById(
 
 if (btnNuevaIdentificacion) {
     btnNuevaIdentificacion.addEventListener("click", () => {
+        modoEdicion = false;
+        idCuestionarioEditar = null;
         pasoActual = 0;
         respuestas = [];
         respuestaSeleccionada = null;
+        guardandoIdentificacion = false;
+        identificacionIntentada = false;
+
+        const estadoGuardado = document.getElementById("estadoGuardadoIdentificacion");
+        if (estadoGuardado) {
+            estadoGuardado.remove();
+        }
 
         const pantallaResultados = document.getElementById(
             "resultadoIdentificacion"
@@ -842,6 +1120,8 @@ async function iniciarIdentificacion() {
                 pruebas.find(prueba => normalizarTexto(prueba.nombre) === normalizarTexto(nombre))
             ).filter(Boolean)
     ];
+
+    await cargarIdentificacionEditar();
 
         if (!pruebas.length) {
             throw new Error(
