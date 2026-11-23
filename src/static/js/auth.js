@@ -110,7 +110,7 @@ createUser.addEventListener("submit", async (event) => {
         });
         if (response.ok) {
             console.log("Usuario creado correctamente");
-            window.location.href = "/login";
+            window.location.href = "/";
         } else if (response.status === 409) {
             ultimoEmailError = email.value;
             document.getElementById("error_correo_register").innerText = "Ese correo ya existe";
