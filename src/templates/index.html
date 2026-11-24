@@ -44,7 +44,7 @@ Inicio
             <button id="btnHistorial" class="btn btn-principal" data-autenticado="{{ 'true' if request.session.get('id_usuario') else 'false' }}">
                 Historial
             </button>
-            <button id="btnEscanear" class="btn btn-principal">
+            <button id="btnEscanear" class="btn btn-principal" onclick="window.location.href='/escaner'">
                 Escanear pruebas
             </button>
         </div>

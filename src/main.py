@@ -70,6 +70,24 @@ async def buscarbacteria(request: Request, db: Session = Depends(get_db)):
             "app_mode": True
         }
     )
+
+@app.get("/escaner")
+async def escaner(request: Request, db: Session = Depends(get_db)):
+    usuario = None
+    id_usuario = request.session.get("id_usuario")
+
+    if id_usuario:
+        usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
+
+    return templates.TemplateResponse(
+        "escaner.html",
+        {
+            "request": request,
+            "usuario": usuario,
+            "app_mode": True
+        }
+    )
+
 @app.get("/login")
 def login(request: Request):
     return templates.TemplateResponse(

@@ -409,6 +409,30 @@
     cursor: pointer;
 }
 
+
+#btnRevisarRespuestas {
+    display: block;
+    margin: 30px auto 0;
+    width: 200px;
+    height: 55px;
+    border: none;
+    border-radius: 30px;
+    background: #e0d6f7;
+    color: #a288e3;
+    font-weight: bold;
+    font-size: 15px;
+    font-family: Poppins, sans-serif;
+    cursor: pointer;
+    transition: .25s;
+}
+
+#btnRevisarRespuestas:hover {
+    color: white;
+    background: #a288e3;
+    transform: translateY(-2px);
+    /*box-shadow: 0px 8px 20px rgba(162, 136, 227, 0.25);*/
+}
+
 .estado-guardado {
     margin-top: 15px;
     padding: 12px 16px;
