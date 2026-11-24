@@ -10,6 +10,7 @@ Escáner Biogram IA
 
 {% block contenido %}
 
+
 <section class="escaner-container">
 
     <div id="pantalla-inicio">
@@ -366,8 +367,8 @@ Escáner Biogram IA
 
             </button>
 
-
-            <button type="button" class="btn-continuar-escaner" disabled>
+            <!-- este permite entrar a la pantalla de captura, la interfaz, no activa la cámara -->
+            <button type="button" class="btn-continuar-escaner" id="btn-continuar-escaner">
 
                 Continuar al escaneo
                 <i class="fa-solid fa-arrow-right"></i>
@@ -382,6 +383,266 @@ Escáner Biogram IA
         </p>
 
     </div>
+
+    <!-- =====================================
+     PANTALLA DE CAPTURA Y ANÁLISIS
+===================================== -->
+
+    <div id="pantalla-captura" hidden>
+
+        <!-- ENCABEZADO -->
+
+        <div class="captura-encabezado">
+
+            <div>
+                <span class="info-etiqueta">
+                    <i class="fa-solid fa-camera"></i>
+                    ANÁLISIS MICROBIOLÓGICO
+                </span>
+
+                <h2>Captura y análisis de pruebas</h2>
+
+                <p>
+                    Coloca tu tubo en el dispositivo para realizar
+                    la captura y el reconocimiento automático.
+                </p>
+            </div>
+
+            <div class="captura-contador">
+                <span>PRUEBA ACTUAL</span>
+                <strong id="numero-prueba">01</strong>
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESO -->
+
+        <div class="preparacion-progreso">
+
+            <div class="progreso-paso completado">
+                <span><i class="fa-solid fa-check"></i></span>
+                <p>Preparación</p>
+            </div>
+
+            <div class="progreso-linea activo"></div>
+
+            <div class="progreso-paso activo">
+                <span>2</span>
+                <p>Captura</p>
+            </div>
+
+            <div class="progreso-linea"></div>
+
+            <div class="progreso-paso">
+                <span>3</span>
+                <p>Resultados</p>
+            </div>
+
+        </div>
+
+
+        <!-- CONTENIDO PRINCIPAL -->
+
+        <div class="captura-contenido">
+
+            <!-- ÁREA DE IMAGEN -->
+
+            <div class="captura-panel">
+
+                <div class="captura-panel-encabezado">
+                    <h3>
+                        <i class="fa-solid fa-camera"></i>
+                        Vista de captura
+                    </h3>
+
+                    <span class="captura-indicador">
+                        <span></span>
+                        Sin conexión
+                    </span>
+                </div>
+
+
+                <div class="captura-visor">
+
+                    <div class="visor-decoracion visor-esquina-1"></div>
+                    <div class="visor-decoracion visor-esquina-2"></div>
+
+                    <div class="visor-mensaje">
+
+                        <div class="visor-icono">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+
+                        <h3>Esperando al dispositivo</h3>
+
+                        <p>
+                            Cuando la Raspberry Pi esté conectada,
+                            aquí aparecerá la imagen capturada del tubo.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="captura-panel-pie">
+                    <i class="fa-solid fa-circle-info"></i>
+                    La imagen se mostrará después de realizar
+                    una captura correctamente.
+                </div>
+
+            </div>
+
+
+            <!-- INFORMACIÓN DEL ANÁLISIS -->
+
+            <div class="captura-informacion">
+
+                <div class="captura-dispositivo-estado">
+
+                    <div class="estado-icono">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+
+                    <div>
+                        <h3>Estado del dispositivo</h3>
+                        <p>Esperando conexión con Raspberry Pi</p>
+                    </div>
+
+                </div>
+
+
+                <div class="captura-datos">
+
+                    <h3>Información de la prueba</h3>
+
+                    <div class="dato-analisis">
+                        <span>Tipo de prueba</span>
+                        <strong id="tipo-prueba">Pendiente de reconocimiento</strong>
+                    </div>
+
+                    <div class="dato-analisis">
+                        <span>Resultado</span>
+                        <strong id="resultado-prueba">Pendiente de análisis</strong>
+                    </div>
+
+                    <div class="dato-analisis">
+                        <span>Observaciones</span>
+                        <p id="observaciones-prueba">
+                            Las observaciones aparecerán después del análisis.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="captura-aviso">
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                    <p>
+                        El sistema reconocerá automáticamente el tipo
+                        de prueba. No necesitas seleccionarlo.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =====================================
+             HISTORIAL DE PRUEBAS DE LA SESIÓN
+        ====================================== -->
+
+        <div class="historial-pruebas">
+
+            <div class="historial-encabezado">
+
+                <div>
+                    <span class="info-etiqueta">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                        REGISTRO DE LA SESIÓN
+                    </span>
+
+                    <h3>Historial de pruebas</h3>
+
+                    <p>
+                        Consulta las pruebas que se han capturado
+                        durante esta sesión.
+                    </p>
+                </div>
+
+                <div class="historial-total">
+                    <strong id="total-pruebas">0</strong>
+                    <span>Pruebas registradas</span>
+                </div>
+
+            </div>
+
+
+            <!-- Aquí aparecerán las pruebas registradas -->
+
+            <div id="lista-historial-pruebas" class="historial-lista">
+
+                <div class="historial-vacio" id="historial-vacio">
+
+                    <div class="historial-vacio-icono">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+
+                    <h4>Aún no hay pruebas registradas</h4>
+
+                    <p>
+                        Cuando se capture y analice tu primer tubo,
+                        aparecerá aquí su información.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ACCIONES -->
+
+        <div class="captura-acciones">
+
+            <button type="button" class="btn-regresar-escaner" id="btn-regresar-preparacion">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Volver a preparación
+
+            </button>
+
+
+            <div class="captura-acciones-derecha">
+
+                <button type="button" class="btn-capturar-tubo" disabled>
+
+                    <i class="fa-solid fa-camera"></i>
+                    Capturar tubo
+
+                </button>
+
+                <button type="button" class="btn-agregar-prueba" disabled>
+
+                    Agregar siguiente prueba
+                    <i class="fa-solid fa-plus"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <p class="captura-nota">
+            Las funciones de captura y análisis estarán disponibles
+            cuando se integre la comunicación con el dispositivo.
+        </p>
+
+    </div>
+
 
 </section>
 
