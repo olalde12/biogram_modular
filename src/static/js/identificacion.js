@@ -526,7 +526,7 @@ function mostrarResultados(resultados) {
                 </div>
 
                 <div class="detalle-esperado">
-                    Resultado esperado:
+                    Resultado esperado según la bacteria obtenida:
                     <strong>${detalle.resultadoEsperado}</strong>
                 </div>
 
