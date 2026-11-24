@@ -8,6 +8,7 @@ from src.crud import comentario as comentario_crud
 from src.crud import publicacion as publicacion_crud
 from src.crud import usuario as usuario_crud
 from src.schemas import comentario as comentario_schema
+from src.moderacion import contenido_moderado
 
 router = APIRouter()
 
@@ -39,6 +40,8 @@ def create_comentario(comentario: comentario_schema.ComentarioCreate, db: Sessio
     db_publicacion = publicacion_crud.get_publicacion_by_id(db, id_publicacion=comentario.id_publicacion)
     if not db_publicacion:
         raise HTTPException(status_code=404, detail='Esa publicacion no existe')
+    if contenido_moderado(comentario.contenido):
+        raise HTTPException(status_code=400, detail=("Tu comentario contiene contenido que no cumple las normas de la comunidad."))
     return comentario_crud.create_comentario(db=db, comentario=comentario)
 
 # Ruta para modificar un comentario
@@ -53,6 +56,8 @@ def update_comentario(id_comentario: int, id_usuario: int, id_publicacion: int, 
     db_publicacion = publicacion_crud.get_publicacion_by_id(db, id_publicacion=id_publicacion)
     if not db_publicacion:
         raise HTTPException(status_code=404, detail="Esa publicacion no existe")
+    if contenido_moderado(comentario.contenido):
+        raise HTTPException(status_code=400, detail=("Tu comentario contiene contenido que no cumple las normas de la comunidad."))
     if db_comentario.id_publicacion != id_publicacion:
         raise HTTPException(status_code=403, detail="Ese comentario no pertenece a esa publicacion")
     if db_comentario.id_usuario != id_usuario:

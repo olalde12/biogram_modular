@@ -5,12 +5,13 @@ from pydantic import BaseModel
 class ComentarioBase(BaseModel):
     contenido: str
 
-# Se agrega el identificador y la fecha a los campos
+# Se agregan los campos necesarios para devolver un comentario
 class Comentario(ComentarioBase):
     id_comentario: int
     fecha_creacion: date
     id_publicacion: int
     id_usuario: int
+    autor: str
 
     class Config:
         from_attributes: True

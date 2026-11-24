@@ -74,10 +74,14 @@ def delete_prueba(db: Session, id_prueba: int):
 
 # Funcion para la ruta del buscador
 def buscar_pruebas(resp_usuario: str, db: Session):
+    texto = resp_usuario.strip()
     return db.query(Pruebas_bioquimicas).filter(
         or_(
-            func.unaccent(Pruebas_bioquimicas.nombre).ilike(func.unaccent(f"%{resp_usuario}%")),
-            func.unaccent(Pruebas_bioquimicas.fundamento).ilike(func.unaccent(f"%{resp_usuario}%")),
-            func.unaccent(Pruebas_bioquimicas.descripcion).ilike(func.unaccent(f"%{resp_usuario}%"))
+            func.unaccent(Pruebas_bioquimicas.nombre).ilike(func.unaccent(f"%{texto}%")),
+            func.unaccent(Pruebas_bioquimicas.fundamento).ilike(func.unaccent(f"%{texto}%")),
+            func.unaccent(Pruebas_bioquimicas.descripcion).ilike(func.unaccent(f"%{texto}%"))
         )
+    ).order_by(
+        (func.lower(Pruebas_bioquimicas.nombre) == texto.lower()).desc(),
+        (func.lower(Pruebas_bioquimicas.nombre).like(texto.lower() + "%")).desc()
     ).all()

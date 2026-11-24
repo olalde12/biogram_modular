@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
+from src.seguridad.password import verificar_password_compatible
 from src.api.deps import get_db
 from src.crud import usuario as usuario_crud
 from src.schemas import usuarios as usuarios_schema
-from src.models import Usuarios
 from pydantic import EmailStr
-import re
+import re, time
 
 router = APIRouter()
 
@@ -29,7 +29,7 @@ def read_usuario_by_email(email: EmailStr, db: Session = Depends(get_db)):
 # Ruta para crear a un usuario
 @router.post('/create', response_model=usuarios_schema.Usuario)
 def create_usuario(usuario: usuarios_schema.UsuarioCreate, db: Session = Depends(get_db)):
-    db_usuario = db.query(Usuarios).filter(Usuarios.correo == usuario.correo.lower()).first()
+    db_usuario = usuario_crud.get_usuario_by_email(db, usuario.correo)
     if db_usuario:
         raise HTTPException(status_code=409, detail='Ese correo ya existe')
     regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
@@ -50,14 +50,17 @@ def update_usuario(id_usuario: int, usuario: usuarios_schema.UsuarioUpdate, db: 
         raise HTTPException(status_code=404, detail='Usuario no encontrado')
     elif db_usuario.estado is False:
         raise HTTPException(status_code=404, detail='Usuario no encontrado')
-    regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
-    if not re.match(regex, usuario.contraseña):
-        raise HTTPException(status_code=400, detail='La contraseña debe contener 8 caracteres, mayúscula, minúscula, número y símbolo')
+    if usuario.contraseña is not None:
+        regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+        if not re.match(regex, usuario.contraseña):
+            raise HTTPException(status_code=400, detail="La contraseña debe contener 8 caracteres, mayúscula, minúscula, número y símbolo")
     regex2 = r'^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+$'
-    if not re.match(regex2, usuario.nombre):
-        raise HTTPException(status_code=400, detail="El nombre solo debe contener letras")
-    if not re.match(regex2, usuario.apellido):
-        raise HTTPException(status_code=400, detail="El apellido solo debe contener letras")
+    if usuario.nombre is not None:
+        if not re.match(regex2, usuario.nombre):
+            raise HTTPException(status_code=400, detail="El nombre solo debe contener letras")
+    if usuario.apellido is not None:
+        if not re.match(regex2, usuario.apellido):
+            raise HTTPException(status_code=400, detail="El apellido solo debe contener letras")
     return usuario_crud.update_usuario(db=db, id_usuario=id_usuario, usuario=usuario)
 
 # Ruta para modificar el avatar de un usuario
@@ -67,6 +70,8 @@ def update_avatar(data: usuarios_schema.AvatarUpdate, request: Request, db: Sess
     if not id_usuario:
         raise HTTPException(status_code=401, detail="No autenticado")
     usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
+    if not usuario or usuario.estado is False:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
     usuario.avatar = data.avatar
     db.commit()
     db.refresh(usuario)
@@ -85,12 +90,20 @@ def delete_usuario(id_usuario: int, db: Session = Depends(get_db)):
 def login(data: usuarios_schema.login, request: Request, db: Session = Depends(get_db)):
     usuario = usuario_crud.get_usuario_by_email(db, data.correo)
     if not usuario or usuario.estado is False:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    if usuario.contraseña != data.contraseña:
-        raise HTTPException(status_code=401, detail="Contraseña incorrecta")
-    if data.recordar:
-        request.session["recordar"] = True
+        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+    valido, nuevo_hash =verificar_password_compatible(data.contraseña, usuario.contraseña)
+    if not valido:
+        raise HTTPException(status_code=401, detail="Contraseñas incorrectas")
+    if nuevo_hash:
+        usuario.contraseña = nuevo_hash
+        db.commit()
+    request.session.clear()
     request.session["id_usuario"] = usuario.id_usuario
+    if data.recordar:
+        duracion = 60 * 60 * 24 * 30  
+    else:
+        duracion = 60 * 60 * 12 
+    request.session["expira_en"] = time.time() + duracion
     return {
         "message": "Login correcto"
     }

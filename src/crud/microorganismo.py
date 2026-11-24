@@ -75,9 +75,13 @@ def delete_microorganismo(db: Session, id_microorganismo: int):
 
 # Funcion para la ruta del buscador
 def buscar_microorganismo(resp_usuario: str, db: Session):
+    texto = resp_usuario.strip()
     return db.query(Microorganismo).filter(
         or_(
             func.unaccent(Microorganismo.nombre).ilike(func.unaccent(f"%{resp_usuario}%")),
             func.unaccent(Microorganismo.descripcion).ilike(func.unaccent(f"%{resp_usuario}%"))
         )
+    ).order_by(
+        (func.lower(Microorganismo.nombre) == texto.lower()).desc(),
+        (func.lower(Microorganismo.nombre).like(texto.lower() + "%")).desc()
     ).all()

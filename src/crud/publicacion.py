@@ -10,8 +10,9 @@ def get_publicacion_by_id(db: Session, id_publicacion: int):
 
 # Metodo POST: crea una publicacion
 def create_publicacion(db: Session, publicacion: PublicacionCreate):
+    datos = publicacion.model_dump()
     db_publicacion = Publicaciones(
-        **publicacion.dict(),
+        **datos,
         fecha_creacion=date.today(),
         )
     db.add(db_publicacion)
@@ -20,11 +21,15 @@ def create_publicacion(db: Session, publicacion: PublicacionCreate):
     return db_publicacion
 
 # Metodo PUT: modifica a una publicacion
-def update_publicacion(db: Session, id_publicacion: int, publicacion: PublicacionUpdate):
-    db_publicacion = db.query(Publicaciones).filter(Publicaciones.id_publicacion == id_publicacion).first()
+def update_publicacion(db: Session, id_publicacion: int, publicacion: PublicacionUpdate, db_publicacion: Publicaciones = None):
+    if db_publicacion is None:
+        db_publicacion = get_publicacion_by_id(
+            db, id_publicacion=id_publicacion
+        )
     if not db_publicacion:
         return None
-    for key, value in publicacion.dict().items():
+    datos = publicacion.model_dump(exclude_unset=True)
+    for key, value in datos.items():
         setattr(db_publicacion, key, value)
     db.commit()
     db.refresh(db_publicacion)
@@ -33,7 +38,19 @@ def update_publicacion(db: Session, id_publicacion: int, publicacion: Publicacio
 # Metodo DELETE: elimina una publicacion
 def delete_publicacion(db: Session, id_publicacion: int):
     db_publicacion = db.query(Publicaciones).filter(Publicaciones.id_publicacion==id_publicacion).first()
-    db.query(Comentarios).filter(Comentarios.id_publicacion == id_publicacion).delete()
-    db.delete(db_publicacion)
-    db.commit()
-    return db_publicacion
+    if not db_publicacion:
+        return None
+    try:
+        # Eliminar los comentarios asociados
+        db.query(Comentarios).filter(
+            Comentarios.id_publicacion == id_publicacion
+        ).delete(synchronize_session=False)
+
+        db.delete(db_publicacion)
+        db.commit()
+
+        return db_publicacion
+
+    except Exception:
+        db.rollback()
+        raise

@@ -69,7 +69,6 @@ document.querySelectorAll(".avatar-opcion").forEach(btn => {
                 return;
             }
 
-            console.log("Avatar actualizado correctamente");
 
 
 if (response.ok) {
@@ -80,7 +79,6 @@ if (response.ok) {
     avatarActual.src = `${nuevaUrl}?t=${Date.now()}`;
 
     modalAvatar.classList.remove("activo");
-    alert("Avatar actualizado correctamente");
 }
 
 
