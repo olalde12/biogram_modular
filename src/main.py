@@ -1,5 +1,5 @@
 import os, time
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from src.core.config import settings
 from src.api.routes import microorganismos, usuarios, publicaciones, comentarios, cuestionarios, resultado_cuest, pruebas, resultados, medios, buscador
 import src.models  
@@ -70,6 +70,24 @@ async def buscarbacteria(request: Request, db: Session = Depends(get_db)):
             "app_mode": True
         }
     )
+
+@app.get("/escaner")
+async def escaner(request: Request, db: Session = Depends(get_db)):
+    usuario = None
+    id_usuario = request.session.get("id_usuario")
+
+    if id_usuario:
+        usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
+
+    return templates.TemplateResponse(
+        "escaner.html",
+        {
+            "request": request,
+            "usuario": usuario,
+            "app_mode": True
+        }
+    )
+
 @app.get("/login")
 def login(request: Request):
     return templates.TemplateResponse(
@@ -153,6 +171,35 @@ async def foro(request: Request, db: Session = Depends(get_db)):
             "request": request,
             "usuario": usuario,
             "app_mode": False
+        }
+    )
+
+@app.get("/historial", response_class=HTMLResponse)
+async def historial(request: Request, db: Session = Depends(get_db)):
+
+    id_usuario = request.session.get("id_usuario")
+
+    if not id_usuario:
+        raise HTTPException(
+            status_code=401,
+            detail="Necesitas iniciar sesión para consultar tu historial."
+        )
+
+    usuario = usuario_crud.get_usuario_by_id(db, id_usuario)
+
+    if not usuario or usuario.estado is False:
+        request.session.clear()
+        raise HTTPException(
+            status_code=401,
+            detail="Tu sesión no es válida. Inicia sesión para continuar."
+        )
+
+    return templates.TemplateResponse(
+        "historial.html",
+        {
+            "request": request,
+            "usuario": usuario,
+            "app_mode": True
         }
     )
 

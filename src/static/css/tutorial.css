@@ -1,0 +1,132 @@
+
+.tutorial-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.65);
+    z-index: 9998;
+}
+
+.tour-resaltado {
+    position: relative !important;
+    z-index: 9999 !important;
+    outline: 4px solid #b49a63 !important;
+    outline-offset: 5px;
+    border-radius: 8px;
+}
+
+.tutorial-tarjeta {
+    position: fixed;
+    z-index: 10000;
+    width: 340px;
+    max-width: calc(100vw - 32px);
+    padding: 22px;
+    background: #f5f4f0;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.3);
+    font-family: 'Poppins', sans-serif;
+    color: #17201e;
+}
+
+.tutorial-flecha {
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    background: #f5f4f0;
+    transform: rotate(45deg);
+    left: 35px;
+}
+
+.tutorial-flecha.arriba {
+    top: -8px;
+}
+
+.tutorial-flecha.abajo {
+    bottom: -8px;
+}
+
+.tutorial-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.tutorial-encabezado span {
+    color: #b49a63;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+#tutorialOmitir {
+    background: none;
+    border: none;
+    color: #686d6a;
+    cursor: pointer;
+}
+
+.tutorial-tarjeta h3 {
+    color: #1d3b36;
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.tutorial-tarjeta p {
+    color: #4b5552;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.tutorial-progreso {
+    height: 5px;
+    background: #deddd7;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 18px 0;
+}
+
+#tutorialBarra {
+    height: 100%;
+    width: 25%;
+    background: #b49a63;
+    transition: width .3s ease;
+}
+
+.tutorial-acciones {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.tutorial-acciones button {
+    padding: 10px 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+
+#tutorialAnterior {
+    background: transparent;
+    border: 1px solid #1d3b36;
+    color: #1d3b36;
+}
+
+#tutorialSiguiente {
+    background: #1d3b36;
+    border: 1px solid #1d3b36;
+    color: white;
+}
+
+@media(max-width:600px) {
+    .tutorial-tarjeta {
+        left: 16px !important;
+        right: 16px;
+        bottom: 18px;
+        top: auto !important;
+        width: auto;
+        max-width: none;
+    }
+
+    .tutorial-flecha {
+        display: none;
+    }
+}

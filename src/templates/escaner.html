@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+
+{% block title %}
+Escáner Biogram IA
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/escaner.css') }}">
+{% endblock %}
+
+{% block contenido %}
+
+<section class="escaner-container">
+
+    <div id="pantalla-inicio">
+
+        <!-- ENCABEZADO -->
+        <div class="escaner-header">
+            <div>
+                <span class="escaner-etiqueta">
+                    <i class="fa-solid fa-microscope"></i>
+                    LABORATORIO INTELIGENTE
+                </span>
+
+                <h1>Escáner Biogram <span>IA</span></h1>
+
+                <p>
+                    Identificación bioquímica asistida mediante inteligencia artificial.
+                </p>
+            </div>
+        </div>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="escaner-hero">
+
+            <!-- INFORMACIÓN -->
+            <div class="escaner-info">
+
+                <span class="info-etiqueta">
+                    <i class="fa-solid fa-flask"></i>
+                    ANÁLISIS MICROBIOLÓGICO
+                </span>
+
+                <h2>
+                    Descubre una nueva forma de
+                    <span>identificar bacterias.</span>
+                </h2>
+
+                <p class="escaner-descripcion">
+                    Analiza tus pruebas bioquímicas mediante nuestro
+                    escáner inteligente. La inteligencia artificial
+                    reconocerá automáticamente el tipo de prueba e
+                    interpretará sus reacciones para apoyar el proceso
+                    de identificación bacteriana.
+                </p>
+
+                <!-- CARACTERÍSTICAS -->
+                <div class="escaner-caracteristicas">
+
+                    <div class="caracteristica">
+                        <div class="caracteristica-icono">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+
+                        <div>
+                            <h3>Reconocimiento automático</h3>
+                            <p>Identificación del tipo de prueba.</p>
+                        </div>
+                    </div>
+
+                    <div class="caracteristica">
+                        <div class="caracteristica-icono">
+                            <i class="fa-solid fa-vial"></i>
+                        </div>
+
+                        <div>
+                            <h3>Análisis bioquímico</h3>
+                            <p>Interpretación de las reacciones.</p>
+                        </div>
+                    </div>
+
+                    <div class="caracteristica">
+                        <div class="caracteristica-icono">
+                            <i class="fa-solid fa-dna"></i>
+                        </div>
+
+                        <div>
+                            <h3>Identificación bacteriana</h3>
+                            <p>Comparación con perfiles bioquímicos.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- BOTÓN -->
+                <button class="btn-iniciar-escaner" id="btn-iniciar-escaner" type="button">
+                    <i class="fa-solid fa-power-off"></i>
+                    Iniciar escaneo
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <p class="escaner-nota">
+                    <i class="fa-solid fa-circle-info"></i>
+                    El inicio estará disponible cuando se establezca
+                    la conexión con el dispositivo.
+                </p>
+
+            </div>
+
+            <!-- ILUSTRACIÓN DEL ESCÁNER -->
+            <div class="escaner-visual">
+
+                <div class="visual-decoracion decoracion-1"></div>
+                <div class="visual-decoracion decoracion-2"></div>
+
+                <div class="visual-contenido">
+
+                    <div class="visual-icono">
+                        <i class="fa-solid fa-microscope"></i>
+                    </div>
+
+                    <div class="visual-dispositivo">
+
+                        <div class="dispositivo-camara">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+
+                        <div class="dispositivo-superior"></div>
+
+                        <div class="dispositivo-cuerpo">
+
+                            <div class="dispositivo-pantalla">
+                                <div class="pantalla-punto"></div>
+                                <i class="fa-solid fa-flask"></i>
+                                <span> BIOGRAM IA</span>
+                            </div>
+
+                            <div class="dispositivo-indicador"></div>
+
+                        </div>
+
+                        <div class="dispositivo-base">
+                            <div class="base-linea"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="visual-pie">
+                        <i class="fa-solid fa-microchip"></i>
+                        Tecnología de análisis inteligente
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ESTADO DEL DISPOSITIVO -->
+        <div class="escaner-estado">
+
+            <div class="estado-informacion">
+
+                <div class="estado-icono">
+                    <i class="fa-solid fa-plug-circle-exclamation"></i>
+                </div>
+
+                <div>
+                    <h3>Estado del dispositivo</h3>
+                    <p>Conexión pendiente de verificación</p>
+                </div>
+
+            </div>
+
+            <span class="estado-badge">
+                <span class="estado-punto"></span>
+                Por verificar
+            </span>
+
+        </div>
+
+        <!-- RECOMENDACIONES -->
+        <div class="escaner-recomendaciones">
+
+            <div class="recomendaciones-titulo">
+                <i class="fa-solid fa-lightbulb"></i>
+
+                <div>
+                    <h3>Antes de comenzar</h3>
+                    <p>Ten en cuenta estas recomendaciones para realizar tu análisis.</p>
+                </div>
+            </div>
+
+            <div class="recomendaciones-grid">
+
+                <div class="recomendacion">
+                    <i class="fa-solid fa-vial-circle-check"></i>
+                    <p>Prepara correctamente el tubo con la prueba bioquímica.</p>
+                </div>
+
+                <div class="recomendacion">
+                    <i class="fa-solid fa-hand"></i>
+                    <p>Coloca el tubo en la posición indicada por el dispositivo.</p>
+                </div>
+
+                <div class="recomendacion">
+                    <i class="fa-solid fa-ban"></i>
+                    <p>Evita mover el tubo durante el proceso de captura.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div><!-- FIN PANTALLA INICIO -->
+
+
+    <!-- =====================================
+     PANTALLA DE PREPARACIÓN
+===================================== -->
+
+    <div id="pantalla-preparacion" hidden>
+
+        <div class="preparacion-encabezado">
+
+            <span class="info-etiqueta">
+                <i class="fa-solid fa-list-check"></i>
+                PREPARACIÓN DEL ANÁLISIS
+            </span>
+
+            <h2>Antes de iniciar el escaneo</h2>
+
+            <p>
+                Sigue estas indicaciones para obtener una captura
+                adecuada de tu prueba bioquímica.
+            </p>
+
+        </div>
+
+
+        <!-- PROGRESO -->
+
+        <div class="preparacion-progreso">
+
+            <div class="progreso-paso activo">
+                <span>1</span>
+                <p>Preparación</p>
+            </div>
+
+            <div class="progreso-linea"></div>
+
+            <div class="progreso-paso">
+                <span>2</span>
+                <p>Captura</p>
+            </div>
+
+            <div class="progreso-linea"></div>
+
+            <div class="progreso-paso">
+                <span>3</span>
+                <p>Resultados</p>
+            </div>
+
+        </div>
+
+
+        <!-- CONTENIDO DE PREPARACIÓN -->
+
+        <div class="preparacion-contenido">
+
+            <div class="preparacion-ilustracion">
+                <i class="fa-solid fa-vial"></i>
+                <span class="ilustracion-brillo brillo-1"></span>
+                <span class="ilustracion-brillo brillo-2"></span>
+
+                <p>Prepara tu muestra</p>
+            </div>
+
+
+            <div class="preparacion-instrucciones">
+
+                <h3>Indicaciones para la captura</h3>
+
+                <p class="instrucciones-descripcion">
+                    Antes de continuar, verifica los siguientes puntos:
+                </p>
+
+
+                <div class="instruccion-item">
+                    <span class="instruccion-numero">01</span>
+
+                    <div>
+                        <h4>Prepara el tubo</h4>
+                        <p>
+                            Asegúrate de que el tubo corresponda a una
+                            prueba bioquímica lista para su análisis.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="instruccion-item">
+                    <span class="instruccion-numero">02</span>
+
+                    <div>
+                        <h4>Verifica la iluminación</h4>
+                        <p>
+                            Procura que el área esté bien iluminada y
+                            evita reflejos que dificulten observar la muestra.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="instruccion-item">
+                    <span class="instruccion-numero">03</span>
+
+                    <div>
+                        <h4>Coloca correctamente el tubo</h4>
+                        <p>
+                            Ubícalo en la posición indicada por el
+                            dispositivo de escaneo.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="instruccion-item">
+                    <span class="instruccion-numero">04</span>
+
+                    <div>
+                        <h4>Evita mover la muestra</h4>
+                        <p>
+                            Mantén el tubo estable durante el proceso
+                            de captura y análisis.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AVISO -->
+
+        <div class="preparacion-aviso">
+            <i class="fa-solid fa-circle-info"></i>
+
+            <p>
+                El reconocimiento automático del tipo de prueba se
+                realizará durante el análisis. No necesitas seleccionarlo
+                manualmente.
+            </p>
+        </div>
+
+
+        <!-- ACCIONES -->
+
+        <div class="preparacion-acciones">
+
+            <button type="button" class="btn-regresar-escaner" id="btn-regresar-escaner">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Regresar
+
+            </button>
+
+
+            <button type="button" class="btn-continuar-escaner" disabled>
+
+                Continuar al escaneo
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+        </div>
+
+        <p class="preparacion-nota">
+            La captura se habilitará cuando esté integrada la conexión
+            con el dispositivo.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', path='js/escaner.js') }}"></script>
+{% endblock %}

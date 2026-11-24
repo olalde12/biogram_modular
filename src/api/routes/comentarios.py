@@ -1,9 +1,10 @@
 from datetime import date
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from typing import List
+from src.api.routes.cuestionarios import obtener_usuario_sesion
 from src.api.deps import get_db
-from src.models import Comentarios
+from src.models import Comentarios, Usuarios
 from src.crud import comentario as comentario_crud
 from src.crud import publicacion as publicacion_crud
 from src.crud import usuario as usuario_crud
@@ -18,31 +19,87 @@ def read_publicaciones(id_publicacion: int, db: Session = Depends(get_db)):
     db_publicacion = publicacion_crud.get_publicacion_by_id(db, id_publicacion=id_publicacion)
     if not db_publicacion:
         raise HTTPException(status_code=404, detail='Esa publicacion no exite')
-    db_comentarios = (db.query(Comentarios).filter(Comentarios.id_publicacion == id_publicacion).all())
-    if not db_comentarios:
-        raise HTTPException(status_code=404, detail='No hay comentarios para mostrar')
-    return db_comentarios
+    db_comentarios = (
+        db.query(
+            Comentarios.id_comentario,
+            Comentarios.contenido,
+            Comentarios.fecha_creacion,
+            Comentarios.id_publicacion,
+            Comentarios.id_usuario,
+            Usuarios.nombre.label("autor")
+        )
+        .join(
+            Usuarios,
+            Comentarios.id_usuario == Usuarios.id_usuario
+        )
+        .filter(
+            Comentarios.id_publicacion == id_publicacion
+        )
+        .order_by(Comentarios.fecha_creacion.asc())
+        .all()
+    )
+    return [{
+            "id_comentario": comentario.id_comentario,
+            "contenido": comentario.contenido,
+            "fecha_creacion": comentario.fecha_creacion,
+            "id_publicacion": comentario.id_publicacion,
+            "id_usuario": comentario.id_usuario,
+            "autor": comentario.autor
+        }
+        for comentario in db_comentarios
+    ]
 
 # Ruta para obtener un comentario por id
 @router.get('/{id_comentario}', response_model=comentario_schema.Comentario)
 def read_comentario_by_id(id_comentario: int, db: Session = Depends(get_db)):
-    db_comentario = comentario_crud.get_comentario_by_id(db, id_comentario=id_comentario)
-    if db_comentario is None:
-        raise HTTPException(status_code=404, detail='Comentario no encontrado')
-    return db_comentario
+    comentario = (
+        db.query(
+            Comentarios.id_comentario,
+            Comentarios.contenido,
+            Comentarios.fecha_creacion,
+            Comentarios.id_publicacion,
+            Comentarios.id_usuario,
+            Usuarios.nombre.label("autor")
+        )
+        .join(
+            Usuarios,
+            Comentarios.id_usuario == Usuarios.id_usuario
+        )
+        .filter(
+            Comentarios.id_comentario == id_comentario
+        )
+        .first()
+    )
+    if comentario is None:
+        raise HTTPException(status_code=404, detail="Comentario no encontrado")
+    return {
+        "id_comentario": comentario.id_comentario,
+        "contenido": comentario.contenido,
+        "fecha_creacion": comentario.fecha_creacion,
+        "id_publicacion": comentario.id_publicacion,
+        "id_usuario": comentario.id_usuario,
+        "autor": comentario.autor
+    }
 
 # Ruta para crear un comentario
 @router.post('/create', response_model=comentario_schema.Comentario)
-def create_comentario(comentario: comentario_schema.ComentarioCreate, db: Session = Depends(get_db)):
-    db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=comentario.id_usuario)
-    if not db_usuario or db_usuario.estado is False:
-        raise HTTPException(status_code=404, detail='Ese usuario no exite')
+def create_comentario(comentario: comentario_schema.ComentarioCreate, request: Request, db: Session = Depends(get_db)):
+    id_usuario = obtener_usuario_sesion(request, db)
+    db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=id_usuario)
     db_publicacion = publicacion_crud.get_publicacion_by_id(db, id_publicacion=comentario.id_publicacion)
     if not db_publicacion:
         raise HTTPException(status_code=404, detail='Esa publicacion no existe')
     if contenido_moderado(comentario.contenido):
         raise HTTPException(status_code=400, detail=("Tu comentario contiene contenido que no cumple las normas de la comunidad."))
-    return comentario_crud.create_comentario(db=db, comentario=comentario)
+    nuevo = comentario_crud.create_comentario(db=db, comentario=comentario, id_usuario=id_usuario)
+    return {
+        "id_comentario": nuevo.id_comentario,
+        "contenido": nuevo.contenido,
+        "fecha_creacion": nuevo.fecha_creacion,
+        "id_publicacion": nuevo.id_publicacion,
+        "id_usuario": nuevo.id_usuario,
+        "autor": db_usuario.nombre
+    }
 
 # Ruta para modificar un comentario
 @router.put("/update/{id_comentario}", response_model=comentario_schema.Comentario)

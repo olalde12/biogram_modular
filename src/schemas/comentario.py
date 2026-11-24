@@ -19,7 +19,6 @@ class Comentario(ComentarioBase):
 # Se necesita el campo de usuario y de publicacion (FK)
 class ComentarioCreate(ComentarioBase):
     id_publicacion: int
-    id_usuario: int
 
 class ComentarioUpdate(ComentarioBase):
     contenido: str

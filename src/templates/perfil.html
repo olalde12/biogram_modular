@@ -18,7 +18,13 @@
 
         <button class="avatar" id="btnAvatar" type="button">
 
-            <img id="avatarActual" src="{{ usuario.avatar }}" alt="Avatar">
+            {% if usuario %}
+                {% if usuario.avatar %}
+                    <img id="avatarActual" src="{{ usuario.avatar }}" alt="Avatar de {{ usuario.nombre }}">
+                {% else %}
+                    <div id="avatarActual" class="avatar-inicial">{{ usuario.nombre[0]|upper }}</div>
+                {% endif %}
+            {% endif %}
 
             <span class="avatar-editar">
                 <i class="fa-solid fa-pencil"></i>

@@ -10,6 +10,8 @@ Inicio
 
 <link rel="stylesheet" href="{{ url_for('static', path='css/identificacion.css') }}">
 
+<link rel="stylesheet" href="{{ url_for('static', path='css/tutorial.css') }}">
+
 {% endblock %}
 
 <section class="home">
@@ -18,11 +20,11 @@ Inicio
 
         <h2>¿Qué deseas hacer hoy?</h2>
 
-        <button class="btn btn-principal" onclick="window.location.href='identificacion'">
+        <button id="btnIdentificar" class="btn btn-principal" onclick="window.location.href='identificacion'">
             Identificar bacteria
         </button>
 
-        <button class="btn btn-principal" onclick="window.location.href='buscarbacteria'">
+        <button id="btnBuscar" class="btn btn-principal" onclick="window.location.href='buscarbacteria'">
             Buscar bacteria
         </button>
 
@@ -39,14 +41,10 @@ Inicio
             </h1>
         </div>
         <div class="btn-right-content">
-            <button class="btn btn-principal">
-                {% if usuario %}
-                Continuar con un tutorial
-                {% else %}
-                Tutoriales
-                {% endif %}
+            <button id="btnHistorial" class="btn btn-principal" data-autenticado="{{ 'true' if request.session.get('id_usuario') else 'false' }}">
+                Historial
             </button>
-            <button class="btn btn-principal">
+            <button id="btnEscanear" class="btn btn-principal" onclick="window.location.href='/escaner'">
                 Escanear pruebas
             </button>
         </div>
@@ -54,5 +52,41 @@ Inicio
     </div>
 
 </section>
+
+
+<!-- DEMOSTRACIÓN DEL TUTORIAL 
+<div id="tutorialOverlay" class="tutorial-overlay"></div>
+
+<div id="tutorialTarjeta" class="tutorial-tarjeta">
+
+    <div class="tutorial-flecha"></div>
+
+    <div class="tutorial-encabezado">
+        <span id="tutorialPaso">PASO 1 DE 4</span>
+        <button id="tutorialOmitir" type="button">Omitir</button>
+    </div>
+
+    <h3 id="tutorialTitulo"></h3>
+
+    <p id="tutorialDescripcion"></p>
+
+    <div class="tutorial-progreso">
+        <div id="tutorialBarra"></div>
+    </div>
+
+    <div class="tutorial-acciones">
+        <button id="tutorialAnterior" type="button">
+            Anterior
+        </button>
+
+        <button id="tutorialSiguiente" type="button">
+            Siguiente →
+        </button>
+    </div>
+
+</div> -->
+
+<script src="{{ url_for('static', path='js/tutorial.js') }}" defer></script>
+
 
 {% endblock %}

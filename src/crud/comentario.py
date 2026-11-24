@@ -8,9 +8,11 @@ def get_comentario_by_id(db: Session, id_comentario: int):
     return db.query(Comentarios).filter(Comentarios.id_comentario == id_comentario).first()
 
 # Metodo POST: crea un comentario
-def create_comentario(db: Session, comentario: ComentarioCreate):
+def create_comentario(db: Session, comentario: ComentarioCreate, id_usuario: int):
+    datos = comentario.model_dump()
     db_comentario = Comentarios(
-        **comentario.dict(),
+        **datos,
+        id_usuario=id_usuario,
         fecha_creacion=date.today(),
         )
     db.add(db_comentario)

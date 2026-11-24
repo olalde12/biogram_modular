@@ -104,6 +104,9 @@
             <button id="btnNuevaIdentificacion">
                 Nueva Identificación
             </button>
+            <button id="btnRevisarRespuestas">
+                Revisar respuestas ingresadas
+            </button>
         </section>
     </div>
     <div id="diccionarioModal" class="diccionario-modal">
@@ -127,6 +130,36 @@
     </div>
 
 </main>
+
+<!-- AVISO PARA USUARIOS SIN SESIÓN -->
+<div id="modalSesion" class="modal-sesion">
+    <div class="modal-sesion-contenido">
+
+        <button type="button" id="cerrarModalSesion" class="cerrar-modal-sesion" aria-label="Cerrar">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="modal-sesion-icono">
+            <i class="fa-solid fa-lock"></i>
+        </div>
+
+        <h2>¡Necesitas una cuenta!</h2>
+
+        <p>
+            Para guardar esta identificación en tu historial,
+            necesitas iniciar sesión o crear una cuenta en BIOGRAM.
+        </p>
+
+        <a href="/login" class="btn-sesion-login">
+            Iniciar sesión / Crear una cuenta
+        </a>
+
+        <span class="modal-sesion-nota">
+            Puedes seguir utilizando la herramienta de identificación.
+        </span>
+
+    </div>
+</div>
 
 {% block js %}
 

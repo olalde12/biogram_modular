@@ -28,7 +28,7 @@ def read_usuario_by_email(email: EmailStr, db: Session = Depends(get_db)):
 
 # Ruta para crear a un usuario
 @router.post('/create', response_model=usuarios_schema.Usuario)
-def create_usuario(usuario: usuarios_schema.UsuarioCreate, db: Session = Depends(get_db)):
+def create_usuario(usuario: usuarios_schema.UsuarioCreate, request:Request, db: Session = Depends(get_db)):
     db_usuario = usuario_crud.get_usuario_by_email(db, usuario.correo)
     if db_usuario:
         raise HTTPException(status_code=409, detail='Ese correo ya existe')
@@ -40,7 +40,11 @@ def create_usuario(usuario: usuarios_schema.UsuarioCreate, db: Session = Depends
         raise HTTPException(status_code=400, detail="El nombre solo debe contener letras")
     if not re.match(regex2, usuario.apellido):
         raise HTTPException(status_code=400, detail="El apellido solo debe contener letras")
-    return usuario_crud.create_usuario(db=db, usuario=usuario)
+    db_usuario = usuario_crud.create_usuario(db=db, usuario=usuario)
+    request.session.clear()
+    request.session["id_usuario"] = db_usuario.id_usuario
+    request.session["expira_en"] = time.time() + (60 * 60 * 12)
+    return db_usuario
 
 # Ruta para modificar a un usuario
 @router.put('/update/{id_usuario}', response_model=usuarios_schema.Usuario)

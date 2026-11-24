@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import func, case
 from sqlalchemy.orm import Session
 from typing import List
+from src.api.routes.cuestionarios import obtener_usuario_sesion
 from src.api.deps import get_db
 from src.models import Publicaciones, Usuarios, Likes, Comentarios
 from src.crud import usuario as usuario_crud
@@ -11,10 +12,7 @@ from src.moderacion import contenido_moderado
 
 router = APIRouter()
 
-
-# Consulta optimizada reutilizable para las publicaciones
 def consultar_publicaciones(db: Session, categoria: str = None):
-    # Contar los likes de cada publicación en una sola subconsulta
     likes_subquery = (
         db.query(
             Likes.id_publicacion.label("id_publicacion"),
@@ -93,14 +91,8 @@ def read_publicaciones(db: Session = Depends(get_db)):
 
 
 # Obtener publicaciones por categoría
-@router.get(
-    "/categoria/{categoria}",
-    response_model=List[publicacion_schema.Publicacion]
-)
-def read_publicaciones_categoria(
-    categoria: str,
-    db: Session = Depends(get_db)
-):
+@router.get("/categoria/{categoria}", response_model=List[publicacion_schema.Publicacion])
+def read_publicaciones_categoria(categoria: str, db: Session = Depends(get_db)):
     return consultar_publicaciones(db, categoria)
 
 
@@ -143,20 +135,19 @@ def read_publicacion_by_title(titulo: str, db: Session = Depends(get_db)):
 
 # Ruta para crear una publicacion
 @router.post('/create', response_model=publicacion_schema.Publicacion)
-def create_publicacion(publicacion: publicacion_schema.PublicacionCreate, db: Session = Depends(get_db)):
-    db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=publicacion.id_usuario)
-    if not db_usuario:
-        raise HTTPException(status_code=404, detail='Ese usuario no exite')
+def create_publicacion(publicacion: publicacion_schema.PublicacionCreate, request: Request,  db: Session = Depends(get_db)):
+    id_usuario = obtener_usuario_sesion(request, db)
+    db_usuario = usuario_crud.get_usuario_by_id(db, id_usuario=id_usuario)
     db_publicacion = (db.query(Publicaciones).filter(
         Publicaciones.titulo == publicacion.titulo,
         Publicaciones.contenido == publicacion.contenido,
-        Publicaciones.id_usuario == publicacion.id_usuario
+        Publicaciones.id_usuario == id_usuario
     ).first())
     if contenido_moderado(publicacion.contenido) or contenido_moderado(publicacion.titulo):
         raise HTTPException(status_code=400, detail=("Tu publicación contiene contenido que no cumple las normas de la comunidad."))
     if db_publicacion:
         raise HTTPException(status_code=409, detail='Esa publicacion ya existe')
-    nueva = publicacion_crud.create_publicacion(db=db, publicacion=publicacion)
+    nueva = publicacion_crud.create_publicacion(db=db, publicacion=publicacion, id_usuario=id_usuario)
     return {
         "id_publicacion": nueva.id_publicacion,
         "titulo": nueva.titulo,
@@ -293,16 +284,11 @@ def delete_publicacion(id_publicacion: int, id_usuario: int, db: Session = Depen
     publicacion_crud.delete_publicacion(db=db, id_publicacion=id_publicacion)
     return datos_publicacion
 
-# Consultar el total y saber si un usuario ya dio me gusta
-
 # Consultar el total de likes y si el usuario ya reaccionó
 @router.get("/{id_publicacion}/likes")
-def consultar_me_gusta(
-    id_publicacion: int,
-    id_usuario: int,
-    db: Session = Depends(get_db)
-):
-    resultado = (
+def consultar_me_gusta(id_publicacion: int, request: Request, db: Session = Depends(get_db)):
+    id_usuario = request.session.get("id_usuario")
+    consulta = (
         db.query(
             Publicaciones.id_publicacion,
             func.count(Likes.id_likes).label("total_likes"),
@@ -324,27 +310,18 @@ def consultar_me_gusta(
         .first()
     )
 
-    if resultado is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Publicación no encontrada"
-        )
+    if consulta is None:
+        raise HTTPException(status_code=404, detail="Publicación no encontrada")
 
     return {
-        "likes": resultado.total_likes,
-        "liked": bool(resultado.liked)
+        "likes": consulta.total_likes,
+        "liked": bool(consulta.liked) if id_usuario else False
     }
-
-
-
 
 # Dar o quitar Me gusta
 @router.post("/{id_publicacion}/likes")
-def alternar_me_gusta(
-    id_publicacion: int,
-    id_usuario: int,
-    db: Session = Depends(get_db)
-):
+def alternar_me_gusta(id_publicacion: int, request: Request, db: Session = Depends(get_db)):
+    id_usuario = obtener_usuario_sesion(request, db)
     publicacion = db.query(
         Publicaciones.id_publicacion
     ).filter(
@@ -352,21 +329,7 @@ def alternar_me_gusta(
     ).first()
 
     if publicacion is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Publicación no encontrada"
-        )
-
-    usuario = db.query(Usuarios.id_usuario).filter(
-        Usuarios.id_usuario == id_usuario,
-        Usuarios.estado.isnot(False)
-    ).first()
-
-    if usuario is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Usuario no encontrado"
-        )
+        raise HTTPException(status_code=404, detail="Publicación no encontrada")
 
     reaccion = db.query(Likes).filter(
         Likes.id_publicacion == id_publicacion,
@@ -377,11 +340,12 @@ def alternar_me_gusta(
         db.delete(reaccion)
         liked = False
     else:
-        nueva_reaccion = Likes(
-            id_publicacion=id_publicacion,
-            id_usuario=id_usuario
+        db.add(
+            Likes(
+                id_publicacion=id_publicacion,
+                id_usuario=id_usuario
+            )
         )
-        db.add(nueva_reaccion)
         liked = True
 
     db.commit()
@@ -396,4 +360,3 @@ def alternar_me_gusta(
         "likes": total,
         "liked": liked
     }
-

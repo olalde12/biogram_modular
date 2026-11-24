@@ -74,7 +74,7 @@
 /* =========================================================
    IMAGEN DEL AVATAR
    ========================================================= */
-#avatarActual {
+#avatarActual:not(.avatar-inicial) {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -103,6 +103,21 @@
 
 .avatar-editar i {
     margin: 0;
+}
+
+.avatar-inicial {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3eb4e8;
+    color: #1c2930;
+    font-size: 55px;
+    font-weight: 600;
+    text-transform: uppercase;
+    box-sizing: border-box;
 }
 
 /* =========================================================
