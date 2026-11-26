@@ -1,7 +1,7 @@
 import os, time
 from fastapi import FastAPI, HTTPException
 from src.core.config import settings
-from src.api.routes import microorganismos, usuarios, publicaciones, comentarios, cuestionarios, resultado_cuest, pruebas, resultados, medios, buscador
+from src.api.routes import microorganismos, usuarios, publicaciones, comentarios, cuestionarios, resultado_cuest, pruebas, resultados, medios, buscador,escaner_api
 import src.models  
 from src.crud import usuario as usuario_crud
 from fastapi.staticfiles import StaticFiles
@@ -209,6 +209,12 @@ app.add_middleware(
     session_cookie="biogram_session",
     max_age = 60 * 60 * 24 * 30,
     same_site="lax"
+ )
+app.include_router(
+    escaner_api.router,
+    prefix="/api/biogram/v1",
+    tags=["Biogram - Escáner"]
+
 )
 
 # Rutas del Swagger del FastAPI para hacer peticiones a la base de datos
