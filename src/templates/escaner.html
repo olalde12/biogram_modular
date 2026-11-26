@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Escáner Biogram IA
+ESCÁNER BIOGRAM IA
 {% endblock %}
 
 {% block css %}
@@ -18,12 +18,9 @@ Escáner Biogram IA
         <!-- ENCABEZADO -->
         <div class="escaner-header">
             <div>
-                <span class="escaner-etiqueta">
-                    <i class="fa-solid fa-microscope"></i>
-                    LABORATORIO INTELIGENTE
-                </span>
 
-                <h1>Escáner Biogram <span>IA</span></h1>
+
+                <h1>ESCÁNER con <span>IA</span></h1>
 
                 <p>
                     Identificación bioquímica asistida mediante inteligencia artificial.
@@ -624,7 +621,7 @@ Escáner Biogram IA
 
                 </button>
 
-                <button type="button" class="btn-agregar-prueba" disabled>
+                <button type="button" class="btn-agregar-prueba" id="btn-agregar-prueba" disabled>
 
                     Agregar siguiente prueba
                     <i class="fa-solid fa-plus"></i>
@@ -632,6 +629,37 @@ Escáner Biogram IA
                 </button>
 
             </div>
+
+        </div>
+
+        <!-- =====================================
+                FINALIZAR ANÁLISIS
+        ====================================== -->
+
+        <div class="finalizar-analisis">
+
+            <div class="finalizar-analisis-info">
+
+                <div class="finalizar-analisis-icono">
+                    <i class="fa-solid fa-dna"></i>
+                </div>
+
+                <div>
+                    <h3>¿Terminaste de registrar tus pruebas?</h3>
+
+                    <p>
+                        Envía los resultados a la inteligencia artificial
+                        para obtener las coincidencias, bacterias candidatas
+                        y recomendaciones de pruebas adicionales.
+                    </p>
+                </div>
+
+            </div>
+
+            <button type="button" class="btn-finalizar-analisis" id="btn-finalizar-analisis" disabled>
+                <i class="fa-solid fa-microscope"></i>
+                Finalizar análisis
+            </button>
 
         </div>
 
@@ -643,6 +671,167 @@ Escáner Biogram IA
 
     </div>
 
+    <!-- =====================================
+         PANTALLA DE RESULTADOS DE LA IA
+        ====================================== -->
+
+    <div id="pantalla-resultados" hidden>
+
+        <div class="resultados-encabezado">
+
+            <span class="info-etiqueta">
+                <i class="fa-solid fa-brain"></i>
+                ANÁLISIS DE INTELIGENCIA ARTIFICIAL
+            </span>
+
+            <h2>Resultados del análisis</h2>
+
+            <p>
+                Consulta las coincidencias bioquímicas, bacterias
+                candidatas y recomendaciones generadas por BIOGRAM IA.
+            </p>
+
+        </div>
+
+
+        <!-- IDENTIFICACIÓN PRINCIPAL -->
+
+        <div class="resultado-identificacion">
+
+            <div class="resultado-identificacion-icono">
+                <i class="fa-solid fa-dna"></i>
+            </div>
+
+            <div>
+                <span>IDENTIFICACIÓN BACTERIANA</span>
+
+                <h3 id="bacteria-identificada">
+                    Pendiente de análisis
+                </h3>
+
+                <p id="estado-identificacion">
+                    Esperando los resultados del motor de inteligencia artificial.
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- COMPATIBILIDAD -->
+
+        <div class="resultados-seccion">
+
+            <h3>
+                <i class="fa-solid fa-chart-simple"></i>
+                Compatibilidad y coincidencias
+            </h3>
+
+            <div id="lista-candidatas">
+
+                <p>
+                    Las bacterias candidatas aparecerán después del análisis.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECOMENDACIONES -->
+
+        <div class="resultados-recomendaciones">
+
+            <div class="recomendaciones-titulo">
+                <i class="fa-solid fa-lightbulb"></i>
+
+                <div>
+                    <h3>Recomendaciones de BIOGRAM IA</h3>
+
+                    <p>
+                        La inteligencia artificial analizará qué pruebas
+                        adicionales pueden ayudar a mejorar la identificación.
+                    </p>
+                </div>
+            </div>
+
+            <div id="lista-pruebas-recomendadas">
+
+                <p>
+                    Las recomendaciones aparecerán después del análisis.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONCLUSIÓN -->
+
+        <div class="resultados-conclusion">
+
+            <h3>
+                <i class="fa-solid fa-clipboard-check"></i>
+                Conclusión del análisis
+            </h3>
+
+            <p id="conclusion-analisis">
+                Pendiente de respuesta del motor de inteligencia artificial.
+            </p>
+
+        </div>
+
+
+        <!-- ACCIONES -->
+
+        <div class="resultados-acciones">
+
+            <button type="button" class="btn-regresar-escaner" id="btn-regresar-captura">
+                <i class="fa-solid fa-arrow-left"></i>
+                Volver a las pruebas
+            </button>
+
+            <button type="button" class="btn-nuevo-analisis" id="btn-nuevo-analisis">
+                <i class="fa-solid fa-rotate"></i>
+                Nuevo análisis
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================
+     MODAL DE CONFIRMACIÓN
+====================================== -->
+
+    <div class="modal-confirmacion" id="modal-confirmacion" hidden>
+
+        <div class="modal-confirmacion-contenido">
+
+            <div class="modal-confirmacion-icono" id="modal-icono">
+                <i class="fa-solid fa-microscope"></i>
+            </div>
+
+            <h3 id="modal-titulo">¿Finalizar análisis?</h3>
+
+            <p id="modal-mensaje">
+                Se prepararán tus pruebas para el análisis de BIOGRAM IA.
+            </p>
+
+            <div class="modal-confirmacion-acciones">
+
+                <button type="button" class="btn-modal-cancelar" id="btn-modal-cancelar">
+                    Cancelar
+                </button>
+
+                <button type="button" class="btn-modal-confirmar" id="btn-modal-confirmar">
+                    Confirmar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 

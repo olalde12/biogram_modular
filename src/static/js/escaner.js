@@ -17,13 +17,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const pantallaInicio = document.getElementById("pantalla-inicio");
     const pantallaPreparacion = document.getElementById("pantalla-preparacion");
     const pantallaCaptura = document.getElementById("pantalla-captura");
+    const pantallaResultados = document.getElementById("pantalla-resultados");
 
     const botonIniciar = document.getElementById("btn-iniciar-escaner");
     const botonRegresar = document.getElementById("btn-regresar-escaner");
     const botonContinuar = document.getElementById("btn-continuar-escaner");
     const botonRegresarPreparacion = document.getElementById("btn-regresar-preparacion");
-
+    const botonAgregarPrueba = document.getElementById("btn-agregar-prueba");
     const numeroPrueba = document.getElementById("numero-prueba");
+    const botonFinalizarAnalisis = document.getElementById("btn-finalizar-analisis");
+    const botonRegresarCaptura = document.getElementById("btn-regresar-captura");
+    const botonNuevoAnalisis = document.getElementById("btn-nuevo-analisis");
 
 
     // ========================================
@@ -42,6 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // ========================================
 
     let sesionEscaner = null;
+
+    //Indica si el tubo actual ya tiene un registro
+    let pruebaActualRegistrada = false;
 
     /*
         La sesión contiene:
@@ -66,12 +73,41 @@ document.addEventListener("DOMContentLoaded", function () {
             resultadoFinal: null
         };
 
+        pruebaActualRegistrada = false;
+
+        if (botonAgregarPrueba) {
+            botonAgregarPrueba.disabled = true;
+        }
+
+        if (botonFinalizarAnalisis) {
+            botonFinalizarAnalisis.disabled = true;
+        }
+
         console.log("Sesión BIOGRAM iniciada:", sesionEscaner.id);
 
         renderizarHistorial();
 
     }
 
+    // ========================================
+    // 3.1. ACTUALIZAR ESTADO DE LOS BOTONES
+    // ========================================
+
+    function actualizarEstadoBotones() {
+
+        const cantidadPruebas = obtenerPruebas().length;
+
+        // Finalizar análisis requiere al menos una prueba
+        if (botonFinalizarAnalisis) {
+            botonFinalizarAnalisis.disabled = cantidadPruebas === 0;
+        }
+
+        // Agregar siguiente prueba requiere que la actual esté registrada
+        if (botonAgregarPrueba) {
+            botonAgregarPrueba.disabled = !pruebaActualRegistrada;
+        }
+
+    }
 
     // ========================================
     // 4. REGISTRO DE UNA PRUEBA
@@ -81,6 +117,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!sesionEscaner) {
             console.error("No existe una sesión activa.");
+            return false;
+        }
+
+        if (pruebaActualRegistrada) {
+            console.warn("El tubo actual ya fue registrado.");
             return false;
         }
 
@@ -100,13 +141,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         sesionEscaner.pruebas.push(nuevaPrueba);
 
-        //Actualizamos el contador de pruebas
+        // Marcar el tubo como registrado
+        pruebaActualRegistrada = true;
+
+        // Actualizar el historial
         renderizarHistorial();
+
+        // Actualizar el estado de los botones
+        actualizarEstadoBotones();
 
         console.log("Prueba registrada:", nuevaPrueba);
 
         return nuevaPrueba;
-
     }
 
 
@@ -330,6 +376,171 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+    // ========================================
+    // 7.1. AGREGAR SIGUIENTE PRUEBA
+    // ========================================
+
+    if (botonAgregarPrueba) {
+
+        botonAgregarPrueba.addEventListener("click", function () {
+
+            // Verificar que exista una sesión
+            if (!sesionEscaner) {
+                console.error("No existe una sesión activa.");
+                return;
+            }
+
+            // Verificar que el tubo actual tenga un registro
+            if (!pruebaActualRegistrada) {
+                alert("Primero debes registrar el resultado de la prueba actual.");
+                return;
+            }
+
+            // Preparar el siguiente tubo
+            pruebaActualRegistrada = false;
+
+            // Deshabilitar el botón hasta registrar el nuevo tubo
+            botonAgregarPrueba.disabled = true;
+
+            // Actualizar el contador
+            actualizarNumeroPrueba();
+
+            // Regresar a la pantalla de preparación
+            pantallaCaptura.hidden = true;
+            pantallaPreparacion.hidden = false;
+            pantallaInicio.hidden = true;
+
+            subirPantalla();
+
+            console.log(
+                "Preparación del tubo " +
+                String(sesionEscaner.pruebas.length + 1).padStart(2, "0")
+            );
+
+        });
+
+    }
+
+    // ========================================
+    // 7.2. FINALIZAR ANÁLISIS
+    // ========================================
+
+    if (botonFinalizarAnalisis) {
+
+        botonFinalizarAnalisis.addEventListener("click", function () {
+
+            // Comprobar que exista una sesión
+            if (!sesionEscaner) {
+                alert("No existe una sesión activa.");
+                return;
+            }
+
+            const pruebas = obtenerPruebas();
+
+            // Comprobar que haya pruebas registradas
+            if (pruebas.length === 0) {
+                alert("Necesitas registrar al menos una prueba.");
+                return;
+            }
+
+            // Solicitar confirmación
+            const confirmar = window.confirm(
+                "Se preparará el análisis de las " +
+                pruebas.length +
+                " pruebas registradas.\n\n" +
+                "La conexión con el motor de inteligencia artificial " +
+                "todavía está pendiente de integración.\n\n" +
+                "¿Deseas continuar a la pantalla de resultados?"
+            );
+
+            if (!confirmar) {
+                return;
+            }
+
+            // Mostrar la pantalla de resultados
+            pantallaInicio.hidden = true;
+            pantallaPreparacion.hidden = true;
+            pantallaCaptura.hidden = true;
+            pantallaResultados.hidden = false;
+
+            // Mostrar que todavía no existe una respuesta de la IA porque no se ha integrado
+            document.getElementById("bacteria-identificada").textContent =
+                "Pendiente de análisis";
+
+            document.getElementById("estado-identificacion").textContent =
+                "La conexión con el motor de inteligencia artificial está pendiente.";
+
+            document.getElementById("lista-candidatas").textContent =
+                "Las bacterias candidatas aparecerán cuando el motor de IA procese las pruebas.";
+
+            document.getElementById("lista-pruebas-recomendadas").textContent =
+                "Las recomendaciones estarán disponibles después de recibir el análisis de IA.";
+
+            document.getElementById("conclusion-analisis").textContent =
+                "Se han preparado " + pruebas.length +
+                " pruebas para su análisis. Todavía no se ha realizado una identificación.";
+
+            subirPantalla();
+
+            console.log("Pruebas preparadas para análisis:", pruebas);
+
+        });
+
+    }
+
+    // ========================================
+    // 7.3. REGRESAR A LAS PRUEBAS
+    // ========================================
+
+    if (botonRegresarCaptura) {
+
+        botonRegresarCaptura.addEventListener("click", function () {
+
+            pantallaResultados.hidden = true;
+            pantallaInicio.hidden = true;
+            pantallaPreparacion.hidden = true;
+            pantallaCaptura.hidden = false;
+
+            actualizarNumeroPrueba();
+            subirPantalla();
+
+        });
+
+    }
+
+    // ========================================
+    // 7.4. INICIAR UN NUEVO ANÁLISIS
+    // ========================================
+
+    if (botonNuevoAnalisis) {
+
+        botonNuevoAnalisis.addEventListener("click", function () {
+
+            const confirmar = window.confirm(
+                "¿Deseas iniciar un nuevo análisis?\n\n" +
+                "La sesión actual y sus pruebas dejarán de estar disponibles " +
+                "en esta pantalla."
+            );
+
+            if (!confirmar) {
+                return;
+            }
+
+            // Crear una sesión completamente nueva
+            crearSesion();
+
+            // Regresar a preparación
+            pantallaInicio.hidden = true;
+            pantallaCaptura.hidden = true;
+            pantallaResultados.hidden = true;
+            pantallaPreparacion.hidden = false;
+
+            actualizarNumeroPrueba();
+            subirPantalla();
+
+        });
+
+    }
 
     // ========================================
     // 8. FUNCIONES DISPONIBLES PARA INTEGRACIÓN
