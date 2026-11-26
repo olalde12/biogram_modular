@@ -19,19 +19,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const pasos = [
         {
+            elemento: "#btnDiccionario",
+            titulo: "Diccionario",
+            descripcion: "Aquí puedes buscar conceptos generales de la materia."
+        },
+        {
+            elemento: "#btnForo",
+            titulo: "Foro",
+            descripcion: "En esta sección puedes compartir tus conocimientos e interactuar con otros usuarios."
+        },
+        {
+            elemento: "#btnPerfil",
+            titulo: "Perfil",
+            descripcion: "Consulta tu perfil y personaliza tu avatar para identificarte en BIOGRAM."
+        },
+        {
             elemento: "#btnIdentificar",
             titulo: "Identificar bacterias",
-            descripcion: "En esta sección puedes comenzar un proceso de identificación bacteriana utilizando los resultados de las pruebas bioquímicas."
+            descripcion: "Aquí puedes comenzar un proceso de identificación bacteriana manual utilizando los resultados de las pruebas bioquímicas."
         },
         {
             elemento: "#btnBuscar",
             titulo: "Buscar bacterias",
-            descripcion: "Consulta información sobre diferentes bacterias, sus características y datos relevantes."
+            descripcion: "Consulta información sobre diferentes bacterias, sus características y resultados probables."
         },
         {
-            elemento: "#btnTutoriales",
-            titulo: "Tutoriales y material de apoyo",
-            descripcion: "Aquí encontrarás recursos educativos, guías y materiales que te ayudarán a comprender los procedimientos."
+            elemento: "#btnHistorial",
+            titulo: "Historial",
+            descripcion: "Aquí encontrarás el historial de las identificaciones manuales que realices."
         },
         {
             elemento: "#btnEscanear",

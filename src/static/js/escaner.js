@@ -11,9 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // 1. ELEMENTOS DEL HTML
     // ========================================
 
-    const menuToggle = document.getElementById("menuToggle");
-    const sidebar = document.getElementById("sidebar");
-
     const pantallaInicio = document.getElementById("pantalla-inicio");
     const pantallaPreparacion = document.getElementById("pantalla-preparacion");
     const pantallaCaptura = document.getElementById("pantalla-captura");
@@ -24,18 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const botonRegresarPreparacion = document.getElementById("btn-regresar-preparacion");
 
     const numeroPrueba = document.getElementById("numero-prueba");
-
-
-    // ========================================
-    // 2. SIDEBAR
-    // ========================================
-
-    if (menuToggle && sidebar) {
-        menuToggle.addEventListener("click", function () {
-            sidebar.classList.toggle("open");
-        });
-    }
-
 
     // ========================================
     // 3. DATOS DE LA SESIÓN
